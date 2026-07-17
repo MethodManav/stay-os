@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  
+  /* Forest-Green & Cream Light Theme Colors */
+  --color-bg-page: #f4f3ed;
+  --color-bg-card: #ffffff;
+  --color-bg-sidebar: #1b4332;
+  --color-border-subtle: #e2e1d7;
+  
+  --color-text-primary: #1a1a1e;
+  --color-text-secondary: #7a7974;
+  --color-text-dark: #ffffff;
+
+  --color-brand-primary: #1b4332; /* Deep Forest Green */
+  --color-brand-hover: #143324;
+  --color-brand-light: #e8efe9;
+  
+  --color-accent-magenta: #f97316; /* Orange highlight quote */
+  --color-accent-purple: #4a6f5a; /* Muted Green highlight */
+}
+
+body {
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  background-color: #f4f3ed;
+  color: #1a1a1e;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure inputs, buttons, and select dropdowns inherit the font but use local backgrounds */
+input, select, textarea, button {
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+/* Modern clean heading styles */
+h1, h2, h3, h4 {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: #1a1a1e;
+}
+
+/* High-tech solid panel styles configured for Light-Beige/Forest-Green context */
+.glassy-sidebar {
+  background-color: #1b4332;
+  border-right: 1px solid #153427;
+}
+
+.glassy-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e1d7;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(27, 67, 50, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(27, 67, 50, 0.3);
+}
