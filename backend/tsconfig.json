@@ -29,5 +29,8 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.spec.ts", "**/*.test.ts", "tests/**/*"]
+  "exclude": ["node_modules", "dist", "**/*.spec.ts", "**/*.test.ts", "tests/**/*"],
+  "ts-node": {
+    "files": true
+  }
 }
