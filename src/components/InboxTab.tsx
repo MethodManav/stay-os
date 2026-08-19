@@ -235,7 +235,7 @@ export const InboxTab: React.FC = () => {
                   <h3 className="text-base font-bold text-text-primary">{activeChat.guestName}</h3>
                   <div className="flex items-center gap-1 text-xs text-text-secondary mt-0.5 font-semibold">
                     <Smartphone className="w-3.5 h-3.5 text-text-secondary/60" />
-                    <span>{activeChat.guestPhone}</span>
+                    <span className="font-mono text-slate-500 font-medium tracking-tight">{activeChat.guestPhone}</span>
                   </div>
                 </div>
               </div>

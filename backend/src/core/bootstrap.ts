@@ -1,4 +1,4 @@
-import { Router } from 'express';
+
 
 // Repositories
 import { MongoUserRepository } from '../modules/users/repositories/MongoUserRepository';
@@ -44,7 +44,7 @@ import { PublicController } from '../modules/businesses/controllers/PublicContro
 import { createAuthRouter } from '../modules/auth/routes/AuthRoutes';
 import { createOrganizationRouter } from '../modules/organizations/routes/OrganizationRoutes';
 import { createBusinessRouter } from '../modules/businesses/routes/BusinessRoutes';
-import { createRoomRouter } from '../modules/rooms/routes/RoomRoutes';
+import { createRoomRouter, createRoomTypeRouter } from '../modules/rooms/routes/RoomRoutes';
 import { createGuestRouter } from '../modules/guests/routes/GuestRoutes';
 import { createBookingRouter } from '../modules/bookings/routes/BookingRoutes';
 import { createWebsiteRouter } from '../modules/websites/routes/WebsiteRoutes';
@@ -70,14 +70,14 @@ const razorpayProvider = new RazorpayPaymentProvider();
 
 // Instantiate Service layer singletons
 const authService = new AuthService(userRepo, tokenRepo, orgRepo, businessRepo);
-const organizationService = new OrganizationService(orgRepo);
+const organizationService = new OrganizationService(orgRepo, userRepo);
 const businessService = new BusinessService(businessRepo);
-const roomService = new RoomService(roomTypeRepo, roomRepo);
+const roomService = new RoomService(roomRepo, roomTypeRepo);
 const guestService = new GuestService(guestRepo);
 const bookingService = new BookingService(bookingRepo, roomRepo, roomTypeRepo, guestRepo);
 const websiteService = new WebsiteService(websiteRepo);
 const paymentService = new PaymentService(bookingRepo, stripeProvider, razorpayProvider);
-const aiService = new AIService(roomTypeRepo, roomRepo, bookingRepo);
+const aiService = new AIService(roomTypeRepo, roomRepo);
 const analyticsService = new AnalyticsService(bookingRepo, roomRepo);
 
 // Instantiate Controller layer singletons
@@ -105,6 +105,7 @@ export const authRouter = createAuthRouter(authController);
 export const organizationRouter = createOrganizationRouter(organizationController);
 export const businessRouter = createBusinessRouter(businessController);
 export const roomRouter = createRoomRouter(roomController);
+export const roomTypeRouter = createRoomTypeRouter(roomController);
 export const guestRouter = createGuestRouter(guestController);
 export const bookingRouter = createBookingRouter(bookingController);
 export const websiteRouter = createWebsiteRouter(websiteController);

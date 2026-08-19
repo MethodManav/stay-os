@@ -174,20 +174,20 @@ export const CustomersTab: React.FC = () => {
                     {guest.name.split(' ').map(n => n[0]).join('')}
                   </div>
                   <div>
-                    <h3 className="text-sm font-extrabold text-[#1a1a1e] leading-snug flex items-center gap-2">
+                    <h3 className="text-sm font-extrabold text-slate-800 leading-snug flex items-center gap-2">
                       {guest.name}
                       {guest.tags.includes('VIP') && <Award className="w-3.5 h-3.5 text-orange-500 fill-orange-200" />}
                     </h3>
-                    <div className="flex flex-col sm:flex-row gap-x-3 gap-y-0.5 text-[10px] text-[#7a7974] font-semibold mt-1">
-                      <span className="flex items-center gap-1"><Mail className="w-3 h-3 text-[#a3c2b2]" /> {guest.email || 'No email'}</span>
-                      <span className="flex items-center gap-1"><Phone className="w-3 h-3 text-[#a3c2b2]" /> {guest.phone || 'No phone'}</span>
+                    <div className="flex flex-col sm:flex-row gap-x-3 gap-y-0.5 text-[10px] text-slate-500 font-semibold mt-1">
+                      <span className="flex items-center gap-1"><Mail className="w-3 h-3 text-slate-450" /> {guest.email || 'No email'}</span>
+                      <span className="flex items-center gap-1 font-mono tracking-tight text-slate-500"><Phone className="w-3 h-3 text-slate-450" /> {guest.phone || 'No phone'}</span>
                     </div>
                   </div>
                 </div>
 
                 <button
                   onClick={() => openEditModal(guest)}
-                  className="p-1.5 rounded-lg border border-[#e2e1d7] hover:bg-[#f4f3ed] text-[#1b4332] cursor-pointer"
+                  className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-[#3872fa] cursor-pointer"
                   title="Edit Profile"
                 >
                   <Edit className="w-3.5 h-3.5" />

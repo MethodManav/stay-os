@@ -20,7 +20,7 @@ const colors = {
 winston.addColors(colors);
 
 // Custom format to mask sensitive fields
-const maskSensitiveFields = winston.format((info) => {
+const maskSensitiveFields = winston.format((info: any) => {
   const sensitiveKeys = ['password', 'token', 'secret', 'jwt', 'authorization', 'card', 'cvv'];
   
   if (info.metadata && typeof info.metadata === 'object') {
@@ -48,8 +48,8 @@ const developmentFormat = winston.format.combine(
   winston.format.colorize({ all: true }),
   winston.format.metadata({ fillExcept: ['message', 'level', 'timestamp'] }),
   maskSensitiveFields(),
-  winston.format.printf(({ timestamp, level, message, metadata }) => {
-    const metaStr = Object.keys(metadata).length ? ` | meta: ${JSON.stringify(metadata)}` : '';
+  winston.format.printf(({ timestamp, level, message, metadata }: any) => {
+    const metaStr = metadata && Object.keys(metadata).length ? ` | meta: ${JSON.stringify(metadata)}` : '';
     return `[${timestamp}] [${level}]: ${message}${metaStr}`;
   })
 );

@@ -3,14 +3,12 @@ import { ConversationModel, IConversationDocument } from '../models/Conversation
 import { AIKnowledgeBaseModel } from '../models/AIKnowledgeBaseModel';
 import { IRoomTypeRepository } from '../../rooms/repositories/IRoomTypeRepository';
 import { IRoomRepository } from '../../rooms/repositories/IRoomRepository';
-import { IBookingRepository } from '../../bookings/repositories/IBookingRepository';
 import { NotFoundError } from '../../../core/errors/NotFoundError';
 
 export class AIService {
   constructor(
     private readonly roomTypeRepository: IRoomTypeRepository,
-    private readonly roomRepository: IRoomRepository,
-    private readonly bookingRepository: IBookingRepository
+    private readonly roomRepository: IRoomRepository
   ) {}
 
   public async getConversations(organizationId: string, businessId: string): Promise<IConversationDocument[]> {

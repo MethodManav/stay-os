@@ -170,9 +170,9 @@ export const AiTab: React.FC = () => {
                   {/* Chat header */}
                   <div className="px-5 py-3 border-b border-[#e2e1d7] bg-[#fcfbf9] flex justify-between items-center shrink-0">
                     <div>
-                      <h3 className="text-xs font-bold text-[#1a1a1e] flex items-center gap-1.5">
+                      <h3 className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                         {selectedConv.guestName}
-                        <span className="text-[10px] text-[#7a7974] font-semibold">({selectedConv.guestPhone})</span>
+                        <span className="text-[10px] text-slate-500 font-mono font-medium tracking-tight">({selectedConv.guestPhone})</span>
                       </h3>
                       <span className="text-[9px] text-[#7a7974] font-semibold mt-0.5 block">AI Concierge active</span>
                     </div>

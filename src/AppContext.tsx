@@ -21,7 +21,9 @@ import {
   getOnboardingCompleted,
   setOnboardingCompleted,
   createNewTenant,
-  resetToDefaults
+  resetToDefaults,
+  saveTenants,
+  getActiveTenantId
 } from './db';
 
 interface AppContextType {
@@ -31,6 +33,7 @@ interface AppContextType {
   onboardingCompleted: boolean;
   switchTenant: (id: string) => void;
   updateActiveTenant: (tenant: Tenant) => void;
+  updateAllTenants: (tenants: Tenant[]) => void;
   registerNewTenant: (
     hotelName: string,
     businessType: string,
@@ -105,6 +108,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     saveActiveTenant(updatedTenant);
     setActiveTenantState(updatedTenant);
     setTenants(getTenants());
+  };
+
+  const updateAllTenants = (updatedTenants: Tenant[]) => {
+    saveTenants(updatedTenants);
+    setTenants(updatedTenants);
+    
+    const activeId = getActiveTenantId();
+    const stillExists = updatedTenants.some(t => t.id === activeId);
+    if (!stillExists && updatedTenants.length > 0) {
+      setActiveTenantId(updatedTenants[0].id);
+      setActiveTenantState(updatedTenants[0]);
+    } else if (stillExists) {
+      const freshActive = updatedTenants.find(t => t.id === activeId);
+      if (freshActive) {
+        setActiveTenantState(freshActive);
+      }
+    }
   };
 
   const registerNewTenant = (
@@ -380,6 +400,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       onboardingCompleted,
       switchTenant,
       updateActiveTenant,
+      updateAllTenants,
       registerNewTenant,
       addBooking,
       updateBooking,

@@ -4,6 +4,7 @@ import {
   organizationRouter,
   businessRouter,
   roomRouter,
+  roomTypeRouter,
   guestRouter,
   bookingRouter,
   websiteRouter,
@@ -29,6 +30,7 @@ rootRouter.use('/auth', authRouter);
 rootRouter.use('/organizations', organizationRouter);
 rootRouter.use('/businesses', businessRouter);
 rootRouter.use('/rooms', roomRouter);
+rootRouter.use('/room-types', roomTypeRouter);
 rootRouter.use('/guests', guestRouter);
 rootRouter.use('/bookings', bookingRouter);
 rootRouter.use('/websites', websiteRouter);

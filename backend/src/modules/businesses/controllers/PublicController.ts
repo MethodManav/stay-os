@@ -6,7 +6,6 @@ import { BookingService } from '../../bookings/services/BookingService';
 import { IRoomRepository } from '../../rooms/repositories/IRoomRepository';
 import { IBookingRepository } from '../../bookings/repositories/IBookingRepository';
 import { BadRequestError } from '../../../core/errors/BadRequestError';
-import { NotFoundError } from '../../../core/errors/NotFoundError';
 import { ConflictError } from '../../../core/errors/ConflictError';
 
 export class PublicController {

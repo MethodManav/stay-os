@@ -16,7 +16,7 @@ export const authorizeRoles = (...allowedRoles: ('OWNER' | 'ADMIN' | 'MANAGER' |
         throw new ForbiddenError('Access denied: You do not belong to this organization');
       }
 
-      const hasRole = allowedRoles.includes(membership.role);
+      const hasRole = allowedRoles.includes(membership.role as any);
       if (!hasRole) {
         throw new ForbiddenError('Access denied: Insufficient permissions');
       }

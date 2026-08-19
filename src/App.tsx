@@ -16,6 +16,7 @@ import { AnalyticsTab } from './components/AnalyticsTab';
 import { TeamTab } from './components/TeamTab';
 import { SettingsTab } from './components/SettingsTab';
 import { PublicSite } from './components/PublicSite';
+import { AdminPanel } from './components/AdminPanel';
 
 // Auth Route Guard wrapper
 const OnboardingGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -66,6 +67,9 @@ export default function App() {
 
           {/* Public Hotel Site Portal */}
           <Route path="/site/:subdomain" element={<PublicSite />} />
+
+          {/* Super Admin Panel Portal */}
+          <Route path="/admin" element={<AdminPanel />} />
 
           {/* Fallback Redirects */}
           <Route path="*" element={<Navigate to="/" replace />} />
