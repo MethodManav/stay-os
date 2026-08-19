@@ -89,15 +89,15 @@ export const RoomsTab: React.FC = () => {
     <div className="space-y-8">
       
       {/* Header section */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#e2e1d7] pb-5">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border-subtle pb-5">
         <div>
-          <h1 className="text-2xl font-extrabold text-[#1a1a1e] font-outfit">Inventory Setup</h1>
-          <p className="text-xs text-[#7a7974] mt-1 font-semibold">Configure room types, pricing, and availability states</p>
+          <h1 className="text-2xl font-extrabold text-text-primary font-outfit">Inventory Setup</h1>
+          <p className="text-xs text-text-secondary mt-1 font-semibold">Configure room types, pricing, and availability states</p>
         </div>
         
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center gap-1.5 px-4.5 py-2.5 rounded-xl bg-[#1b4332] text-white hover:bg-[#143324] font-bold text-xs shadow-md shadow-[#1b4332]/10 transition-all cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4.5 py-2.5 rounded-xl bg-brand-primary text-white hover:bg-brand-hover font-bold text-xs shadow-md shadow-brand-primary/10 transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Create Room Category</span>
@@ -111,7 +111,7 @@ export const RoomsTab: React.FC = () => {
             <div 
               key={room.id} 
               className={`bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between group ${
-                room.status === 'maintenance' ? 'border-amber-200' : 'border-[#e2e1d7]'
+                room.status === 'maintenance' ? 'border-amber-200' : 'border-border-subtle'
               }`}
             >
               
@@ -125,7 +125,7 @@ export const RoomsTab: React.FC = () => {
                 
                 {/* Status Badges */}
                 <div className="absolute top-3 left-3 flex gap-2">
-                  <span className={`px-2.5 py-1 rounded-lg text-[9px] font-extrabold uppercase tracking-wider shadow-sm ${
+                  <span className={`px-2.5 py-1 rounded-lg text-[11px] font-extrabold uppercase tracking-wider shadow-sm ${
                     room.status === 'available' ? 'bg-emerald-500 text-black' :
                     room.status === 'occupied' ? 'bg-blue-600 text-white' :
                     'bg-amber-500 text-black'
@@ -136,18 +136,18 @@ export const RoomsTab: React.FC = () => {
 
                 {/* Price tag */}
                 <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-xl text-xs font-bold font-mono">
-                  {currencySymbol}{room.basePrice.toLocaleString()} <span className="text-[9px] font-normal text-slate-300">/ night</span>
+                  {currencySymbol}{room.basePrice.toLocaleString()} <span className="text-[11px] font-normal text-slate-300">/ night</span>
                 </div>
               </div>
 
               {/* Body details */}
               <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                 <div className="space-y-2">
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-[#7a7974]">{room.type}</span>
-                  <h3 className="text-base font-extrabold text-[#1a1a1e] leading-snug">{room.name}</h3>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">{room.type}</span>
+                  <h3 className="text-base font-extrabold text-text-primary leading-snug">{room.name}</h3>
                   
                   {/* Meta stats */}
-                  <div className="flex gap-4 text-xs font-semibold text-[#7a7974] pt-1">
+                  <div className="flex gap-4 text-xs font-semibold text-text-secondary pt-1">
                     <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5" /> Max Guests: {room.maxGuests}</span>
                     <span className="flex items-center gap-1"><Bed className="w-3.5 h-3.5" /> Total: {room.count} rooms</span>
                   </div>
@@ -155,7 +155,7 @@ export const RoomsTab: React.FC = () => {
                   {/* Amenities */}
                   <div className="flex flex-wrap gap-1.5 pt-3">
                     {room.amenities.map((a, i) => (
-                      <span key={i} className="px-2 py-0.5 rounded bg-[#f4f3ed] border border-[#e2e1d7] text-[10px] font-bold text-[#1a1a1e]">
+                      <span key={i} className="px-2 py-0.5 rounded bg-[#f1f5f9] border border-border-subtle text-[10px] font-bold text-text-primary">
                         {a}
                       </span>
                     ))}
@@ -163,10 +163,10 @@ export const RoomsTab: React.FC = () => {
                 </div>
 
                 {/* Actions */}
-                <div className="border-t border-[#e2e1d7] pt-3.5 flex justify-between items-center">
+                <div className="border-t border-border-subtle pt-3.5 flex justify-between items-center">
                   <button
                     onClick={() => openEditModal(room)}
-                    className="text-xs font-bold text-[#1b4332] hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-xs font-bold text-brand-primary hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <Edit className="w-3.5 h-3.5" />
                     <span>Edit Specifications</span>
@@ -186,7 +186,7 @@ export const RoomsTab: React.FC = () => {
         })}
         
         {rooms.length === 0 && (
-          <div className="col-span-3 text-center py-20 bg-white border border-[#e2e1d7] border-dashed rounded-2xl text-[#7a7974]">
+          <div className="col-span-3 text-center py-20 bg-white border border-border-subtle border-dashed rounded-2xl text-text-secondary">
             No rooms configured. Click "Create Room Category" to establish inventory.
           </div>
         )}
@@ -195,35 +195,35 @@ export const RoomsTab: React.FC = () => {
       {/* Editor Modal Popup */}
       {editorOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-xl bg-white border border-[#e2e1d7] rounded-2xl shadow-2xl p-6 space-y-5">
-            <div className="flex justify-between items-center border-b border-[#e2e1d7] pb-3">
-              <h3 className="text-base font-extrabold text-[#1b4332] font-outfit">
+          <div className="w-full max-w-xl bg-white border border-border-subtle rounded-2xl shadow-2xl p-6 space-y-5">
+            <div className="flex justify-between items-center border-b border-border-subtle pb-3">
+              <h3 className="text-base font-extrabold text-brand-primary font-outfit">
                 {selectedRoom ? `Edit Category: ${selectedRoom.name}` : 'Add Room Category'}
               </h3>
-              <button onClick={() => setEditorOpen(false)} className="text-[#7a7974] hover:text-[#1a1a1e]">
+              <button onClick={() => setEditorOpen(false)} className="text-text-secondary hover:text-text-primary">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs font-semibold text-[#1a1a1e]">
+            <form onSubmit={handleSubmit} className="space-y-4 text-xs font-semibold text-text-primary">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Room Category Name</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Room Category Name</label>
                   <input
                     type="text"
                     required
                     value={name}
                     placeholder="e.g. Oceanfront Suite"
                     onChange={e => setName(e.target.value)}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none focus:border-[#1b4332]"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none focus:border-brand-primary"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Room Type Class</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Room Type Class</label>
                   <select
                     value={type}
                     onChange={e => setType(e.target.value)}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   >
                     <option value="Deluxe Room">Deluxe Room</option>
                     <option value="Premium Suite">Premium Suite</option>
@@ -232,41 +232,41 @@ export const RoomsTab: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Max Guests Limit</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Max Guests Limit</label>
                   <input
                     type="number"
                     min={1}
                     value={maxGuests}
                     onChange={e => setMaxGuests(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Base Price / Night ({currencySymbol})</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Base Price / Night ({currencySymbol})</label>
                   <input
                     type="number"
                     min={0}
                     value={basePrice}
                     onChange={e => setBasePrice(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Total Rooms Count</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Total Rooms Count</label>
                   <input
                     type="number"
                     min={1}
                     value={count}
                     onChange={e => setCount(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Current State Status</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Current State Status</label>
                   <select
                     value={status}
                     onChange={e => setStatus(e.target.value as any)}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   >
                     <option value="available">Available</option>
                     <option value="occupied">Occupied</option>
@@ -276,38 +276,38 @@ export const RoomsTab: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Room Cover Image URL</label>
+                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Room Cover Image URL</label>
                 <input
                   type="text"
                   value={image}
                   placeholder="https://images.unsplash.com/photo-..."
                   onChange={e => setImage(e.target.value)}
-                  className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                  className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Amenities List (comma separated)</label>
+                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Amenities List (comma separated)</label>
                 <input
                   type="text"
                   value={amenitiesText}
                   placeholder="King Bed, Ocean View, Wi-Fi"
                   onChange={e => setAmenitiesText(e.target.value)}
-                  className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                  className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-3 border-t border-[#e2e1d7]">
+              <div className="flex justify-end gap-3 pt-3 border-t border-border-subtle">
                 <button
                   type="button"
                   onClick={() => setEditorOpen(false)}
-                  className="px-4 py-2 border border-[#e2e1d7] hover:bg-[#f4f3ed] text-[#7a7974] font-bold rounded-lg cursor-pointer"
+                  className="px-4 py-2 border border-border-subtle hover:bg-[#f1f5f9] text-text-secondary font-bold rounded-lg cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#1b4332] hover:bg-[#143324] text-white font-bold rounded-lg cursor-pointer shadow-sm shadow-[#1b4332]/10"
+                  className="px-5 py-2 bg-brand-primary hover:bg-brand-hover text-white font-bold rounded-lg cursor-pointer shadow-sm shadow-brand-primary/10"
                 >
                   Save Category
                 </button>

@@ -97,11 +97,11 @@ export const SettingsTab: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 max-w-4xl pb-12 text-xs font-semibold text-[#1a1a1e]">
+    <div className="space-y-8 max-w-4xl pb-12 text-xs font-semibold text-text-primary">
       
       {/* Save Success Indicator */}
       {savedSuccessMsg && (
-        <div className="bg-[#e8efe9] border border-emerald-200 text-[#1b4332] text-xs px-4 py-3 rounded-xl flex items-center gap-2">
+        <div className="bg-brand-light border border-emerald-200 text-brand-primary text-xs px-4 py-3 rounded-xl flex items-center gap-2">
           <CheckCircle className="w-4.5 h-4.5" />
           <span>{savedSuccessMsg}</span>
         </div>
@@ -110,119 +110,119 @@ export const SettingsTab: React.FC = () => {
       <form onSubmit={handleSaveChanges} className="space-y-8">
         
         {/* Section 1: Property coordinates */}
-        <div className="bg-white border border-[#e2e1d7] rounded-2xl p-6 shadow-sm space-y-5">
-          <div className="flex items-center gap-2 border-b border-[#e2e1d7] pb-3">
-            <Building2 className="w-4.5 h-4.5 text-[#1b4332]" />
-            <h3 className="text-sm font-bold text-[#1a1a1e] uppercase tracking-wide">Property Profile</h3>
+        <div className="bg-white border border-border-subtle rounded-2xl p-6 shadow-sm space-y-5">
+          <div className="flex items-center gap-2 border-b border-border-subtle pb-3">
+            <Building2 className="w-4.5 h-4.5 text-brand-primary" />
+            <h3 className="text-sm font-bold text-text-primary uppercase tracking-wide">Property Profile</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4.5">
             <div>
-              <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1.5">Hotel Name</label>
+              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Hotel Name</label>
               <input 
                 type="text" 
                 value={name} 
                 onChange={e => setName(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-[#e2e1d7] bg-[#f4f3ed]/30 rounded-lg focus:outline-none focus:border-[#1b4332]"
+                className="w-full px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none focus:border-brand-primary"
               />
             </div>
             
             <div>
-              <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1.5">Guest Wi-Fi Password</label>
+              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Guest Wi-Fi Password</label>
               <input 
                 type="text" 
                 value={wifiPassword} 
                 onChange={e => setWifiPassword(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-[#e2e1d7] bg-[#f4f3ed]/30 rounded-lg focus:outline-none focus:border-[#1b4332]"
+                className="w-full px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none focus:border-brand-primary"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1.5">Street Address</label>
+              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Street Address</label>
               <input 
                 type="text" 
                 value={address} 
                 onChange={e => setAddress(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-[#e2e1d7] bg-[#f4f3ed]/30 rounded-lg focus:outline-none focus:border-[#1b4332]"
+                className="w-full px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none focus:border-brand-primary"
               />
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1.5">City</label>
+              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">City</label>
               <input 
                 type="text" 
                 value={city} 
                 onChange={e => setCity(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-[#e2e1d7] bg-[#f4f3ed]/30 rounded-lg focus:outline-none focus:border-[#1b4332]"
+                className="w-full px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none focus:border-brand-primary"
               />
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1.5">Country</label>
+              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Country</label>
               <input 
                 type="text" 
                 value={country} 
                 onChange={e => setCountry(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-[#e2e1d7] bg-[#f4f3ed]/30 rounded-lg focus:outline-none focus:border-[#1b4332]"
+                className="w-full px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none focus:border-brand-primary"
               />
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1.5">Contact Phone</label>
+              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Contact Phone</label>
               <input 
                 type="text" 
                 value={phone} 
                 onChange={e => setPhone(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-[#e2e1d7] bg-[#f4f3ed]/30 rounded-lg focus:outline-none"
+                className="w-full px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1.5">Contact Email</label>
+              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Contact Email</label>
               <input 
                 type="email" 
                 value={email} 
                 onChange={e => setEmail(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-[#e2e1d7] bg-[#f4f3ed]/30 rounded-lg focus:outline-none"
+                className="w-full px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1.5">Check-in time</label>
+              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Check-in time</label>
               <input 
                 type="time" 
                 value={checkInTime} 
                 onChange={e => setCheckInTime(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-[#e2e1d7] bg-[#f4f3ed]/30 rounded-lg focus:outline-none"
+                className="w-full px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1.5">Checkout deadline</label>
+              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Checkout deadline</label>
               <input 
                 type="time" 
                 value={checkOutTime} 
                 onChange={e => setCheckOutTime(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-[#e2e1d7] bg-[#f4f3ed]/30 rounded-lg focus:outline-none"
+                className="w-full px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none"
               />
             </div>
           </div>
         </div>
 
         {/* Section 2: Policies */}
-        <div className="bg-white border border-[#e2e1d7] rounded-2xl p-6 shadow-sm space-y-5">
-          <div className="flex items-center gap-2 border-b border-[#e2e1d7] pb-3">
-            <Coffee className="w-4.5 h-4.5 text-[#1b4332]" />
-            <h3 className="text-sm font-bold text-[#1a1a1e] uppercase tracking-wide">Policies & Guidelines</h3>
+        <div className="bg-white border border-border-subtle rounded-2xl p-6 shadow-sm space-y-5">
+          <div className="flex items-center gap-2 border-b border-border-subtle pb-3">
+            <Coffee className="w-4.5 h-4.5 text-brand-primary" />
+            <h3 className="text-sm font-bold text-text-primary uppercase tracking-wide">Policies & Guidelines</h3>
           </div>
 
           <div className="grid grid-cols-1 gap-4.5">
             <div>
-              <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1.5">Breakfast Policy</label>
+              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Breakfast Policy</label>
               <select 
                 value={breakfastPolicy} 
                 onChange={e => setBreakfastPolicy(e.target.value as any)}
-                className="w-full max-w-xs px-3.5 py-2.5 border border-[#e2e1d7] bg-[#f4f3ed]/30 rounded-lg focus:outline-none focus:border-[#1b4332]"
+                className="w-full max-w-xs px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none focus:border-brand-primary"
               >
                 <option value="included">Free Breakfast Included</option>
                 <option value="paid">Paid Breakfast Surcharge</option>
@@ -231,12 +231,12 @@ export const SettingsTab: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1.5">Cancellation Policy</label>
+              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Cancellation Policy</label>
               <textarea 
                 rows={3}
                 value={cancellationPolicy} 
                 onChange={e => setCancellationPolicy(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-[#e2e1d7] bg-[#f4f3ed]/30 rounded-lg focus:outline-none focus:border-[#1b4332]"
+                className="w-full px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none focus:border-brand-primary"
               />
             </div>
           </div>
@@ -258,7 +258,7 @@ export const SettingsTab: React.FC = () => {
           
           <button
             type="submit"
-            className="flex items-center gap-1.5 px-5 py-2.5 bg-[#1b4332] hover:bg-[#143324] text-white text-xs font-bold rounded-lg shadow-sm transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-5 py-2.5 bg-brand-primary hover:bg-brand-hover text-white text-xs font-bold rounded-lg shadow-sm transition-colors cursor-pointer"
           >
             <Save className="w-4 h-4" />
             <span>Save Settings</span>
@@ -268,21 +268,21 @@ export const SettingsTab: React.FC = () => {
       </form>
 
       {/* WhatsApp Scanner simulator */}
-      <div className="bg-white border border-[#e2e1d7] rounded-2xl p-6 shadow-sm space-y-6">
-        <div className="flex items-center gap-2 border-b border-[#e2e1d7] pb-3">
-          <Smartphone className="w-4.5 h-4.5 text-[#1b4332]" />
-          <h3 className="text-sm font-bold text-[#1a1a1e] uppercase tracking-wide">WhatsApp Business Connection</h3>
+      <div className="bg-white border border-border-subtle rounded-2xl p-6 shadow-sm space-y-6">
+        <div className="flex items-center gap-2 border-b border-border-subtle pb-3">
+          <Smartphone className="w-4.5 h-4.5 text-brand-primary" />
+          <h3 className="text-sm font-bold text-text-primary uppercase tracking-wide">WhatsApp Business Connection</h3>
         </div>
 
         {qrState === 'connected' ? (
-          <div className="p-4 bg-[#e8efe9] border border-emerald-200 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="p-4 bg-brand-light border border-emerald-200 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded bg-[#1b4332] text-white font-extrabold flex items-center justify-center shrink-0">
+              <div className="w-11 h-11 rounded bg-brand-primary text-white font-extrabold flex items-center justify-center shrink-0">
                 WA
               </div>
               <div>
                 <span className="block text-xs font-bold text-slate-800">Connected Phone number</span>
-                <span className="block text-xs font-bold text-[#1b4332] mt-0.5">{waNumberInput || '+91 98765 00123'}</span>
+                <span className="block text-xs font-bold text-brand-primary mt-0.5">{waNumberInput || '+91 98765 00123'}</span>
               </div>
             </div>
 
@@ -296,7 +296,7 @@ export const SettingsTab: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div className="space-y-4">
-              <p className="text-xs text-[#7a7974] leading-relaxed font-medium">
+              <p className="text-xs text-text-secondary leading-relaxed font-medium">
                 Pair stayos with your WhatsApp Business numbers to trigger automated guest billing alerts and receptionist chat routing.
               </p>
               
@@ -307,12 +307,12 @@ export const SettingsTab: React.FC = () => {
                   value={waNumberInput}
                   disabled={qrState !== 'disconnected'}
                   onChange={e => setWaNumberInput(e.target.value)}
-                  className="flex-1 px-3 py-2 bg-[#f4f3ed]/30 border border-[#e2e1d7] rounded-lg text-xs focus:outline-none"
+                  className="flex-1 px-3 py-2 bg-[#f1f5f9]/30 border border-border-subtle rounded-lg text-xs focus:outline-none"
                 />
                 {qrState === 'disconnected' && (
                   <button
                     onClick={startQrGeneration}
-                    className="px-4 py-2 bg-[#1b4332] text-white text-xs rounded-lg font-bold"
+                    className="px-4 py-2 bg-brand-primary text-white text-xs rounded-lg font-bold"
                   >
                     Generate QR
                   </button>
@@ -320,22 +320,22 @@ export const SettingsTab: React.FC = () => {
               </div>
             </div>
 
-            <div className="border border-dashed border-[#e2e1d7] rounded-xl p-4 bg-[#fcfbf9] min-h-[160px] flex flex-col items-center justify-center text-center">
+            <div className="border border-dashed border-border-subtle rounded-xl p-4 bg-bg-page min-h-[160px] flex flex-col items-center justify-center text-center">
               {qrState === 'disconnected' && (
-                <span className="text-[10px] text-[#7a7974] italic">Input phone and generate pairing credentials</span>
+                <span className="text-[10px] text-text-secondary italic">Input phone and generate pairing credentials</span>
               )}
               {qrState === 'generating' && (
-                <RefreshCw className="w-5 h-5 text-[#1b4332] animate-spin" />
+                <RefreshCw className="w-5 h-5 text-brand-primary animate-spin" />
               )}
               {qrState === 'ready' && (
                 <div className="space-y-3">
-                  <div className="w-24 h-24 bg-white border border-[#e2e1d7] p-2 mx-auto flex items-center justify-center">
+                  <div className="w-24 h-24 bg-white border border-border-subtle p-2 mx-auto flex items-center justify-center">
                     {/* Visual QR Code simulation */}
-                    <div className="w-full h-full bg-[#1b4332]/5 flex items-center justify-center font-bold text-xs">QR</div>
+                    <div className="w-full h-full bg-brand-primary/5 flex items-center justify-center font-bold text-xs">QR</div>
                   </div>
                   <button
                     onClick={simulateQrScan}
-                    className="px-3 py-1 bg-[#e8efe9] text-[#1b4332] rounded text-[10px] border border-emerald-100 font-bold"
+                    className="px-3 py-1 bg-brand-light text-brand-primary rounded text-[10px] border border-emerald-100 font-bold"
                   >
                     Scan QR
                   </button>
@@ -343,7 +343,7 @@ export const SettingsTab: React.FC = () => {
               )}
               {qrState === 'connecting' && (
                 <div className="space-y-1">
-                  <RefreshCw className="w-5 h-5 text-[#1b4332] animate-spin mx-auto" />
+                  <RefreshCw className="w-5 h-5 text-brand-primary animate-spin mx-auto" />
                   <span className="block text-[10px] text-slate-500 font-semibold">Pairing device...</span>
                 </div>
               )}

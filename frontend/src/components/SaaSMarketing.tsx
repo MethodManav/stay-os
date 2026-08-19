@@ -21,7 +21,7 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 font-sans antialiased selection:bg-[#3872fa] selection:text-white">
+    <div className="public-site min-h-screen bg-bg-page text-slate-800 font-sans antialiased selection:bg-brand-primary selection:text-white">
       {/* Background Decorative Blobs */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-100/30 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-indigo-100/30 rounded-full blur-[100px] pointer-events-none" />
@@ -33,13 +33,13 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
           <Link to="/" className="flex items-center gap-2.5 group">
             <div className="flex gap-1 items-center">
               {/* Short Blue Capsule */}
-              <div className="w-2.5 h-6 rounded-full bg-gradient-to-b from-[#3872fa] to-[#4f46e5] rotate-[25deg]"></div>
+              <div className="w-2.5 h-6 rounded-full bg-gradient-to-b from-brand-primary to-[#4f46e5] rotate-[25deg]"></div>
               {/* Long Purple Capsule */}
               <div className="w-2.5 h-8 rounded-full bg-gradient-to-b from-[#4f46e5] to-[#7c3aed] rotate-[25deg] -translate-y-0.5"></div>
             </div>
             <div>
-              <span className="text-xl font-bold tracking-tight text-slate-900">stay<span className="text-[#3872fa]">os</span></span>
-              <span className="block text-[10px] text-[#3872fa] font-bold uppercase tracking-widest mt-0.5 leading-none">hotel os</span>
+              <span className="text-xl font-bold tracking-tight text-slate-900">stay<span className="text-brand-primary">os</span></span>
+              <span className="block text-[10px] text-brand-primary font-bold uppercase tracking-widest mt-0.5 leading-none">hotel os</span>
             </div>
           </Link>
 
@@ -47,19 +47,19 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
           <nav className="hidden md:flex items-center gap-8">
             <Link 
               to="/features" 
-              className={`text-sm font-semibold transition-all hover:text-[#3872fa] ${currentTab === 'features' ? 'text-[#3872fa] font-bold' : 'text-slate-600'}`}
+              className={`text-sm font-semibold transition-all hover:text-brand-primary ${currentTab === 'features' ? 'text-brand-primary font-bold' : 'text-slate-600'}`}
             >
               Features
             </Link>
             <Link 
               to="/solutions/hotels" 
-              className={`text-sm font-semibold transition-all hover:text-[#3872fa] ${currentTab === 'solutions' ? 'text-[#3872fa] font-bold' : 'text-slate-600'}`}
+              className={`text-sm font-semibold transition-all hover:text-brand-primary ${currentTab === 'solutions' ? 'text-brand-primary font-bold' : 'text-slate-600'}`}
             >
               Hotel Solutions
             </Link>
             <Link 
               to="/pricing" 
-              className={`text-sm font-semibold transition-all hover:text-[#3872fa] ${currentTab === 'pricing' ? 'text-[#3872fa] font-bold' : 'text-slate-600'}`}
+              className={`text-sm font-semibold transition-all hover:text-brand-primary ${currentTab === 'pricing' ? 'text-brand-primary font-bold' : 'text-slate-600'}`}
             >
               Pricing
             </Link>
@@ -69,19 +69,19 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
           <div className="hidden md:flex items-center gap-4">
             <Link 
               to="/admin" 
-              className="text-sm font-bold text-slate-500 hover:text-[#3872fa] px-3 py-2 transition-colors"
+              className="text-sm font-bold text-slate-500 hover:text-brand-primary px-3 py-2 transition-colors"
             >
               SaaS Admin
             </Link>
             <Link 
               to="/login" 
-              className="text-sm font-bold text-slate-700 hover:text-[#3872fa] px-4 py-2 transition-colors"
+              className="text-sm font-bold text-slate-700 hover:text-brand-primary px-4 py-2 transition-colors"
             >
               Log In
             </Link>
             <Link 
               to="/signup" 
-              className="relative group overflow-hidden bg-[#3872fa] hover:bg-[#1e5ade] text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all"
+              className="relative group overflow-hidden bg-brand-primary hover:bg-brand-hover text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all"
             >
               Create Your Hotel
             </Link>
@@ -90,7 +90,7 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
           {/* Mobile Menu Btn */}
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-slate-750 hover:text-[#3872fa] focus:outline-none"
+            className="md:hidden text-slate-750 hover:text-brand-primary focus:outline-none"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -103,21 +103,21 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
           <Link 
             to="/features" 
             onClick={() => setMobileMenuOpen(false)}
-            className="text-lg font-bold text-slate-700 hover:text-[#3872fa]"
+            className="text-lg font-bold text-slate-700 hover:text-brand-primary"
           >
             Features
           </Link>
           <Link 
             to="/solutions/hotels" 
             onClick={() => setMobileMenuOpen(false)}
-            className="text-lg font-bold text-slate-700 hover:text-[#3872fa]"
+            className="text-lg font-bold text-slate-700 hover:text-brand-primary"
           >
             Solutions
           </Link>
           <Link 
             to="/pricing" 
             onClick={() => setMobileMenuOpen(false)}
-            className="text-lg font-bold text-slate-700 hover:text-[#3872fa]"
+            className="text-lg font-bold text-slate-700 hover:text-brand-primary"
           >
             Pricing
           </Link>
@@ -140,7 +140,7 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
             <Link 
               to="/signup" 
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center py-3 rounded-xl bg-[#3872fa] text-white font-bold"
+              className="w-full text-center py-3 rounded-xl bg-brand-primary text-white font-bold"
             >
               Create Your Hotel
             </Link>
@@ -155,13 +155,13 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
           <section className="relative pt-20 pb-28 px-6 text-center overflow-hidden">
             <div className="max-w-4xl mx-auto space-y-8">
               {/* Pill badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3872fa] text-xs font-bold uppercase tracking-wider mx-auto">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-brand-primary text-xs font-bold uppercase tracking-wider mx-auto">
                 <Sparkles className="w-3.5 h-3.5" />
                 Next Generation Hospitality Platform
               </div>
 
               <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-[1.1] font-outfit">
-                Everything Your Hotel Needs to <span className="bg-gradient-to-r from-[#3872fa] to-[#6366f1] bg-clip-text text-transparent">Go Direct.</span>
+                Everything Your Hotel Needs to <span className="bg-gradient-to-r from-brand-primary to-[#6366f1] bg-clip-text text-transparent">Go Direct.</span>
               </h1>
 
               <p className="text-lg sm:text-xl text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed">
@@ -171,7 +171,7 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
               <div className="flex flex-wrap justify-center gap-4 pt-4">
                 <Link
                   to="/signup"
-                  className="px-8 py-4 rounded-full bg-[#3872fa] hover:bg-[#1e5ade] text-white font-bold text-base shadow-lg shadow-blue-500/20 active:scale-98 transition-all flex items-center gap-2 group"
+                  className="px-8 py-4 rounded-full bg-brand-primary hover:bg-brand-hover text-white font-bold text-base shadow-lg shadow-blue-500/20 active:scale-98 transition-all flex items-center gap-2 group"
                 >
                   Create Your Hotel
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -187,17 +187,17 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
 
             {/* Premium Mockup Display */}
             <div className="max-w-5xl mx-auto mt-20 relative rounded-2xl border border-slate-200 overflow-hidden shadow-2xl bg-white group">
-              <div className="absolute inset-0 bg-gradient-to-t from-[#f8fafc] via-transparent to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-bg-page via-transparent to-transparent z-10 pointer-events-none" />
               <img 
                 src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80" 
                 alt="StayOS Premium Interface Dashboard View" 
                 className="w-full h-auto object-cover opacity-90 group-hover:scale-[1.01] transition-transform duration-[4000ms]"
               />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-2 pointer-events-none">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/80 backdrop-blur-md border border-slate-200 text-[#3872fa] shadow-xl text-2xl font-bold">
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/80 backdrop-blur-md border border-slate-200 text-brand-primary shadow-xl text-2xl font-bold">
                   ⚡
                 </div>
-                <span className="text-xs font-bold tracking-widest text-[#3872fa] uppercase bg-white/95 px-3 py-1 rounded-full shadow-sm">
+                <span className="text-xs font-bold tracking-widest text-brand-primary uppercase bg-white/95 px-3 py-1 rounded-full shadow-sm">
                   StayOS Operating System
                 </span>
               </div>
@@ -216,8 +216,8 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Feature 1 */}
-                <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200/60 hover:border-[#3872fa]/40 group transition-all duration-300">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#3872fa] flex items-center justify-center mb-6 group-hover:bg-[#3872fa] group-hover:text-white transition-colors duration-300">
+                <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200/60 hover:border-brand-primary/40 group transition-all duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-brand-primary flex items-center justify-center mb-6 group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300">
                     <Globe2 className="w-6 h-6" />
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2">Automated Hotel Website</h3>
@@ -227,8 +227,8 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
                 </div>
 
                 {/* Feature 2 */}
-                <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200/60 hover:border-[#3872fa]/40 group transition-all duration-300">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#3872fa] flex items-center justify-center mb-6 group-hover:bg-[#3872fa] group-hover:text-white transition-colors duration-300">
+                <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200/60 hover:border-brand-primary/40 group transition-all duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-brand-primary flex items-center justify-center mb-6 group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300">
                     <MessageSquareCode className="w-6 h-6" />
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2">AI Floating Receptionist</h3>
@@ -238,8 +238,8 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
                 </div>
 
                 {/* Feature 3 */}
-                <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200/60 hover:border-[#3872fa]/40 group transition-all duration-300">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#3872fa] flex items-center justify-center mb-6 group-hover:bg-[#3872fa] group-hover:text-white transition-colors duration-300">
+                <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200/60 hover:border-brand-primary/40 group transition-all duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-brand-primary flex items-center justify-center mb-6 group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300">
                     <Users2 className="w-6 h-6" />
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2">Connected Hotel CRM</h3>
@@ -265,7 +265,7 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3872fa] text-xs font-bold">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-brand-primary text-xs font-bold">
                 <CalendarCheck2 className="w-3.5 h-3.5" /> Bookings
               </div>
               <h2 className="text-3xl font-bold text-slate-900">Interactive Reservation Calendar</h2>
@@ -273,9 +273,9 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
                 A complete room grid visualizing dates and guest allocations. Filter reservations, update status (Pending, Confirmed, Checked-in, Checked-out), or schedule manual bookings seamlessly.
               </p>
               <ul className="space-y-2.5 text-sm text-slate-500 font-medium">
-                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#3872fa]" /> Easy drag-and-drop availability mapping</li>
-                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#3872fa]" /> Fully supports check-in/out transitions</li>
-                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#3872fa]" /> Multi-room type listings</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-brand-primary" /> Easy drag-and-drop availability mapping</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-brand-primary" /> Fully supports check-in/out transitions</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-brand-primary" /> Multi-room type listings</li>
               </ul>
             </div>
             <div className="rounded-xl overflow-hidden border border-slate-200 shadow-xl bg-white p-2">
@@ -285,7 +285,7 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="md:order-2 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#3872fa] text-xs font-bold">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-brand-primary text-xs font-bold">
                 <Building2 className="w-3.5 h-3.5" /> Site Builder
               </div>
               <h2 className="text-3xl font-bold text-slate-900">Visual Drag & Drop Customizer</h2>
@@ -293,9 +293,9 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
                 Edit branding assets, toggle section visibilities, modify headers, and reorder sections (hero, testimonials, gallery, maps) with instantaneous Desktop, Tablet, and Mobile preview structures.
               </p>
               <ul className="space-y-2.5 text-sm text-slate-500 font-medium">
-                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#3872fa]" /> 1-Click Accent Color & Typography shifts</li>
-                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#3872fa]" /> Linked direct to CRM prices</li>
-                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#3872fa]" /> Responsive layouts built in</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-brand-primary" /> 1-Click Accent Color & Typography shifts</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-brand-primary" /> Linked direct to CRM prices</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-brand-primary" /> Responsive layouts built in</li>
               </ul>
             </div>
             <div className="md:order-1 rounded-xl overflow-hidden border border-slate-200 shadow-xl bg-white p-2">
@@ -352,7 +352,7 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
             {/* Tier 1 */}
             <div className="p-8 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-6 relative overflow-hidden flex flex-col justify-between">
               <div>
-                <span className="text-xs font-bold text-[#3872fa] uppercase tracking-widest block mb-2">Starter</span>
+                <span className="text-xs font-bold text-brand-primary uppercase tracking-widest block mb-2">Starter</span>
                 <div className="flex items-baseline gap-1 text-slate-900">
                   <span className="text-4xl font-extrabold">₹1,999</span>
                   <span className="text-xs text-slate-500">/ month</span>
@@ -362,27 +362,27 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
                 </p>
                 <hr className="border-slate-100 my-6" />
                 <ul className="space-y-3.5 text-xs text-slate-600 font-medium">
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Up to 15 Rooms</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Automated Website Builder</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Unified Calendar & CRM</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Mock Payments Mode</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Up to 15 Rooms</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Automated Website Builder</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Unified Calendar & CRM</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Mock Payments Mode</li>
                 </ul>
               </div>
               <Link 
                 to="/signup" 
-                className="w-full text-center py-2.5 rounded-lg border border-slate-200 text-[#3872fa] font-bold hover:bg-slate-50 text-xs mt-6 block transition-all"
+                className="w-full text-center py-2.5 rounded-lg border border-slate-200 text-brand-primary font-bold hover:bg-slate-50 text-xs mt-6 block transition-all"
               >
                 Start Trial
               </Link>
             </div>
 
             {/* Tier 2 */}
-            <div className="p-8 rounded-2xl bg-gradient-to-b from-blue-50/50 to-white border-2 border-[#3872fa] shadow-xl shadow-blue-100/30 space-y-6 relative overflow-hidden flex flex-col justify-between">
-              <div className="absolute top-4 right-4 bg-[#3872fa] text-white text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full tracking-wider">
+            <div className="p-8 rounded-2xl bg-gradient-to-b from-blue-50/50 to-white border-2 border-brand-primary shadow-xl shadow-blue-100/30 space-y-6 relative overflow-hidden flex flex-col justify-between">
+              <div className="absolute top-4 right-4 bg-brand-primary text-white text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full tracking-wider">
                 Popular
               </div>
               <div>
-                <span className="text-xs font-bold text-[#3872fa] uppercase tracking-widest block mb-2">Growth</span>
+                <span className="text-xs font-bold text-brand-primary uppercase tracking-widest block mb-2">Growth</span>
                 <div className="flex items-baseline gap-1 text-slate-900">
                   <span className="text-4xl font-extrabold">₹3,999</span>
                   <span className="text-xs text-slate-500">/ month</span>
@@ -392,16 +392,16 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
                 </p>
                 <hr className="border-slate-100 my-6" />
                 <ul className="space-y-3.5 text-xs text-slate-600 font-medium">
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Unlimited Room Listings</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Live AI receptionist chatbot</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Custom Domain Integration</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> 3 Team Admin accounts</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Full analytics & reports</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Unlimited Room Listings</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Live AI receptionist chatbot</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Custom Domain Integration</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> 3 Team Admin accounts</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Full analytics & reports</li>
                 </ul>
               </div>
               <Link 
                 to="/signup" 
-                className="w-full text-center py-2.5 rounded-lg bg-[#3872fa] hover:bg-[#1e5ade] text-white font-bold text-xs mt-6 block transition-all shadow-sm hover:shadow"
+                className="w-full text-center py-2.5 rounded-lg bg-brand-primary hover:bg-brand-hover text-white font-bold text-xs mt-6 block transition-all shadow-sm hover:shadow"
               >
                 Create Hotel
               </Link>
@@ -410,7 +410,7 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
             {/* Tier 3 */}
             <div className="p-8 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-6 relative overflow-hidden flex flex-col justify-between">
               <div>
-                <span className="text-xs font-bold text-[#3872fa] uppercase tracking-widest block mb-2">Enterprise</span>
+                <span className="text-xs font-bold text-brand-primary uppercase tracking-widest block mb-2">Enterprise</span>
                 <div className="flex items-baseline gap-1 text-slate-900">
                   <span className="text-4xl font-extrabold">₹7,999</span>
                   <span className="text-xs text-slate-500">/ month</span>
@@ -420,15 +420,15 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
                 </p>
                 <hr className="border-slate-100 my-6" />
                 <ul className="space-y-3.5 text-xs text-slate-600 font-medium">
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Multi-Property switchboards</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Premium WhatsApp automation</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Custom integrations / API Access</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" /> Dedicated Account Managers</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Multi-Property switchboards</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Premium WhatsApp automation</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Custom integrations / API Access</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-brand-primary" /> Dedicated Account Managers</li>
                 </ul>
               </div>
               <Link 
                 to="/signup" 
-                className="w-full text-center py-2.5 rounded-lg border border-slate-200 text-[#3872fa] font-bold hover:bg-slate-50 text-xs mt-6 block transition-all"
+                className="w-full text-center py-2.5 rounded-lg border border-slate-200 text-brand-primary font-bold hover:bg-slate-50 text-xs mt-6 block transition-all"
               >
                 Talk to Sales
               </Link>
@@ -442,7 +442,7 @@ export const SaaSMarketing: React.FC<SaaSMarketingProps> = ({ currentTab = 'home
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2.5">
             <div className="flex gap-1 items-center">
-              <div className="w-2.5 h-5 rounded-full bg-gradient-to-b from-[#3872fa] to-[#4f46e5] rotate-[25deg]"></div>
+              <div className="w-2.5 h-5 rounded-full bg-gradient-to-b from-brand-primary to-[#4f46e5] rotate-[25deg]"></div>
               <div className="w-2.5 h-6 rounded-full bg-gradient-to-b from-[#4f46e5] to-[#7c3aed] rotate-[25deg] -translate-y-0.5"></div>
             </div>
             <span className="text-base font-bold text-slate-900">stayos</span>

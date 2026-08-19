@@ -150,15 +150,15 @@ export const BookingsTab: React.FC = () => {
     <div className="space-y-8">
       
       {/* Header Area */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#e2e1d7] pb-5">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border-subtle pb-5">
         <div>
-          <h1 className="text-2xl font-extrabold text-[#1a1a1e] font-outfit">Reservations Ledger</h1>
-          <p className="text-xs text-[#7a7974] mt-1 font-semibold">Track and edit guest room scheduling calendars</p>
+          <h1 className="text-2xl font-extrabold text-text-primary font-outfit">Reservations Ledger</h1>
+          <p className="text-xs text-text-secondary mt-1 font-semibold">Track and edit guest room scheduling calendars</p>
         </div>
         
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center gap-1.5 px-4.5 py-2.5 rounded-xl bg-[#1b4332] text-white hover:bg-[#143324] font-bold text-xs shadow-md shadow-[#1b4332]/10 transition-all cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4.5 py-2.5 rounded-xl bg-brand-primary text-white hover:bg-brand-hover font-bold text-xs shadow-md shadow-brand-primary/10 transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Add Booking</span>
@@ -166,23 +166,23 @@ export const BookingsTab: React.FC = () => {
       </div>
 
       {/* Control Filters Bar */}
-      <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 bg-white border border-[#e2e1d7] p-4 rounded-2xl shadow-sm">
+      <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 bg-white border border-border-subtle p-4 rounded-2xl shadow-sm">
         <div className="flex flex-wrap items-center gap-3">
           {/* Search bar */}
           <div className="relative min-w-[200px] flex-1 sm:flex-none">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7a7974]" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
             <input
               type="text"
               placeholder="Search guests or reservation IDs..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-[#e2e1d7] rounded-xl focus:outline-none focus:border-[#1b4332] text-xs text-[#1a1a1e] bg-[#f4f3ed]/30"
+              className="w-full pl-10 pr-4 py-2 border border-border-subtle rounded-xl focus:outline-none focus:border-brand-primary text-xs text-text-primary bg-[#f1f5f9]/30"
             />
           </div>
 
           {/* Status filter */}
-          <div className="flex items-center gap-1 bg-[#f4f3ed]/50 border border-[#e2e1d7] rounded-xl px-2.5 py-1.5 text-xs text-[#1a1a1e]">
-            <Filter className="w-3.5 h-3.5 text-[#7a7974]" />
+          <div className="flex items-center gap-1 bg-[#f1f5f9]/50 border border-border-subtle rounded-xl px-2.5 py-1.5 text-xs text-text-primary">
+            <Filter className="w-3.5 h-3.5 text-text-secondary" />
             <select
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
@@ -198,7 +198,7 @@ export const BookingsTab: React.FC = () => {
           </div>
 
           {/* Room filter */}
-          <div className="flex items-center gap-1 bg-[#f4f3ed]/50 border border-[#e2e1d7] rounded-xl px-2.5 py-1.5 text-xs text-[#1a1a1e]">
+          <div className="flex items-center gap-1 bg-[#f1f5f9]/50 border border-border-subtle rounded-xl px-2.5 py-1.5 text-xs text-text-primary">
             <select
               value={roomFilter}
               onChange={e => setRoomFilter(e.target.value)}
@@ -213,11 +213,11 @@ export const BookingsTab: React.FC = () => {
         </div>
 
         {/* View Switcher toggle */}
-        <div className="flex border border-[#e2e1d7] rounded-xl p-0.5 bg-[#f4f3ed] shrink-0 self-start md:self-auto">
+        <div className="flex border border-border-subtle rounded-xl p-0.5 bg-[#f1f5f9] shrink-0 self-start md:self-auto">
           <button
             onClick={() => setViewMode('list')}
             className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-              viewMode === 'list' ? 'bg-white text-[#1b4332] shadow-sm' : 'text-[#7a7974] hover:text-[#1a1a1e]'
+              viewMode === 'list' ? 'bg-white text-brand-primary shadow-sm' : 'text-text-secondary hover:text-text-primary'
             }`}
           >
             <List className="w-3.5 h-3.5" />
@@ -226,7 +226,7 @@ export const BookingsTab: React.FC = () => {
           <button
             onClick={() => setViewMode('calendar')}
             className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-              viewMode === 'calendar' ? 'bg-white text-[#1b4332] shadow-sm' : 'text-[#7a7974] hover:text-[#1a1a1e]'
+              viewMode === 'calendar' ? 'bg-white text-brand-primary shadow-sm' : 'text-text-secondary hover:text-text-primary'
             }`}
           >
             <CalendarIcon className="w-3.5 h-3.5" />
@@ -237,11 +237,11 @@ export const BookingsTab: React.FC = () => {
 
       {/* View Contents */}
       {viewMode === 'list' ? (
-        <div className="bg-white border border-[#e2e1d7] rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white border border-border-subtle rounded-2xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="bg-[#fcfbf9] text-[#7a7974] border-b border-[#e2e1d7] uppercase tracking-wider font-bold">
+                <tr className="bg-bg-page text-text-secondary border-b border-border-subtle uppercase tracking-wider font-bold">
                   <th className="px-6 py-3.5">Booking ID</th>
                   <th className="px-6 py-3.5">Guest</th>
                   <th className="px-6 py-3.5">Room Type</th>
@@ -252,20 +252,20 @@ export const BookingsTab: React.FC = () => {
                   <th className="px-6 py-3.5 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#e2e1d7]/60 text-[#1a1a1e] font-semibold">
+              <tbody className="divide-y divide-border-subtle/60 text-text-primary font-semibold">
                 {filteredBookings.map((b) => (
-                  <tr key={b.id} className="hover:bg-[#f4f3ed]/30 transition-colors">
-                    <td className="px-6 py-4.5 font-mono text-[#7a7974]">{b.id}</td>
+                  <tr key={b.id} className="hover:bg-[#f1f5f9]/30 transition-colors">
+                    <td className="px-6 py-4.5 font-mono text-text-secondary">{b.id}</td>
                     <td className="px-6 py-4.5">
                       <div>
-                        <span className="block font-bold text-sm text-[#1a1a1e]">{b.guestName}</span>
-                        <span className="block text-[10px] text-[#7a7974] mt-0.5 leading-none">{b.guestId}</span>
+                        <span className="block font-bold text-sm text-text-primary">{b.guestName}</span>
+                        <span className="block text-[10px] text-text-secondary mt-0.5 leading-none">{b.guestId}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4.5 text-[#7a7974]">{b.roomType}</td>
+                    <td className="px-6 py-4.5 text-text-secondary">{b.roomType}</td>
                     <td className="px-6 py-4.5 font-mono text-center sm:text-left">{b.roomNumber}</td>
-                    <td className="px-6 py-4.5 font-medium text-[#7a7974]">
-                      {b.checkIn} <span className="text-[#a3c2b2] mx-1">→</span> {b.checkOut}
+                    <td className="px-6 py-4.5 font-medium text-text-secondary">
+                      {b.checkIn} <span className="text-[#cbd5e1] mx-1">→</span> {b.checkOut}
                     </td>
                     <td className="px-6 py-4.5">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
@@ -285,7 +285,7 @@ export const BookingsTab: React.FC = () => {
                       <div className="flex justify-center items-center gap-2">
                         <button
                           onClick={() => openEditModal(b)}
-                          className="p-1.5 rounded-lg border border-[#e2e1d7] hover:bg-[#f4f3ed] text-[#1b4332] cursor-pointer"
+                          className="p-1.5 rounded-lg border border-border-subtle hover:bg-[#f1f5f9] text-brand-primary cursor-pointer"
                           title="Edit Booking"
                         >
                           <Edit className="w-3.5 h-3.5" />
@@ -303,7 +303,7 @@ export const BookingsTab: React.FC = () => {
                 ))}
                 {filteredBookings.length === 0 && (
                   <tr>
-                    <td colSpan={8} className="text-center py-10 text-[#7a7974] font-medium italic">
+                    <td colSpan={8} className="text-center py-10 text-text-secondary font-medium italic">
                       No matching reservations found.
                     </td>
                   </tr>
@@ -314,38 +314,38 @@ export const BookingsTab: React.FC = () => {
         </div>
       ) : (
         /* Calendar Schedule Room Grid */
-        <div className="bg-white border border-[#e2e1d7] rounded-2xl shadow-sm p-6 overflow-hidden space-y-6">
-          <div className="flex justify-between items-center border-b border-[#e2e1d7] pb-3">
+        <div className="bg-white border border-border-subtle rounded-2xl shadow-sm p-6 overflow-hidden space-y-6">
+          <div className="flex justify-between items-center border-b border-border-subtle pb-3">
             <div>
-              <h3 className="text-sm font-bold text-[#1a1a1e] uppercase tracking-wide">August 2026 Timeline</h3>
-              <span className="text-[10px] text-[#7a7974]">View active allocations per room row</span>
+              <h3 className="text-sm font-bold text-text-primary uppercase tracking-wide">August 2026 Timeline</h3>
+              <span className="text-[10px] text-text-secondary">View active allocations per room row</span>
             </div>
-            <div className="flex items-center gap-2.5 text-[10px] font-bold text-[#7a7974]">
+            <div className="flex items-center gap-2.5 text-[10px] font-bold text-text-secondary">
               <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded bg-emerald-500" /> Checked-In</span>
               <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded bg-blue-500" /> Confirmed</span>
               <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded bg-amber-500" /> Pending</span>
             </div>
           </div>
 
-          <div className="overflow-x-auto border border-[#e2e1d7] rounded-xl bg-[#fcfbf9]">
+          <div className="overflow-x-auto border border-border-subtle rounded-xl bg-bg-page">
             <table className="w-full text-xs min-w-[800px] table-fixed">
               <thead>
-                <tr className="border-b border-[#e2e1d7]">
-                  <th className="w-32 px-4 py-3 bg-white text-left font-bold text-[#1a1a1e] uppercase tracking-wider sticky left-0 z-10 border-r border-[#e2e1d7]">Room No</th>
+                <tr className="border-b border-border-subtle">
+                  <th className="w-32 px-4 py-3 bg-white text-left font-bold text-text-primary uppercase tracking-wider sticky left-0 z-10 border-r border-border-subtle">Room No</th>
                   {calendarDays.map(day => (
-                    <th key={day} className="px-2 py-3 text-center text-[10px] font-extrabold text-[#7a7974] uppercase tracking-wider border-r border-[#e2e1d7]/60">
+                    <th key={day} className="px-2 py-3 text-center text-[10px] font-extrabold text-text-secondary uppercase tracking-wider border-r border-border-subtle/60">
                       {getCalendarDayLabel(day)}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#e2e1d7]">
+              <tbody className="divide-y divide-border-subtle">
                 {mockRoomRows.map(row => (
                   <tr key={row.roomNumber} className="hover:bg-slate-50/50">
                     {/* Room title */}
-                    <td className="px-4 py-4 bg-white font-bold text-left sticky left-0 z-10 border-r border-[#e2e1d7] shadow-sm">
-                      <span className="block text-sm text-[#1a1a1e]">Room {row.roomNumber}</span>
-                      <span className="block text-[9px] text-[#7a7974] leading-none mt-0.5">{row.type}</span>
+                    <td className="px-4 py-4 bg-white font-bold text-left sticky left-0 z-10 border-r border-border-subtle shadow-sm">
+                      <span className="block text-sm text-text-primary">Room {row.roomNumber}</span>
+                      <span className="block text-[11px] text-text-secondary leading-none mt-0.5">{row.type}</span>
                     </td>
 
                     {/* Schedule block columns */}
@@ -369,9 +369,9 @@ export const BookingsTab: React.FC = () => {
                           <td 
                             key={day} 
                             onClick={() => openEditModal(activeBooking)}
-                            className={`p-1 text-center cursor-pointer border-r border-[#e2e1d7]/60 relative`}
+                            className={`p-1 text-center cursor-pointer border-r border-border-subtle/60 relative`}
                           >
-                            <div className={`py-1.5 px-1 rounded-md text-[9px] font-bold truncate leading-none ${statusColors}`}>
+                            <div className={`py-1.5 px-1 rounded-md text-[11px] font-bold truncate leading-none ${statusColors}`}>
                               {isStart ? activeBooking.guestName : '•'}
                             </div>
                           </td>
@@ -379,7 +379,7 @@ export const BookingsTab: React.FC = () => {
                       }
 
                       return (
-                        <td key={day} className="p-1 border-r border-[#e2e1d7]/60 text-center text-[#e2e1d7] font-bold">
+                        <td key={day} className="p-1 border-r border-border-subtle/60 text-center text-border-subtle font-bold">
                           -
                         </td>
                       );
@@ -395,45 +395,45 @@ export const BookingsTab: React.FC = () => {
       {/* Editor Modal Popup */}
       {editorOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-xl bg-white border border-[#e2e1d7] rounded-2xl shadow-2xl p-6 space-y-5">
-            <div className="flex justify-between items-center border-b border-[#e2e1d7] pb-3">
-              <h3 className="text-base font-extrabold text-[#1b4332] font-outfit">
+          <div className="w-full max-w-xl bg-white border border-border-subtle rounded-2xl shadow-2xl p-6 space-y-5">
+            <div className="flex justify-between items-center border-b border-border-subtle pb-3">
+              <h3 className="text-base font-extrabold text-brand-primary font-outfit">
                 {selectedBooking ? `Edit Booking ID: ${selectedBooking.id}` : 'Create New Reservation'}
               </h3>
-              <button onClick={() => setEditorOpen(false)} className="text-[#7a7974] hover:text-[#1a1a1e]">
+              <button onClick={() => setEditorOpen(false)} className="text-text-secondary hover:text-text-primary">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs font-semibold text-[#1a1a1e]">
+            <form onSubmit={handleSubmit} className="space-y-4 text-xs font-semibold text-text-primary">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Guest Full Name</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Guest Full Name</label>
                   <input
                     type="text"
                     required
                     value={guestName}
                     onChange={e => setGuestName(e.target.value)}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none focus:border-[#1b4332]"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none focus:border-brand-primary"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Guest Email or Phone</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Guest Email or Phone</label>
                   <input
                     type="text"
                     required
                     value={guestContact}
                     placeholder="e.g. rahul.sharma@gmail.com"
                     onChange={e => setGuestContact(e.target.value)}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none focus:border-[#1b4332]"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none focus:border-brand-primary"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Room Category</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Room Category</label>
                   <select
                     value={roomType}
                     onChange={e => setRoomType(e.target.value)}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none focus:border-[#1b4332]"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none focus:border-brand-primary"
                   >
                     {activeTenant.rooms.map(r => (
                       <option key={r.id} value={r.type}>{r.type}</option>
@@ -441,61 +441,61 @@ export const BookingsTab: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Room Number Alloc</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Room Number Alloc</label>
                   <input
                     type="text"
                     required
                     value={roomNumber}
                     onChange={e => setRoomNumber(e.target.value)}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Check-in Date</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Check-in Date</label>
                   <input
                     type="date"
                     required
                     value={checkIn}
                     onChange={e => setCheckIn(e.target.value)}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Check-out Date</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Check-out Date</label>
                   <input
                     type="date"
                     required
                     value={checkOut}
                     onChange={e => setCheckOut(e.target.value)}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Total Guests Count</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Total Guests Count</label>
                   <input
                     type="number"
                     min={1}
                     value={guestsCount}
                     onChange={e => setGuestsCount(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Price Paid ({currencySymbol})</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Price Paid ({currencySymbol})</label>
                   <input
                     type="number"
                     min={0}
                     value={amountPaid}
                     onChange={e => setAmountPaid(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Reservation Status</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Reservation Status</label>
                   <select
                     value={status}
                     onChange={e => setStatus(e.target.value as any)}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   >
                     <option value="pending">Pending</option>
                     <option value="confirmed">Confirmed</option>
@@ -505,11 +505,11 @@ export const BookingsTab: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Payment Status</label>
+                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Payment Status</label>
                   <select
                     value={paymentStatus}
                     onChange={e => setPaymentStatus(e.target.value as any)}
-                    className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                    className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                   >
                     <option value="paid">Paid</option>
                     <option value="pending">Pending</option>
@@ -519,26 +519,26 @@ export const BookingsTab: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-bold text-[#7a7974] mb-1">Reservation Details & Notes</label>
+                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Reservation Details & Notes</label>
                 <textarea
                   rows={2}
                   value={notes}
                   onChange={e => setNotes(e.target.value)}
-                  className="w-full px-3 py-2 border border-[#e2e1d7] rounded-lg focus:outline-none"
+                  className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-3 border-t border-[#e2e1d7]">
+              <div className="flex justify-end gap-3 pt-3 border-t border-border-subtle">
                 <button
                   type="button"
                   onClick={() => setEditorOpen(false)}
-                  className="px-4 py-2 border border-[#e2e1d7] hover:bg-[#f4f3ed] text-[#7a7974] font-bold rounded-lg cursor-pointer"
+                  className="px-4 py-2 border border-border-subtle hover:bg-[#f1f5f9] text-text-secondary font-bold rounded-lg cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#1b4332] hover:bg-[#143324] text-white font-bold rounded-lg cursor-pointer shadow-sm shadow-[#1b4332]/10"
+                  className="px-5 py-2 bg-brand-primary hover:bg-brand-hover text-white font-bold rounded-lg cursor-pointer shadow-sm shadow-brand-primary/10"
                 >
                   Save Reservation
                 </button>

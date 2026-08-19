@@ -143,7 +143,7 @@ export const PublicSite: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center text-center p-6 text-[#1a1a1e]">
+      <div className="public-site min-h-screen bg-white flex items-center justify-center text-center p-6 text-[#1a1a1e]">
         <div className="space-y-4">
           <Clock className="w-10 h-10 animate-spin mx-auto text-[#1b4332]" />
           <h2 className="text-xl font-bold font-outfit">Loading Hotel Portal...</h2>
@@ -154,7 +154,7 @@ export const PublicSite: React.FC = () => {
 
   if (errorState || !tenant) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center text-center p-6 text-[#1a1a1e]">
+      <div className="public-site min-h-screen bg-slate-50 flex items-center justify-center text-center p-6 text-[#1a1a1e]">
         <div className="space-y-4">
           <h1 className="text-3xl font-extrabold">404: Hotel Profile Not Found</h1>
           <p className="text-sm text-slate-500">{errorState || 'This property subdomain is not registered on the platform.'}</p>
@@ -264,7 +264,7 @@ export const PublicSite: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-white text-[#1a1a1e] antialiased ${fontClass}`}>
+    <div className={`public-site min-h-screen bg-white text-[#1a1a1e] antialiased ${fontClass}`}>
       
       {/* Navigation Header */}
       <header className="sticky top-0 bg-white border-b border-slate-100 z-40">
@@ -374,13 +374,13 @@ export const PublicSite: React.FC = () => {
                     <div className="h-56 bg-slate-150 overflow-hidden relative">
                       <img src={room.image} alt={room.name} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" />
                       <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-xl text-xs font-bold font-mono">
-                        {currencySymbol}{room.basePrice.toLocaleString()} <span className="text-[9px] font-normal text-slate-350">/ night</span>
+                        {currencySymbol}{room.basePrice.toLocaleString()} <span className="text-[11px] font-normal text-slate-350">/ night</span>
                       </div>
                     </div>
                     
                     <div className="p-6 flex-1 flex flex-col justify-between space-y-6">
                       <div className="space-y-3">
-                        <span className="text-[9px] uppercase font-bold text-[#7a7974]">{room.type}</span>
+                        <span className="text-[11px] uppercase font-bold text-[#7a7974]">{room.type}</span>
                         <h4 className="text-base font-extrabold text-slate-900 leading-snug">{room.name}</h4>
                         <div className="flex flex-wrap gap-1.5 pt-2">
                           {room.amenities.slice(0, 4).map((a, i) => (
@@ -512,7 +512,7 @@ export const PublicSite: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[9px] uppercase font-bold text-slate-500 mb-1">Select Room Type</label>
+                    <label className="block text-[11px] uppercase font-bold text-slate-500 mb-1">Select Room Type</label>
                     <select
                       value={selectedRoom?.id || ''}
                       onChange={e => setSelectedRoom(tenant.rooms.find(r => r.id === e.target.value) || null)}
@@ -524,7 +524,7 @@ export const PublicSite: React.FC = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[9px] uppercase font-bold text-slate-500 mb-1">Guests Count</label>
+                    <label className="block text-[11px] uppercase font-bold text-slate-500 mb-1">Guests Count</label>
                     <input
                       type="number"
                       min={1}
@@ -534,7 +534,7 @@ export const PublicSite: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-[9px] uppercase font-bold text-slate-500 mb-1">Check-in Date</label>
+                    <label className="block text-[11px] uppercase font-bold text-slate-500 mb-1">Check-in Date</label>
                     <input
                       type="date"
                       required
@@ -544,7 +544,7 @@ export const PublicSite: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-[9px] uppercase font-bold text-slate-500 mb-1">Check-out Date</label>
+                    <label className="block text-[11px] uppercase font-bold text-slate-500 mb-1">Check-out Date</label>
                     <input
                       type="date"
                       required
@@ -554,7 +554,7 @@ export const PublicSite: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-[9px] uppercase font-bold text-slate-500 mb-1">Guest Full Name</label>
+                    <label className="block text-[11px] uppercase font-bold text-slate-500 mb-1">Guest Full Name</label>
                     <input
                       type="text"
                       required
@@ -565,7 +565,7 @@ export const PublicSite: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-[9px] uppercase font-bold text-slate-500 mb-1">Phone Number</label>
+                    <label className="block text-[11px] uppercase font-bold text-slate-500 mb-1">Phone Number</label>
                     <input
                       type="text"
                       required
@@ -576,7 +576,7 @@ export const PublicSite: React.FC = () => {
                     />
                   </div>
                   <div className="sm:col-span-2">
-                    <label className="block text-[9px] uppercase font-bold text-slate-500 mb-1">Email Address</label>
+                    <label className="block text-[11px] uppercase font-bold text-slate-500 mb-1">Email Address</label>
                     <input
                       type="email"
                       required
@@ -668,7 +668,7 @@ export const PublicSite: React.FC = () => {
                 </div>
                 <div>
                   <span className="block text-xs font-bold">AI Receptionist Concierge</span>
-                  <span className="block text-[9px] opacity-85 mt-0.5 leading-none">Answers instantly 24/7</span>
+                  <span className="block text-[11px] opacity-85 mt-0.5 leading-none">Answers instantly 24/7</span>
                 </div>
               </div>
 

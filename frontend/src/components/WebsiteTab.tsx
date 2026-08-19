@@ -57,14 +57,14 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({ value, onChange }) => {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="px-2 py-0.5 bg-white hover:bg-slate-50 text-slate-800 text-[8px] font-bold rounded shadow-sm transition-all cursor-pointer"
+              className="px-2 py-0.5 bg-white hover:bg-slate-50 text-slate-800 text-[10px] font-bold rounded shadow-sm transition-all cursor-pointer"
             >
               Replace
             </button>
             <button
               type="button"
               onClick={() => onChange('')}
-              className="px-2 py-0.5 bg-red-600 hover:bg-red-700 text-white text-[8px] font-bold rounded shadow-sm transition-all cursor-pointer"
+              className="px-2 py-0.5 bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold rounded shadow-sm transition-all cursor-pointer"
             >
               Remove
             </button>
@@ -92,10 +92,10 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({ value, onChange }) => {
           className="hidden"
         />
         <Upload className="w-4.5 h-4.5 text-slate-400 mb-1" />
-        <span className="text-[9px] font-bold text-slate-600 leading-none">
+        <span className="text-[11px] font-bold text-slate-600 leading-none">
           {dragOver ? 'Drop image here' : 'Drop image, or click to browse'}
         </span>
-        <span className="text-[8px] text-slate-400 mt-0.5">PNG, JPG, WebP</span>
+        <span className="text-[10px] text-slate-400 mt-0.5">PNG, JPG, WebP</span>
       </div>
     </div>
   );
@@ -162,17 +162,17 @@ export const WebsiteTab: React.FC = () => {
     <div className="space-y-6 h-[calc(100vh-140px)] flex flex-col">
       
       {/* Header and view site shortcut */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#e2e1d7] pb-4 shrink-0">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border-subtle pb-4 shrink-0">
         <div>
-          <h1 className="text-2xl font-extrabold text-[#1a1a1e] font-outfit">Visual Website Builder</h1>
-          <p className="text-xs text-[#7a7974] mt-1 font-semibold">Customize your hotel landing website and review previews</p>
+          <h1 className="text-2xl font-extrabold text-text-primary font-outfit">Visual Website Builder</h1>
+          <p className="text-xs text-text-secondary mt-1 font-semibold">Customize your hotel landing website and review previews</p>
         </div>
         
         <a
           href={`/site/${activeTenant.subdomain}`}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#e8efe9] text-[#1b4332] font-bold text-xs hover:bg-[#1b4332] hover:text-white transition-all shadow-sm"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-light text-brand-primary font-bold text-xs hover:bg-brand-primary hover:text-white transition-all shadow-sm"
         >
           <span>Open Live Site</span>
           <ExternalLink className="w-3.5 h-3.5" />
@@ -183,16 +183,16 @@ export const WebsiteTab: React.FC = () => {
       <div className="flex-1 flex gap-6 overflow-hidden min-h-0">
         
         {/* Left Side: Customize Config Panel */}
-        <div className="w-80 bg-white border border-[#e2e1d7] rounded-2xl flex flex-col overflow-hidden shadow-sm shrink-0">
+        <div className="w-80 bg-white border border-border-subtle rounded-2xl flex flex-col overflow-hidden shadow-sm shrink-0">
           
           {/* Editor Sub-Tabs Switch */}
-          <div className="grid grid-cols-3 border-b border-[#e2e1d7] p-1 bg-[#f4f3ed]/60 shrink-0">
+          <div className="grid grid-cols-3 border-b border-border-subtle p-1 bg-[#f1f5f9]/60 shrink-0">
             {(['sections', 'branding', 'templates'] as const).map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  activeTab === tab ? 'bg-white text-[#1b4332] shadow-sm' : 'text-[#7a7974] hover:text-[#1a1a1e]'
+                  activeTab === tab ? 'bg-white text-brand-primary shadow-sm' : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 {tab}
@@ -206,15 +206,15 @@ export const WebsiteTab: React.FC = () => {
             {/* Sections Sub-Tab */}
             {activeTab === 'sections' && (
               <div className="space-y-3">
-                <span className="block text-[10px] uppercase font-bold text-[#7a7974] tracking-widest border-b border-[#e2e1d7] pb-1.5 mb-2">Section Layout Order</span>
+                <span className="block text-[10px] uppercase font-bold text-text-secondary tracking-widest border-b border-border-subtle pb-1.5 mb-2">Section Layout Order</span>
                 {website.sections.map((sec, idx) => {
                   const isExpanded = expandedSection === sec.id;
                   return (
-                    <div key={sec.id} className="border border-[#e2e1d7] rounded-xl overflow-hidden bg-[#fcfbf9]">
+                    <div key={sec.id} className="border border-border-subtle rounded-xl overflow-hidden bg-bg-page">
                       <div className="p-3.5 flex items-center justify-between gap-2 bg-white">
                         <button
                           onClick={() => setExpandedSection(isExpanded ? null : sec.id)}
-                          className="flex-1 text-left font-bold text-xs text-[#1a1a1e] hover:text-[#1b4332]"
+                          className="flex-1 text-left font-bold text-xs text-text-primary hover:text-brand-primary"
                         >
                           {sec.title}
                         </button>
@@ -223,21 +223,21 @@ export const WebsiteTab: React.FC = () => {
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => updateSectionVisibility(sec.id, !sec.visible)}
-                            className="p-1 rounded text-slate-500 hover:bg-[#f4f3ed] hover:text-[#1b4332] transition-colors"
+                            className="p-1 rounded text-slate-500 hover:bg-[#f1f5f9] hover:text-brand-primary transition-colors"
                           >
                             {sec.visible ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5 text-slate-350" />}
                           </button>
                           <button
                             disabled={idx === 0}
                             onClick={() => moveSection(idx, 'up')}
-                            className="p-1 rounded text-slate-500 hover:bg-[#f4f3ed] disabled:opacity-20 transition-colors"
+                            className="p-1 rounded text-slate-500 hover:bg-[#f1f5f9] disabled:opacity-20 transition-colors"
                           >
                             <ArrowUp className="w-3.5 h-3.5" />
                           </button>
                           <button
                             disabled={idx === website.sections.length - 1}
                             onClick={() => moveSection(idx, 'down')}
-                            className="p-1 rounded text-slate-500 hover:bg-[#f4f3ed] disabled:opacity-20 transition-colors"
+                            className="p-1 rounded text-slate-500 hover:bg-[#f1f5f9] disabled:opacity-20 transition-colors"
                           >
                             <ArrowDown className="w-3.5 h-3.5" />
                           </button>
@@ -246,7 +246,7 @@ export const WebsiteTab: React.FC = () => {
 
                       {/* Content editor inside expanded section */}
                       {isExpanded && (
-                        <div className="p-3.5 border-t border-[#e2e1d7] bg-[#fcfbf9] text-[10px] font-bold text-[#7a7974] space-y-3">
+                        <div className="p-3.5 border-t border-border-subtle bg-bg-page text-[10px] font-bold text-text-secondary space-y-3">
                           {Object.keys(sec.content).map(contentKey => {
                             const isImageKey = contentKey.toLowerCase().includes('image') || contentKey.toLowerCase().includes('img');
                             return (
@@ -264,14 +264,14 @@ export const WebsiteTab: React.FC = () => {
                                     rows={3}
                                     value={sec.content[contentKey]}
                                     onChange={e => updateSectionContent(sec.id, contentKey, e.target.value)}
-                                    className="w-full p-2 bg-white border border-[#e2e1d7] rounded-lg text-xs font-semibold text-[#1a1a1e] focus:outline-none"
+                                    className="w-full p-2 bg-white border border-border-subtle rounded-lg text-xs font-semibold text-text-primary focus:outline-none"
                                   />
                                 ) : (
                                   <input
                                     type="text"
                                     value={sec.content[contentKey]}
                                     onChange={e => updateSectionContent(sec.id, contentKey, e.target.value)}
-                                    className="w-full p-2 bg-white border border-[#e2e1d7] rounded-lg text-xs font-semibold text-[#1a1a1e] focus:outline-none"
+                                    className="w-full p-2 bg-white border border-border-subtle rounded-lg text-xs font-semibold text-text-primary focus:outline-none"
                                   />
                                 )}
                               </div>
@@ -287,21 +287,21 @@ export const WebsiteTab: React.FC = () => {
 
             {/* Branding Sub-Tab */}
             {activeTab === 'branding' && (
-              <div className="space-y-5 text-xs font-semibold text-[#1a1a1e]">
+              <div className="space-y-5 text-xs font-semibold text-text-primary">
                 
                 {/* Accent Palette Picker */}
                 <div className="space-y-2">
-                  <span className="block text-[10px] uppercase font-bold text-[#7a7974]">Accent Brand Colors</span>
+                  <span className="block text-[10px] uppercase font-bold text-text-secondary">Accent Brand Colors</span>
                   <div className="grid grid-cols-2 gap-2">
                     {colors.map(col => (
                       <button
                         key={col.name}
                         onClick={() => updateBranding({ ...branding, primaryColor: col.primary, secondaryColor: col.secondary })}
                         className={`p-2.5 rounded-xl border text-[10px] font-bold text-left flex items-center gap-2.5 transition-all cursor-pointer ${
-                          branding.primaryColor === col.primary ? 'border-emerald-600 bg-[#f4f3ed]' : 'border-[#e2e1d7] bg-white'
+                          branding.primaryColor === col.primary ? 'border-emerald-600 bg-[#f1f5f9]' : 'border-border-subtle bg-white'
                         }`}
                       >
-                        <span className="w-5 h-5 rounded-full block border border-[#e2e1d7]" style={{ backgroundColor: col.primary }} />
+                        <span className="w-5 h-5 rounded-full block border border-border-subtle" style={{ backgroundColor: col.primary }} />
                         <span className="truncate">{col.name}</span>
                       </button>
                     ))}
@@ -310,20 +310,20 @@ export const WebsiteTab: React.FC = () => {
 
                 {/* Font selection */}
                 <div className="space-y-2">
-                  <span className="block text-[10px] uppercase font-bold text-[#7a7974]">Font Typography Family</span>
+                  <span className="block text-[10px] uppercase font-bold text-text-secondary">Font Typography Family</span>
                   <div className="grid grid-cols-1 gap-2">
                     {(['outfit', 'sans', 'serif'] as const).map(fontVal => (
                       <button
                         key={fontVal}
                         onClick={() => updateBranding({ ...branding, font: fontVal })}
                         className={`p-3 rounded-xl border text-left flex justify-between items-center transition-all cursor-pointer ${
-                          branding.font === fontVal ? 'bg-[#f4f3ed] border-emerald-600 font-bold' : 'bg-white border-[#e2e1d7]'
+                          branding.font === fontVal ? 'bg-[#f1f5f9] border-emerald-600 font-bold' : 'bg-white border-border-subtle'
                         }`}
                       >
                         <span className={`text-xs ${fontVal === 'serif' ? 'font-serif' : fontVal === 'outfit' ? 'font-outfit' : 'font-sans'}`}>
                           {fontVal === 'serif' ? 'Playfair style' : fontVal === 'outfit' ? 'Outfit' : 'Plus Jakarta Sans'}
                         </span>
-                        {branding.font === fontVal && <Check className="w-3.5 h-3.5 text-[#1b4332]" />}
+                        {branding.font === fontVal && <Check className="w-3.5 h-3.5 text-brand-primary" />}
                       </button>
                     ))}
                   </div>
@@ -331,14 +331,14 @@ export const WebsiteTab: React.FC = () => {
 
                 {/* Button Style selector */}
                 <div className="space-y-2">
-                  <span className="block text-[10px] uppercase font-bold text-[#7a7974]">Button Border Style</span>
+                  <span className="block text-[10px] uppercase font-bold text-text-secondary">Button Border Style</span>
                   <div className="grid grid-cols-3 gap-2">
                     {(['rounded-full', 'rounded-md', 'square'] as const).map(btnVal => (
                       <button
                         key={btnVal}
                         onClick={() => updateBranding({ ...branding, buttonStyle: btnVal })}
                         className={`py-2 border text-[10px] font-bold text-center transition-all cursor-pointer ${
-                          branding.buttonStyle === btnVal ? 'bg-[#1b4332] text-white border-transparent' : 'bg-white border-[#e2e1d7] text-slate-700'
+                          branding.buttonStyle === btnVal ? 'bg-brand-primary text-white border-transparent' : 'bg-white border-border-subtle text-slate-700'
                         } ${
                           btnVal === 'rounded-full' ? 'rounded-full' : btnVal === 'rounded-md' ? 'rounded-md' : 'rounded-none'
                         }`}
@@ -354,20 +354,20 @@ export const WebsiteTab: React.FC = () => {
             {/* Templates Sub-Tab */}
             {activeTab === 'templates' && (
               <div className="space-y-3">
-                <span className="block text-[10px] uppercase font-bold text-[#7a7974] tracking-widest border-b border-[#e2e1d7] pb-1.5 mb-2">Web Template Selection</span>
+                <span className="block text-[10px] uppercase font-bold text-text-secondary tracking-widest border-b border-border-subtle pb-1.5 mb-2">Web Template Selection</span>
                 {templates.map(tmpl => (
                   <button
                     key={tmpl.id}
                     onClick={() => updateWebsiteTheme({ ...website, template: tmpl.id as any })}
                     className={`w-full p-4 rounded-xl border text-left flex flex-col justify-between transition-all cursor-pointer ${
-                      website.template === tmpl.id ? 'bg-[#e8efe9] border-[#1b4332]' : 'bg-white border-[#e2e1d7] hover:border-slate-350'
+                      website.template === tmpl.id ? 'bg-brand-light border-brand-primary' : 'bg-white border-border-subtle hover:border-slate-350'
                     }`}
                   >
                     <div className="flex justify-between items-center w-full">
-                      <span className="font-extrabold text-xs text-[#1a1a1e]">{tmpl.name}</span>
-                      {website.template === tmpl.id && <Check className="w-3.5 h-3.5 text-[#1b4332]" />}
+                      <span className="font-extrabold text-xs text-text-primary">{tmpl.name}</span>
+                      {website.template === tmpl.id && <Check className="w-3.5 h-3.5 text-brand-primary" />}
                     </div>
-                    <span className="text-[10px] text-[#7a7974] mt-2.5 leading-relaxed font-semibold">{tmpl.desc}</span>
+                    <span className="text-[10px] text-text-secondary mt-2.5 leading-relaxed font-semibold">{tmpl.desc}</span>
                   </button>
                 ))}
               </div>
@@ -377,19 +377,19 @@ export const WebsiteTab: React.FC = () => {
         </div>
 
         {/* Right Side: Live preview frame */}
-        <div className="flex-1 flex flex-col border border-[#e2e1d7] rounded-2xl overflow-hidden bg-[#e2e1d7]/40 shadow-inner">
+        <div className="flex-1 flex flex-col border border-border-subtle rounded-2xl overflow-hidden bg-border-subtle/40 shadow-inner">
           
           {/* Preview Controls Bar */}
-          <div className="h-14 bg-white border-b border-[#e2e1d7] flex justify-between items-center px-4 shrink-0">
+          <div className="h-14 bg-white border-b border-border-subtle flex justify-between items-center px-4 shrink-0">
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
               <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
               <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-              <span className="text-[10px] font-bold text-[#7a7974] ml-2 select-none">Preview Canvas: /site/{activeTenant.subdomain}</span>
+              <span className="text-[10px] font-bold text-text-secondary ml-2 select-none">Preview Canvas: /site/{activeTenant.subdomain}</span>
             </div>
             
             {/* Device screen toggles */}
-            <div className="flex border border-[#e2e1d7] rounded-lg p-0.5 bg-[#f4f3ed]">
+            <div className="flex border border-border-subtle rounded-lg p-0.5 bg-[#f1f5f9]">
               {(['desktop', 'tablet', 'mobile'] as const).map(device => {
                 const Icon = device === 'desktop' ? Laptop : device === 'tablet' ? Tablet : Smartphone;
                 return (
@@ -397,7 +397,7 @@ export const WebsiteTab: React.FC = () => {
                     key={device}
                     onClick={() => setDeviceFrame(device)}
                     className={`p-1.5 rounded-md transition-all cursor-pointer ${
-                      deviceFrame === device ? 'bg-white text-[#1b4332] shadow-sm' : 'text-[#7a7974] hover:text-[#1a1a1e]'
+                      deviceFrame === device ? 'bg-white text-brand-primary shadow-sm' : 'text-text-secondary hover:text-text-primary'
                     }`}
                     title={`${device} preview`}
                   >
@@ -412,7 +412,7 @@ export const WebsiteTab: React.FC = () => {
           <div className="flex-1 overflow-auto flex justify-center items-center p-4">
             
             <div 
-              className={`h-full border border-[#e2e1d7] rounded-xl overflow-hidden shadow-2xl bg-white flex flex-col transition-all duration-300 ${
+              className={`h-full border border-border-subtle rounded-xl overflow-hidden shadow-2xl bg-white flex flex-col transition-all duration-300 ${
                 deviceFrame === 'desktop' ? 'w-full' :
                 deviceFrame === 'tablet' ? 'w-[640px]' :
                 'w-[375px]'
@@ -421,15 +421,15 @@ export const WebsiteTab: React.FC = () => {
               
               {/* Header inside website preview container */}
               <div className="bg-white border-b border-slate-100 px-4 py-3 flex justify-between items-center shrink-0 text-xs">
-                <span className="font-extrabold text-[#1a1a1e] tracking-tight">{activeTenant.branding.logo || '🏨'} {activeTenant.name}</span>
-                <span className="px-3 py-1 text-[9px] font-extrabold uppercase text-white" style={{ backgroundColor: branding.primaryColor, borderRadius: branding.buttonStyle === 'rounded-full' ? '999px' : branding.buttonStyle === 'rounded-md' ? '4px' : '0px' }}>
+                <span className="font-extrabold text-text-primary tracking-tight">{activeTenant.branding.logo || '🏨'} {activeTenant.name}</span>
+                <span className="px-3 py-1 text-[11px] font-extrabold uppercase text-white" style={{ backgroundColor: branding.primaryColor, borderRadius: branding.buttonStyle === 'rounded-full' ? '999px' : branding.buttonStyle === 'rounded-md' ? '4px' : '0px' }}>
                   Book
                 </span>
               </div>
 
               {/* Scrollable mockup page */}
               <div 
-                className="flex-1 overflow-y-auto space-y-8 pb-10 text-[#1a1a1e]"
+                className="flex-1 overflow-y-auto space-y-8 pb-10 text-text-primary"
                 style={{ 
                   fontFamily: branding.font === 'serif' ? 'Playfair Display, Georgia, serif' : branding.font === 'outfit' ? 'Outfit, sans-serif' : 'Plus Jakarta Sans, sans-serif'
                 }}
@@ -443,7 +443,7 @@ export const WebsiteTab: React.FC = () => {
                         <div className="relative z-10 space-y-2">
                           <h2 className="text-xl md:text-2xl font-extrabold leading-tight tracking-tight">{sec.content.headline}</h2>
                           <p className="text-[10px] max-w-sm text-slate-200 leading-normal">{sec.content.subheadline}</p>
-                          <button className="px-4 py-1.5 font-bold text-[9px] uppercase tracking-wider text-black bg-white inline-block mt-2" style={{ borderRadius: branding.buttonStyle === 'rounded-full' ? '999px' : branding.buttonStyle === 'rounded-md' ? '4px' : '0px' }}>
+                          <button className="px-4 py-1.5 font-bold text-[11px] uppercase tracking-wider text-black bg-white inline-block mt-2" style={{ borderRadius: branding.buttonStyle === 'rounded-full' ? '999px' : branding.buttonStyle === 'rounded-md' ? '4px' : '0px' }}>
                             {sec.content.ctaText}
                           </button>
                         </div>
@@ -454,8 +454,8 @@ export const WebsiteTab: React.FC = () => {
                   if (sec.type === 'about') {
                     return (
                       <div key={sec.id} className="px-6 text-center space-y-2 py-4">
-                        <h3 className="text-xs font-bold uppercase tracking-widest text-[#7a7974]" style={{ color: branding.primaryColor }}>{sec.title}</h3>
-                        <p className="text-[11px] leading-relaxed text-[#7a7974] max-w-md mx-auto italic">
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-text-secondary" style={{ color: branding.primaryColor }}>{sec.title}</h3>
+                        <p className="text-[11px] leading-relaxed text-text-secondary max-w-md mx-auto italic">
                           "{sec.content.text}"
                         </p>
                       </div>
@@ -467,7 +467,7 @@ export const WebsiteTab: React.FC = () => {
                       <div key={sec.id} className="px-6 space-y-4 py-2">
                         <div className="text-center space-y-1">
                           <h3 className="text-xs font-bold uppercase tracking-widest" style={{ color: branding.primaryColor }}>{sec.title}</h3>
-                          <span className="text-[9px] text-[#7a7974] block">{sec.content.subheading}</span>
+                          <span className="text-[11px] text-text-secondary block">{sec.content.subheading}</span>
                         </div>
                         <div className="grid grid-cols-1 gap-3">
                           {activeTenant.rooms.map(rm => (
@@ -475,8 +475,8 @@ export const WebsiteTab: React.FC = () => {
                               <img src={rm.image} alt="" className="w-20 h-20 object-cover shrink-0" />
                               <div className="p-2.5 flex-1 flex flex-col justify-between">
                                 <div>
-                                  <h4 className="font-bold text-[#1a1a1e] leading-snug">{rm.name}</h4>
-                                  <span className="text-[9px] text-[#7a7974] mt-0.5 block">{rm.amenities.slice(0, 3).join(' • ')}</span>
+                                  <h4 className="font-bold text-text-primary leading-snug">{rm.name}</h4>
+                                  <span className="text-[11px] text-text-secondary mt-0.5 block">{rm.amenities.slice(0, 3).join(' • ')}</span>
                                 </div>
                                 <span className="font-extrabold text-[10px]" style={{ color: branding.primaryColor }}>
                                   {currencySymbol}{rm.basePrice.toLocaleString()}/night
@@ -495,7 +495,7 @@ export const WebsiteTab: React.FC = () => {
                         <h3 className="text-xs font-bold uppercase tracking-widest" style={{ color: branding.primaryColor }}>{sec.title}</h3>
                         <div className="flex flex-wrap justify-center gap-2">
                           {sec.content.list.split(',').map((am, i) => (
-                            <span key={i} className="px-2.5 py-1 rounded bg-white border border-slate-200 text-[9px] font-bold text-slate-700">
+                            <span key={i} className="px-2.5 py-1 rounded bg-white border border-slate-200 text-[11px] font-bold text-slate-700">
                               {am.trim()}
                             </span>
                           ))}
@@ -506,12 +506,12 @@ export const WebsiteTab: React.FC = () => {
 
                   if (sec.type === 'testimonials') {
                     return (
-                      <div key={sec.id} className="px-6 py-4 text-center space-y-2 bg-[#f4f3ed]/30 border-y border-dashed border-[#e2e1d7]">
+                      <div key={sec.id} className="px-6 py-4 text-center space-y-2 bg-[#f1f5f9]/30 border-y border-dashed border-border-subtle">
                         <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{sec.title}</h3>
                         <p className="text-xs font-medium italic text-slate-700 leading-relaxed max-w-sm mx-auto">
                           "{sec.content.quote}"
                         </p>
-                        <span className="block text-[9px] font-bold text-slate-500">- {sec.content.author}</span>
+                        <span className="block text-[11px] font-bold text-slate-500">- {sec.content.author}</span>
                       </div>
                     );
                   }
@@ -520,7 +520,7 @@ export const WebsiteTab: React.FC = () => {
                     return (
                       <div key={sec.id} className="px-6 space-y-2.5">
                         <h3 className="text-xs font-bold uppercase tracking-widest text-center" style={{ color: branding.primaryColor }}>{sec.title}</h3>
-                        <p className="text-[10px] text-center text-[#7a7974]">{sec.content.address}</p>
+                        <p className="text-[10px] text-center text-text-secondary">{sec.content.address}</p>
                         <div className="h-32 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 flex items-center justify-center text-[10px] text-slate-450 italic">
                           Map View Simulated Frame
                         </div>
@@ -530,7 +530,7 @@ export const WebsiteTab: React.FC = () => {
 
                   if (sec.type === 'footer') {
                     return (
-                      <div key={sec.id} className="pt-6 border-t border-slate-100 text-center text-[9px] text-[#7a7974]">
+                      <div key={sec.id} className="pt-6 border-t border-slate-100 text-center text-[11px] text-text-secondary">
                         {sec.content.copyright}
                       </div>
                     );

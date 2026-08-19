@@ -467,13 +467,13 @@ export const AdminPanel: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 font-sans antialiased flex flex-col">
+    <div className="min-h-screen bg-bg-page text-slate-800 font-sans antialiased flex flex-col">
       {/* Header bar */}
       <header className="h-20 bg-white border-b border-slate-200/60 flex items-center justify-between px-6 md:px-8 shrink-0 sticky top-0 z-40">
         <div className="flex items-center gap-3">
           <button 
             onClick={() => navigate('/app/dashboard')}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 text-[#3872fa] text-xs font-bold hover:bg-[#3872fa] hover:text-white transition-all shadow-sm cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 text-brand-primary text-xs font-bold hover:bg-brand-primary hover:text-white transition-all shadow-sm cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Exit Admin</span>
@@ -482,7 +482,7 @@ export const AdminPanel: React.FC = () => {
           <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
             <span>Administration</span>
             <span>/</span>
-            <span className="text-[#3872fa] font-extrabold">SaaS Super Admin</span>
+            <span className="text-brand-primary font-extrabold">SaaS Super Admin</span>
           </div>
         </div>
 
@@ -508,7 +508,7 @@ export const AdminPanel: React.FC = () => {
             {/* Top Logo Segment */}
             <div className="h-20 flex items-center gap-3 px-2 border-b border-slate-100 -mt-6 -mx-4 mb-4">
               <div className="flex gap-1 items-center px-2">
-                <div className="w-2.5 h-6 rounded-full bg-gradient-to-b from-[#3872fa] to-[#4f46e5] rotate-[25deg]"></div>
+                <div className="w-2.5 h-6 rounded-full bg-gradient-to-b from-brand-primary to-[#4f46e5] rotate-[25deg]"></div>
                 <div className="w-2.5 h-7.5 rounded-full bg-gradient-to-b from-[#4f46e5] to-[#7c3aed] rotate-[25deg] -translate-y-0.5"></div>
               </div>
               <div>
@@ -524,7 +524,7 @@ export const AdminPanel: React.FC = () => {
                   onClick={() => setActiveTab('overview')}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
                     activeTab === 'overview'
-                      ? 'bg-blue-50 text-[#3872fa] border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
+                      ? 'bg-blue-50 text-brand-primary border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
                       : 'text-slate-650 border-transparent hover:bg-slate-50 hover:text-slate-900'
                   }`}
                 >
@@ -535,7 +535,7 @@ export const AdminPanel: React.FC = () => {
                   onClick={() => setActiveTab('hotels')}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
                     activeTab === 'hotels'
-                      ? 'bg-blue-50 text-[#3872fa] border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
+                      ? 'bg-blue-50 text-brand-primary border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
                       : 'text-slate-655 border-transparent hover:bg-slate-50 hover:text-slate-900'
                   }`}
                 >
@@ -546,7 +546,7 @@ export const AdminPanel: React.FC = () => {
                   onClick={() => setActiveTab('users')}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
                     activeTab === 'users'
-                      ? 'bg-blue-50 text-[#3872fa] border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
+                      ? 'bg-blue-50 text-brand-primary border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
                       : 'text-slate-655 border-transparent hover:bg-slate-50 hover:text-slate-900'
                   }`}
                 >
@@ -557,7 +557,7 @@ export const AdminPanel: React.FC = () => {
                   onClick={() => setActiveTab('ai-simulator')}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
                     activeTab === 'ai-simulator'
-                      ? 'bg-blue-50 text-[#3872fa] border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
+                      ? 'bg-blue-50 text-brand-primary border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
                       : 'text-slate-655 border-transparent hover:bg-slate-50 hover:text-slate-900'
                   }`}
                 >
@@ -568,7 +568,7 @@ export const AdminPanel: React.FC = () => {
                   onClick={() => setActiveTab('logs')}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
                     activeTab === 'logs'
-                      ? 'bg-blue-50 text-[#3872fa] border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
+                      ? 'bg-blue-50 text-brand-primary border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
                       : 'text-slate-655 border-transparent hover:bg-slate-50 hover:text-slate-900'
                   }`}
                 >
@@ -623,7 +623,7 @@ export const AdminPanel: React.FC = () => {
         </aside>
 
         {/* Content Pane */}
-        <main className="flex-1 overflow-y-auto p-8 bg-[#f8fafc]">
+        <main className="flex-1 overflow-y-auto p-8 bg-bg-page">
           {/* TAB 1: OVERVIEW */}
           {activeTab === 'overview' && (
             <div className="space-y-8 animate-in fade-in duration-200">
@@ -634,7 +634,7 @@ export const AdminPanel: React.FC = () => {
                   <p className="text-slate-500 text-sm mt-1">Multi-tenant business activity across all registered properties.</p>
                 </div>
                 <div className="text-xs bg-white border border-slate-200 px-3.5 py-2 rounded-xl flex items-center gap-2 shadow-sm">
-                  <span className="w-1.5 h-1.5 bg-[#3872fa] rounded-full animate-ping" />
+                  <span className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-ping" />
                   <span className="text-slate-655 font-bold">Auto-syncing active (Local DB)</span>
                 </div>
               </div>
@@ -644,7 +644,7 @@ export const AdminPanel: React.FC = () => {
                 <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-sm transition-all hover:shadow-md group">
                   <div className="flex justify-between items-start">
                     <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Gross Platform Revenue</span>
-                    <div className="p-2 rounded-xl bg-blue-50 text-[#3872fa] group-hover:scale-110 transition-transform">
+                    <div className="p-2 rounded-xl bg-blue-50 text-brand-primary group-hover:scale-110 transition-transform">
                       <DollarSign className="w-4.5 h-4.5" />
                     </div>
                   </div>
@@ -681,7 +681,7 @@ export const AdminPanel: React.FC = () => {
                   </div>
                   <div className="mt-4">
                     <h3 className="text-3xl font-extrabold text-slate-900">{totalBookingsCount}</h3>
-                    <div className="flex items-center gap-1.5 mt-2 text-xs text-[#3872fa] font-bold">
+                    <div className="flex items-center gap-1.5 mt-2 text-xs text-brand-primary font-bold">
                       <span>{totalGuestsCount} registered guests in CRM</span>
                     </div>
                   </div>
@@ -725,7 +725,7 @@ export const AdminPanel: React.FC = () => {
                         <div key={t.id} className="space-y-1.5">
                           <div className="flex justify-between items-center text-xs">
                             <div className="flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-[#3872fa]" />
+                              <span className="w-2 h-2 rounded-full bg-brand-primary" />
                               <span className="font-bold text-slate-700">{t.name}</span>
                               <span className="text-[10px] text-slate-500 font-bold bg-slate-100 px-1.5 py-0.5 rounded uppercase tracking-wider">{t.subdomain}</span>
                             </div>
@@ -733,7 +733,7 @@ export const AdminPanel: React.FC = () => {
                           </div>
                           <div className="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
                             <div 
-                              className="h-full rounded-full bg-gradient-to-r from-[#3872fa] to-indigo-500 transition-all duration-500" 
+                              className="h-full rounded-full bg-gradient-to-r from-brand-primary to-indigo-500 transition-all duration-500" 
                               style={{ width: `${pct}%` }} 
                             />
                           </div>
@@ -750,7 +750,7 @@ export const AdminPanel: React.FC = () => {
                     {logs.slice(0, 5).map(l => (
                       <div key={l.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs">
                         <div className="flex justify-between items-center">
-                          <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${
+                          <span className={`px-1.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider ${
                             l.source === 'WEBHOOK' ? 'bg-cyan-50 text-cyan-600 border border-cyan-200/30' :
                             l.source === 'AI' ? 'bg-indigo-50 text-indigo-650 border border-indigo-200/30' :
                             l.source === 'GATEWAY' ? 'bg-pink-50 text-pink-600 border border-pink-200/30' :
@@ -779,7 +779,7 @@ export const AdminPanel: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setAddHotelModalOpen(true)}
-                  className="bg-[#3872fa] hover:bg-[#1e5ade] text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md shadow-blue-500/10"
+                  className="bg-brand-primary hover:bg-brand-hover text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md shadow-blue-500/10"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Create Hotel Tenant</span>
@@ -846,7 +846,7 @@ export const AdminPanel: React.FC = () => {
                                 href={`/site/${t.subdomain}`} 
                                 target="_blank" 
                                 rel="noreferrer"
-                                className="text-[#3872fa] font-bold hover:underline flex items-center gap-1"
+                                className="text-brand-primary font-bold hover:underline flex items-center gap-1"
                               >
                                 <span>{t.subdomain}</span>
                                 <ExternalLink className="w-3 h-3" />
@@ -883,7 +883,7 @@ export const AdminPanel: React.FC = () => {
                                     localStorage.setItem("stayos_v1_active_tenant_id", t.id);
                                     window.location.href = '/app/dashboard';
                                   }}
-                                  className="text-xs bg-blue-50 hover:bg-blue-100 border border-blue-200 text-[#3872fa] px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer"
+                                  className="text-xs bg-blue-50 hover:bg-blue-100 border border-blue-200 text-brand-primary px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer"
                                 >
                                   Manage Hotel
                                 </button>
@@ -916,7 +916,7 @@ export const AdminPanel: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setAddUserModalOpen(true)}
-                  className="bg-[#3872fa] hover:bg-[#1e5ade] text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md shadow-blue-500/10"
+                  className="bg-brand-primary hover:bg-brand-hover text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md shadow-blue-500/10"
                 >
                   <UserPlus className="w-4 h-4" />
                   <span>Invite User</span>
@@ -939,7 +939,7 @@ export const AdminPanel: React.FC = () => {
                       <tr key={u.id} className="hover:bg-slate-50/30 transition-colors">
                         <td className="p-4">
                           <div className="flex items-center gap-2.5">
-                            <div className="w-7 h-7 rounded-full bg-slate-100 text-[#3872fa] border border-slate-200 flex items-center justify-center font-bold text-xs">
+                            <div className="w-7 h-7 rounded-full bg-slate-100 text-brand-primary border border-slate-200 flex items-center justify-center font-bold text-[13px]">
                               {u.name[0]}
                             </div>
                             <span className="font-bold text-slate-800 block text-sm">{u.name}</span>
@@ -959,7 +959,7 @@ export const AdminPanel: React.FC = () => {
                                     className="text-[10px] text-indigo-650 font-bold bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded flex items-center gap-1"
                                   >
                                     <span>{hotelObj?.name || 'Unknown Hotel'}</span>
-                                    <span className="text-[9px] uppercase font-black text-indigo-500">({tAssoc.role})</span>
+                                    <span className="text-[11px] uppercase font-black text-indigo-500">({tAssoc.role})</span>
                                   </span>
                                 );
                               })
@@ -996,7 +996,7 @@ export const AdminPanel: React.FC = () => {
                 {/* Config & Send Form */}
                 <div className="lg:col-span-2 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-6">
                   <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <Sliders className="w-5 h-5 text-[#3872fa]" />
+                    <Sliders className="w-5 h-5 text-brand-primary" />
                     <span>Simulator Parameters</span>
                   </h2>
 
@@ -1072,7 +1072,7 @@ export const AdminPanel: React.FC = () => {
                     <button
                       onClick={handleTriggerSimulation}
                       disabled={isSimulating || !simMessage}
-                      className="bg-[#3872fa] hover:bg-[#1e5ade] disabled:bg-blue-300 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md shadow-blue-500/10 hover:shadow-blue-500/20"
+                      className="bg-brand-primary hover:bg-brand-hover disabled:bg-blue-300 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md shadow-blue-500/10 hover:shadow-blue-500/20"
                     >
                       {isSimulating ? (
                         <>
@@ -1171,7 +1171,7 @@ export const AdminPanel: React.FC = () => {
                     logs.map(l => (
                       <div key={l.id} className="flex items-start gap-2.5 font-semibold">
                         <span className="text-slate-500 font-bold shrink-0">[{l.timestamp}]</span>
-                        <span className={`px-1 rounded text-[9px] font-black shrink-0 ${
+                        <span className={`px-1 rounded text-[11px] font-black shrink-0 ${
                           l.source === 'SYSTEM' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
                           l.source === 'WEBHOOK' ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20' :
                           l.source === 'AI' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' :
@@ -1233,7 +1233,7 @@ export const AdminPanel: React.FC = () => {
           <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-lg p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-200">
             <div className="flex justify-between items-center border-b border-slate-100 pb-3">
               <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <Building className="w-5 h-5 text-[#3872fa]" />
+                <Building className="w-5 h-5 text-brand-primary" />
                 <span>Register New Hotel Profile</span>
               </h3>
               <button 
@@ -1316,7 +1316,7 @@ export const AdminPanel: React.FC = () => {
                       onClick={() => setNewHotelTemplate(layout)}
                       className={`py-2 px-1 rounded-xl text-center capitalize border cursor-pointer transition-all ${
                         newHotelTemplate === layout 
-                          ? 'bg-blue-50 text-[#3872fa] border-blue-200' 
+                          ? 'bg-blue-50 text-brand-primary border-blue-200' 
                           : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100 hover:text-slate-850'
                       }`}
                     >
@@ -1336,7 +1336,7 @@ export const AdminPanel: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#3872fa] hover:bg-[#1e5ade] text-white font-extrabold rounded-xl transition-all cursor-pointer shadow-md"
+                  className="px-5 py-2 bg-brand-primary hover:bg-brand-hover text-white font-extrabold rounded-xl transition-all cursor-pointer shadow-md"
                 >
                   Save Property
                 </button>
@@ -1352,7 +1352,7 @@ export const AdminPanel: React.FC = () => {
           <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-200">
             <div className="flex justify-between items-center border-b border-slate-100 pb-3">
               <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <UserPlus className="w-5 h-5 text-[#3872fa]" />
+                <UserPlus className="w-5 h-5 text-brand-primary" />
                 <span>Invite Platform Admin</span>
               </h3>
               <button 
@@ -1428,7 +1428,7 @@ export const AdminPanel: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#3872fa] hover:bg-[#1e5ade] text-white font-extrabold rounded-xl transition-all cursor-pointer shadow-md"
+                  className="px-5 py-2 bg-brand-primary hover:bg-brand-hover text-white font-extrabold rounded-xl transition-all cursor-pointer shadow-md"
                 >
                   Assign Access
                 </button>

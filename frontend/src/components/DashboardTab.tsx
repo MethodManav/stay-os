@@ -62,7 +62,7 @@ export const DashboardTab: React.FC = () => {
         
         <Link 
           to="/app/bookings" 
-          className="inline-flex items-center gap-1.5 px-4.5 py-2.5 rounded-xl bg-[#3872fa] hover:bg-[#1e5ade] text-white font-bold text-xs shadow-md shadow-blue-500/10 transition-all cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4.5 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-hover text-white font-bold text-xs shadow-md shadow-blue-500/10 transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>New Reservation</span>
@@ -180,11 +180,11 @@ export const DashboardTab: React.FC = () => {
           <div className="relative h-60 w-full flex flex-col justify-end pt-4">
             {/* Grid Line lines */}
             <div className="absolute inset-0 flex flex-col justify-between pointer-events-none pb-8 pt-4">
-              <div className="w-full border-t border-slate-100 flex items-center"><span className="text-[8px] text-slate-400 -translate-y-2">10000</span></div>
-              <div className="w-full border-t border-slate-100 flex items-center"><span className="text-[8px] text-slate-400 -translate-y-2">7500</span></div>
-              <div className="w-full border-t border-slate-100 flex items-center"><span className="text-[8px] text-slate-400 -translate-y-2">5000</span></div>
-              <div className="w-full border-t border-slate-100 flex items-center"><span className="text-[8px] text-slate-400 -translate-y-2">2500</span></div>
-              <div className="w-full border-t border-slate-100 flex items-center"><span className="text-[8px] text-slate-400 -translate-y-2">0</span></div>
+              <div className="w-full border-t border-slate-100 flex items-center"><span className="text-[10px] text-slate-400 -translate-y-2">10000</span></div>
+              <div className="w-full border-t border-slate-100 flex items-center"><span className="text-[10px] text-slate-400 -translate-y-2">7500</span></div>
+              <div className="w-full border-t border-slate-100 flex items-center"><span className="text-[10px] text-slate-400 -translate-y-2">5000</span></div>
+              <div className="w-full border-t border-slate-100 flex items-center"><span className="text-[10px] text-slate-400 -translate-y-2">2500</span></div>
+              <div className="w-full border-t border-slate-100 flex items-center"><span className="text-[10px] text-slate-400 -translate-y-2">0</span></div>
             </div>
 
             {/* Bars Column layout */}
@@ -194,12 +194,12 @@ export const DashboardTab: React.FC = () => {
                 // Highlight August month as green/teal like mockup, others blue
                 const barColor = growthMonths[idx] === 'Aug' 
                   ? 'bg-[#10b981] hover:bg-[#059669]' 
-                  : 'bg-[#3872fa] hover:bg-[#1e5ade]';
+                  : 'bg-brand-primary hover:bg-brand-hover';
                 
                 return (
                   <div key={idx} className="flex flex-col items-center flex-1 space-y-2 max-w-[28px] group relative">
                     {/* Tooltip */}
-                    <div className="absolute -top-8 bg-slate-800 text-white text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity font-bold pointer-events-none whitespace-nowrap z-50">
+                    <div className="absolute -top-8 bg-slate-800 text-white text-[11px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity font-bold pointer-events-none whitespace-nowrap z-50">
                       {val.toLocaleString()}
                     </div>
                     {/* Bar Pillar */}
@@ -316,7 +316,7 @@ export const DashboardTab: React.FC = () => {
               <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wide">Upcoming Reservations</h2>
               <span className="text-xs text-slate-400 font-semibold">Upcoming arrivals ledger</span>
             </div>
-            <Link to="/app/bookings" className="text-xs text-[#3872fa] font-bold hover:underline">View all</Link>
+            <Link to="/app/bookings" className="text-xs text-brand-primary font-bold hover:underline">View all</Link>
           </div>
 
           <div className="overflow-x-auto">
@@ -374,7 +374,7 @@ export const DashboardTab: React.FC = () => {
           <div className="space-y-4">
             {recentActivity.map((act, i) => (
               <div key={i} className="flex gap-3 text-xs items-start">
-                <span className="mt-0.5 text-[#3872fa] shrink-0">
+                <span className="mt-0.5 text-brand-primary shrink-0">
                   <CircleDot className="w-3.5 h-3.5" />
                 </span>
                 <div>

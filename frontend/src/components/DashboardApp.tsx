@@ -59,7 +59,7 @@ export const DashboardLayout: React.FC = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-[#f8fafc] text-slate-800 font-sans overflow-hidden">
+    <div className="flex h-screen bg-bg-page text-slate-800 font-sans overflow-hidden">
       
       {/* Sidebar - Desktop */}
       <aside className="hidden lg:flex flex-col w-64 bg-white text-slate-600 shrink-0 border-r border-slate-200 z-30">
@@ -68,7 +68,7 @@ export const DashboardLayout: React.FC = () => {
         <div className="h-20 flex items-center gap-3 px-6 border-b border-slate-100">
           {/* Logo capsule style */}
           <div className="flex gap-1 items-center">
-            <div className="w-2.5 h-6 rounded-full bg-gradient-to-b from-[#3872fa] to-[#4f46e5] rotate-[25deg]"></div>
+            <div className="w-2.5 h-6 rounded-full bg-gradient-to-b from-brand-primary to-[#4f46e5] rotate-[25deg]"></div>
             <div className="w-2.5 h-7.5 rounded-full bg-gradient-to-b from-[#4f46e5] to-[#7c3aed] rotate-[25deg] -translate-y-0.5"></div>
           </div>
           <div>
@@ -98,11 +98,11 @@ export const DashboardLayout: React.FC = () => {
                   key={t.id}
                   onClick={() => handleSwitch(t.id)}
                   className={`w-full text-left px-3 py-2 text-xs font-semibold flex justify-between items-center ${
-                    activeTenant.id === t.id ? 'bg-blue-50/50 text-[#3872fa] font-bold' : 'text-slate-650 hover:bg-slate-50 hover:text-slate-900'
+                    activeTenant.id === t.id ? 'bg-blue-50/50 text-brand-primary font-bold' : 'text-slate-650 hover:bg-slate-50 hover:text-slate-900'
                   }`}
                 >
                   <span className="truncate">{t.name}</span>
-                  {activeTenant.id === t.id && <span className="w-1.5 h-1.5 rounded-full bg-[#3872fa]" />}
+                  {activeTenant.id === t.id && <span className="w-1.5 h-1.5 rounded-full bg-brand-primary" />}
                 </button>
               ))}
             </div>
@@ -120,7 +120,7 @@ export const DashboardLayout: React.FC = () => {
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
                     isActive
-                      ? 'bg-blue-50 text-[#3872fa] border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
+                      ? 'bg-blue-50 text-brand-primary border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
                       : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
                   }`
                 }
@@ -135,7 +135,7 @@ export const DashboardLayout: React.FC = () => {
         {/* Footer Profile Banner */}
         <div className="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#3872fa] border border-blue-100 flex items-center justify-center font-bold text-sm shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-blue-50 text-brand-primary border border-blue-100 flex items-center justify-center font-bold text-sm shrink-0">
               {currentUser?.name[0] || 'M'}
             </div>
             <div className="overflow-hidden">
@@ -170,7 +170,7 @@ export const DashboardLayout: React.FC = () => {
             <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
               <span>Organizations</span>
               <span>/</span>
-              <span className="text-[#3872fa] font-extrabold">{activeTenant?.name}</span>
+              <span className="text-brand-primary font-extrabold">{activeTenant?.name}</span>
             </div>
           </div>
 
@@ -182,7 +182,7 @@ export const DashboardLayout: React.FC = () => {
               href={`/site/${activeTenant?.subdomain}`} 
               target="_blank" 
               rel="noreferrer"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 text-[#3872fa] text-xs font-bold hover:bg-[#3872fa] hover:text-white transition-all shadow-sm"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 text-brand-primary text-xs font-bold hover:bg-brand-primary hover:text-white transition-all shadow-sm"
             >
               <Globe className="w-3.5 h-3.5" />
               <span>Live Website</span>
@@ -201,7 +201,7 @@ export const DashboardLayout: React.FC = () => {
               {notificationsOpen && (
                 <div className="absolute right-0 mt-2.5 w-80 bg-white border border-slate-200 rounded-xl shadow-xl py-2 z-50">
                   <div className="px-4 py-1.5 border-b border-slate-100 flex justify-between items-center">
-                    <span className="text-xs font-bold text-[#3872fa] uppercase tracking-wider">Notifications</span>
+                    <span className="text-xs font-bold text-brand-primary uppercase tracking-wider">Notifications</span>
                     <button className="text-[10px] text-slate-400 hover:underline">Clear all</button>
                   </div>
                   <div className="divide-y divide-slate-100">
@@ -222,7 +222,7 @@ export const DashboardLayout: React.FC = () => {
                 onClick={() => setProfileMenuOpen(!profileMenuOpen)}
                 className="flex items-center gap-2 px-2 py-1.5 rounded-xl hover:bg-slate-50 transition-colors text-left cursor-pointer"
               >
-                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#3872fa] border border-blue-100 flex items-center justify-center font-bold text-sm">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-brand-primary border border-blue-100 flex items-center justify-center font-bold text-sm">
                   {currentUser?.name[0] || 'M'}
                 </div>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-450 hidden md:block" />
@@ -245,7 +245,7 @@ export const DashboardLayout: React.FC = () => {
                     className="w-full text-left px-3.5 py-2 hover:bg-indigo-50 font-semibold text-indigo-650 flex items-center justify-between cursor-pointer border-t border-b border-slate-100/80"
                   >
                     <span>SaaS Admin Portal</span>
-                    <span className="text-[9px] uppercase font-black px-1.5 py-0.5 rounded bg-indigo-50 border border-indigo-100">Super</span>
+                    <span className="text-[11px] uppercase font-black px-1.5 py-0.5 rounded bg-indigo-50 border border-indigo-100">Super</span>
                   </button>
                   <button 
                     onClick={onLogout}
@@ -270,7 +270,7 @@ export const DashboardLayout: React.FC = () => {
               <div className="h-20 flex items-center justify-between px-6 border-b border-slate-100">
                 <div className="flex items-center gap-2.5">
                   <div className="flex gap-1 items-center">
-                    <div className="w-2.5 h-5 rounded-full bg-gradient-to-b from-[#3872fa] to-[#4f46e5] rotate-[25deg]"></div>
+                    <div className="w-2.5 h-5 rounded-full bg-gradient-to-b from-brand-primary to-[#4f46e5] rotate-[25deg]"></div>
                     <div className="w-2.5 h-6.5 rounded-full bg-gradient-to-b from-[#4f46e5] to-[#7c3aed] rotate-[25deg] -translate-y-0.5"></div>
                   </div>
                   <span className="text-base font-extrabold text-slate-900">stayos</span>
@@ -295,7 +295,7 @@ export const DashboardLayout: React.FC = () => {
                       onClick={() => setMobileNavOpen(false)}
                       className={({ isActive }) =>
                         `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-all ${
-                          isActive ? 'bg-blue-50 text-[#3872fa]' : 'text-slate-650 hover:bg-slate-50 hover:text-slate-900'
+                          isActive ? 'bg-blue-50 text-brand-primary' : 'text-slate-650 hover:bg-slate-50 hover:text-slate-900'
                         }`
                       }
                     >
@@ -315,7 +315,7 @@ export const DashboardLayout: React.FC = () => {
         )}
 
         {/* Dashboard Main Workspace Content */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-[#f8fafc]">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-bg-page">
           <Outlet />
         </main>
       </div>

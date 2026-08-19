@@ -58,7 +58,7 @@ export const LoginSignup: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#0f172a] flex font-sans antialiased">
+    <div className="min-h-screen bg-white text-text-primary flex font-sans antialiased">
       {/* Left side: Sign in form panel */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 py-12 sm:px-12 lg:px-20 xl:px-24 z-10 bg-white">
         <div className="mx-auto w-full max-w-md space-y-8">
@@ -68,12 +68,12 @@ export const LoginSignup: React.FC = () => {
             {/* Custom Isomorphic logo style */}
             <div className="flex gap-1.5 items-center">
               {/* Short Blue Capsule */}
-              <div className="w-3.5 h-7 rounded-full bg-gradient-to-b from-[#3872fa] to-[#4f46e5] rotate-[25deg] transform -translate-y-0.5"></div>
+              <div className="w-3.5 h-7 rounded-full bg-gradient-to-b from-brand-primary to-[#4f46e5] rotate-[25deg] transform -translate-y-0.5"></div>
               {/* Long Purple Capsule */}
               <div className="w-3.5 h-10 rounded-full bg-gradient-to-b from-[#4f46e5] to-[#7c3aed] rotate-[25deg] transform -translate-y-1"></div>
             </div>
-            <span className="text-2xl font-bold tracking-tight text-[#0f172a] ml-1">
-              stay<span className="text-[#3872fa]">os</span>
+            <span className="text-2xl font-bold tracking-tight text-text-primary ml-1">
+              stay<span className="text-brand-primary">os</span>
             </span>
           </Link>
 
@@ -84,7 +84,7 @@ export const LoginSignup: React.FC = () => {
               <span className="relative inline-block text-slate-900">
                 Sign in
                 {/* Hand-drawn underline SVG */}
-                <svg className="absolute -bottom-1.5 left-0 w-full h-2 text-[#3872fa]" viewBox="0 0 100 10" preserveAspectRatio="none">
+                <svg className="absolute -bottom-1.5 left-0 w-full h-2 text-brand-primary" viewBox="0 0 100 10" preserveAspectRatio="none">
                   <path d="M1 5 Q 50 10, 99 5" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
                 </svg>
               </span>{' '}
@@ -162,7 +162,7 @@ export const LoginSignup: React.FC = () => {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="admin@admin.com"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#3872fa] text-sm text-slate-800 transition-colors placeholder:text-slate-400 font-medium"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-brand-primary text-sm text-slate-800 transition-colors placeholder:text-slate-400 font-medium"
                 />
               </div>
             </div>
@@ -178,7 +178,7 @@ export const LoginSignup: React.FC = () => {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="•••••"
-                  className="w-full pl-10 pr-10 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#3872fa] text-sm text-slate-800 transition-colors placeholder:text-slate-400 font-sans"
+                  className="w-full pl-10 pr-10 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-brand-primary text-sm text-slate-800 transition-colors placeholder:text-slate-400 font-sans"
                 />
                 <button
                   type="button"
@@ -196,11 +196,11 @@ export const LoginSignup: React.FC = () => {
                 <input
                   type="checkbox"
                   defaultChecked
-                  className="w-4 h-4 rounded border-slate-300 text-[#3872fa] focus:ring-[#3872fa] accent-[#3872fa]"
+                  className="w-4 h-4 rounded border-slate-300 text-brand-primary focus:ring-brand-primary accent-brand-primary"
                 />
                 Remember Me
               </label>
-              <a href="#forgot" className="text-[#3872fa] hover:underline">
+              <a href="#forgot" className="text-brand-primary hover:underline">
                 Forget Password?
               </a>
             </div>
@@ -208,14 +208,14 @@ export const LoginSignup: React.FC = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3 bg-[#3872fa] hover:bg-[#1e5ade] text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer text-center"
+              className="w-full py-3 bg-brand-primary hover:bg-brand-hover text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer text-center"
             >
               Sign In
             </button>
           </form>
 
           {/* Registration Notice / Demo Login Mode */}
-          <div className="p-4 rounded-xl bg-[#eff6ff] border border-blue-100 text-xs text-[#1e40af] leading-relaxed font-medium space-y-3">
+          <div className="p-4 rounded-xl bg-brand-light border border-blue-100 text-xs text-[#1e40af] leading-relaxed font-medium space-y-3">
             <div>
               <span className="font-bold text-[#1d4ed8] block mb-1">Hotel Manager:</span>
               Pre-filled with `admin@admin.com`. Just click **Sign In** to log in to the hotel portal.
@@ -250,7 +250,7 @@ export const LoginSignup: React.FC = () => {
           {/* Redirect to signup */}
           <div className="text-center pt-2 border-t border-slate-100 text-xs text-slate-500 font-medium">
             Don't have a hotel dashboard?{' '}
-            <Link to="/signup" className="text-[#3872fa] hover:underline font-bold">
+            <Link to="/signup" className="text-brand-primary hover:underline font-bold">
               Create Your Hotel
             </Link>
           </div>
@@ -259,7 +259,7 @@ export const LoginSignup: React.FC = () => {
       </div>
 
       {/* Right side: Mockup illustration (Hidden on small screens) */}
-      <div className="hidden lg:flex w-1/2 bg-[#f8fafc] flex-col justify-center items-center p-12 xl:p-16 border-l border-slate-150 overflow-hidden relative">
+      <div className="hidden lg:flex w-1/2 bg-bg-page flex-col justify-center items-center p-12 xl:p-16 border-l border-slate-150 overflow-hidden relative">
         <div className="max-w-xl w-full text-center space-y-6 z-10 flex flex-col items-center">
           {/* Header titles */}
           <h2 className="text-3xl xl:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight max-w-md">
@@ -276,13 +276,13 @@ export const LoginSignup: React.FC = () => {
               <div className="flex items-center gap-2">
                 {/* Mini Isomorphic Logo */}
                 <div className="flex gap-1 items-center">
-                  <div className="w-2.5 h-5 rounded-full bg-gradient-to-b from-[#3872fa] to-[#4f46e5] rotate-[25deg]"></div>
+                  <div className="w-2.5 h-5 rounded-full bg-gradient-to-b from-brand-primary to-[#4f46e5] rotate-[25deg]"></div>
                   <div className="w-2.5 h-6 rounded-full bg-gradient-to-b from-[#4f46e5] to-[#7c3aed] rotate-[25deg] -translate-y-0.5"></div>
                 </div>
                 <span className="font-bold text-slate-900 text-xs">isomorphic</span>
               </div>
               <div className="flex gap-4 text-[10px] text-slate-400 font-semibold">
-                <span className="text-[#3872fa] font-bold">Dashboard</span>
+                <span className="text-brand-primary font-bold">Dashboard</span>
                 <span>Products</span>
                 <span>E-Commerce</span>
                 <span>Smart Board</span>
@@ -298,14 +298,14 @@ export const LoginSignup: React.FC = () => {
               {/* Sales Overview Title block */}
               <div className="flex justify-between items-center">
                 <div>
-                  <h3 className="font-bold text-[#0f172a] text-sm">Sales Overview</h3>
+                  <h3 className="font-bold text-text-primary text-sm">Sales Overview</h3>
                   <span className="text-[10px] text-slate-400">View current sales summary and activity</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] px-2.5 py-1 bg-white border border-slate-200 rounded-md font-semibold text-slate-500 shadow-sm cursor-default flex items-center">
                     Jan 23, 2023 - Feb 23, 2023
                   </span>
-                  <span className="text-[10px] px-2.5 py-1 bg-[#3872fa] text-white rounded-md font-bold shadow-sm cursor-default">
+                  <span className="text-[10px] px-2.5 py-1 bg-brand-primary text-white rounded-md font-bold shadow-sm cursor-default">
                     Filter
                   </span>
                 </div>
@@ -321,18 +321,18 @@ export const LoginSignup: React.FC = () => {
                   <svg className="w-full h-8 text-[#7c3aed]/40" viewBox="0 0 100 30" preserveAspectRatio="none">
                     <path d="M0,25 Q15,5 30,20 T60,10 T90,22 L100,20" stroke="currentColor" strokeWidth="2.5" fill="none" />
                   </svg>
-                  <span className="text-[9px] text-[#22c55e] font-extrabold block">+32.40% <span className="text-slate-400 font-medium">Increased last month</span></span>
+                  <span className="text-[11px] text-[#22c55e] font-extrabold block">+32.40% <span className="text-slate-400 font-medium">Increased last month</span></span>
                 </div>
 
                 {/* Card 2: Referral Sales */}
-                <div className="bg-white border-l-4 border-l-[#3872fa] border border-slate-200 rounded-xl p-3.5 shadow-sm space-y-1.5 relative overflow-hidden">
+                <div className="bg-white border-l-4 border-l-brand-primary border border-slate-200 rounded-xl p-3.5 shadow-sm space-y-1.5 relative overflow-hidden">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Referral Sales</span>
                   <span className="text-lg font-black text-slate-900 block">$3,302</span>
                   {/* Wave line placeholder */}
-                  <svg className="w-full h-8 text-[#3872fa]/40" viewBox="0 0 100 30" preserveAspectRatio="none">
+                  <svg className="w-full h-8 text-brand-primary/40" viewBox="0 0 100 30" preserveAspectRatio="none">
                     <path d="M0,15 Q20,25 40,10 T80,22 T100,5" stroke="currentColor" strokeWidth="2.5" fill="none" />
                   </svg>
-                  <span className="text-[9px] text-[#22c55e] font-extrabold block">+18.06% <span className="text-slate-400 font-medium">Increased last month</span></span>
+                  <span className="text-[11px] text-[#22c55e] font-extrabold block">+18.06% <span className="text-slate-400 font-medium">Increased last month</span></span>
                 </div>
 
                 {/* Card 3: Purchases */}
@@ -343,7 +343,7 @@ export const LoginSignup: React.FC = () => {
                   <svg className="w-full h-8 text-[#ef4444]/40" viewBox="0 0 100 30" preserveAspectRatio="none">
                     <path d="M0,5 Q20,20 40,8 T80,25 T100,15" stroke="currentColor" strokeWidth="2.5" fill="none" />
                   </svg>
-                  <span className="text-[9px] text-[#ef4444] font-extrabold block">-4.43% <span className="text-slate-400 font-medium">Decreased last month</span></span>
+                  <span className="text-[11px] text-[#ef4444] font-extrabold block">-4.43% <span className="text-slate-400 font-medium">Decreased last month</span></span>
                 </div>
               </div>
 
@@ -353,20 +353,20 @@ export const LoginSignup: React.FC = () => {
                 <div className="col-span-2 bg-white border border-slate-200 rounded-xl p-3 shadow-sm space-y-2">
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-slate-800 text-[10px]">Monthly Revenue</span>
-                    <div className="flex gap-1.5 text-[8px] font-bold">
-                      <span className="text-[#3872fa] flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-[#3872fa] inline-block"></span>New Orders</span>
+                    <div className="flex gap-1.5 text-[10px] font-bold">
+                      <span className="text-brand-primary flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-brand-primary inline-block"></span>New Orders</span>
                       <span className="text-[#7c3aed] flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-[#7c3aed] inline-block"></span>Shipped</span>
                     </div>
                   </div>
                   {/* CSS graph bars */}
                   <div className="flex items-end justify-between h-20 pt-4 px-2">
-                    <div className="w-3 bg-[#3872fa]/20 rounded-t h-[40%]"></div>
-                    <div className="w-3 bg-[#3872fa]/40 rounded-t h-[65%]"></div>
-                    <div className="w-3 bg-[#3872fa]/60 rounded-t h-[50%]"></div>
-                    <div className="w-3 bg-[#3872fa] rounded-t h-[80%]"></div>
+                    <div className="w-3 bg-brand-primary/20 rounded-t h-[40%]"></div>
+                    <div className="w-3 bg-brand-primary/40 rounded-t h-[65%]"></div>
+                    <div className="w-3 bg-brand-primary/60 rounded-t h-[50%]"></div>
+                    <div className="w-3 bg-brand-primary rounded-t h-[80%]"></div>
                     <div className="w-3 bg-[#7c3aed]/40 rounded-t h-[55%]"></div>
                     <div className="w-3 bg-[#7c3aed]/80 rounded-t h-[90%]"></div>
-                    <div className="w-3 bg-[#3872fa] rounded-t h-[75%]"></div>
+                    <div className="w-3 bg-brand-primary rounded-t h-[75%]"></div>
                   </div>
                 </div>
 
@@ -375,17 +375,17 @@ export const LoginSignup: React.FC = () => {
                   <span className="font-bold text-slate-800 text-[10px] block">Activity Feed</span>
                   <div className="space-y-2">
                     <div className="flex items-center gap-1.5">
-                      <div className="w-4 h-4 rounded-full bg-[#3872fa]/10 flex items-center justify-center text-[7px] font-extrabold text-[#3872fa]">JW</div>
+                      <div className="w-4 h-4 rounded-full bg-brand-primary/10 flex items-center justify-center text-[10px] font-extrabold text-brand-primary">JW</div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[8px] font-bold text-slate-800 truncate leading-none">James Warren</p>
-                        <span className="text-[7px] text-slate-400 block mt-0.5">Purchased Membership</span>
+                        <p className="text-[10px] font-bold text-slate-800 truncate leading-none">James Warren</p>
+                        <span className="text-[10px] text-slate-400 block mt-0.5">Purchased Membership</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <div className="w-4 h-4 rounded-full bg-[#7c3aed]/10 flex items-center justify-center text-[7px] font-extrabold text-[#7c3aed]">AS</div>
+                      <div className="w-4 h-4 rounded-full bg-[#7c3aed]/10 flex items-center justify-center text-[10px] font-extrabold text-[#7c3aed]">AS</div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[8px] font-bold text-slate-800 truncate leading-none">Alice Smith</p>
-                        <span className="text-[7px] text-slate-400 block mt-0.5">Checked In</span>
+                        <p className="text-[10px] font-bold text-slate-800 truncate leading-none">Alice Smith</p>
+                        <span className="text-[10px] text-slate-400 block mt-0.5">Checked In</span>
                       </div>
                     </div>
                   </div>

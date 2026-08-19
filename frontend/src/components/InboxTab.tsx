@@ -72,7 +72,7 @@ export const InboxTab: React.FC = () => {
   );
 
   return (
-    <div className="flex h-full w-full bg-[#ffffff] rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+    <div className="flex h-full w-full bg-bg-card rounded-xl border border-slate-200 overflow-hidden shadow-sm">
       {/* Inbox List (Left) */}
       <div className="w-80 border-r border-slate-200 flex flex-col bg-slate-50/30">
         <div className="p-4 border-b border-slate-200 bg-white">
@@ -82,7 +82,7 @@ export const InboxTab: React.FC = () => {
             <input
               type="text"
               placeholder="search by name or phone..."
-              className="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-200 focus:border-[#3872fa] rounded-lg focus:outline-none transition-all text-slate-800 text-xs font-semibold placeholder:text-slate-400/80"
+              className="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-200 focus:border-brand-primary rounded-lg focus:outline-none transition-all text-slate-800 text-xs font-semibold placeholder:text-slate-400/80"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
             />
@@ -99,11 +99,11 @@ export const InboxTab: React.FC = () => {
                 key={chat.id}
                 onClick={() => handleSelectChat(chat.id)}
                 className={`w-full text-left p-3.5 flex items-start gap-3 transition-colors cursor-pointer border-l-2 ${
-                  isSelected ? 'bg-blue-50/40 border-[#3872fa]' : 'border-transparent hover:bg-slate-50/55'
+                  isSelected ? 'bg-blue-50/40 border-brand-primary' : 'border-transparent hover:bg-slate-50/55'
                 }`}
               >
                 <div className="relative shrink-0">
-                  <div className="w-10 h-10 rounded bg-blue-50 border border-blue-100 flex items-center justify-center font-bold text-[#3872fa] text-sm">
+                  <div className="w-10 h-10 rounded bg-blue-50 border border-blue-100 flex items-center justify-center font-bold text-brand-primary text-sm">
                     {chat.guestName.charAt(0)}
                   </div>
                   {chat.unread && (
@@ -123,7 +123,7 @@ export const InboxTab: React.FC = () => {
                   
                   <div className="flex items-center gap-1.5 mt-1">
                     {isEscalated && (
-                      <span className="inline-block px-1 bg-rose-50 border border-rose-105 text-rose-600 text-[8px] font-black rounded uppercase">
+                      <span className="inline-block px-1 bg-rose-50 border border-rose-105 text-rose-600 text-[10px] font-black rounded uppercase">
                         staff
                       </span>
                     )}
@@ -151,7 +151,7 @@ export const InboxTab: React.FC = () => {
             {/* Header */}
             <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-white shadow-xs">
               <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded bg-blue-50 border border-blue-100 flex items-center justify-center font-bold text-[#3872fa] text-base">
+                <div className="w-11 h-11 rounded bg-blue-50 border border-blue-100 flex items-center justify-center font-bold text-brand-primary text-base">
                   {activeChat.guestName.charAt(0)}
                 </div>
                 <div>
@@ -176,13 +176,13 @@ export const InboxTab: React.FC = () => {
                   onClick={toggleEscalation}
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border transition-all cursor-pointer ${
                     activeChat.status === 'escalated'
-                      ? 'bg-blue-50 border-blue-200 text-[#3872fa] hover:bg-blue-100/50'
+                      ? 'bg-blue-50 border-blue-200 text-brand-primary hover:bg-blue-100/50'
                       : 'bg-rose-50 border-rose-200 text-rose-600 hover:bg-rose-100/50'
                   }`}
                 >
                   {activeChat.status === 'escalated' ? (
                     <>
-                      <CheckCircle className="w-3.5 h-3.5 text-[#3872fa]" />
+                      <CheckCircle className="w-3.5 h-3.5 text-brand-primary" />
                       <span>mark resolved (enable ai)</span>
                     </>
                   ) : (
@@ -217,7 +217,7 @@ export const InboxTab: React.FC = () => {
                     className={`flex ${isGuest ? 'justify-start' : 'justify-end'}`}
                   >
                     <div className="max-w-[70%] space-y-1">
-                      <span className="block text-[9px] text-slate-400 font-extrabold px-1 uppercase tracking-wider">
+                      <span className="block text-[11px] text-slate-400 font-extrabold px-1 uppercase tracking-wider">
                         {msg.sender === 'guest' ? 'guest' : msg.sender === 'ai' ? '🤖 ai concierge' : '👤 staff agent'}
                       </span>
                       
@@ -226,12 +226,12 @@ export const InboxTab: React.FC = () => {
                           ? 'bg-white text-slate-800 border-slate-200' 
                           : msg.sender === 'ai'
                             ? 'bg-emerald-50 text-emerald-800 border-emerald-100'
-                            : 'bg-[#3872fa] text-white border-[#3872fa] font-semibold'
+                            : 'bg-brand-primary text-white border-brand-primary font-semibold'
                       }`}>
                         <p>{msg.text}</p>
                       </div>
 
-                      <span className="block text-[9px] text-slate-400 text-right px-1 font-semibold font-mono">
+                      <span className="block text-[11px] text-slate-400 text-right px-1 font-semibold font-mono">
                         {msg.timestamp}
                       </span>
                     </div>
@@ -250,13 +250,13 @@ export const InboxTab: React.FC = () => {
                     ? "type message to reply as human staff..."
                     : "type message (sending now will automatically override AI)..."
                 }
-                className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 focus:border-[#3872fa] rounded-xl focus:outline-none transition-all text-slate-800 text-xs font-semibold placeholder:text-slate-450"
+                className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 focus:border-brand-primary rounded-xl focus:outline-none transition-all text-slate-800 text-xs font-semibold placeholder:text-slate-450"
                 value={inputMessage}
                 onChange={e => setInputMessage(e.target.value)}
               />
               <button
                 type="submit"
-                className="px-4 py-2 bg-[#3872fa] hover:bg-[#1e5ade] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-md cursor-pointer"
+                className="px-4 py-2 bg-brand-primary hover:bg-brand-hover text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-md cursor-pointer"
               >
                 <Send className="w-4 h-4" />
                 <span>send</span>

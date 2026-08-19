@@ -184,11 +184,11 @@ export const Onboarding: React.FC = () => {
               {[1, 2, 3, 4, 5, 6].map((num) => (
                 <div key={num} className="flex flex-col items-center gap-2">
                   <div 
-                    className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all border ${
+                    className={`w-9 h-9 rounded-full flex items-center justify-center text-[13px] font-bold transition-all border ${
                       step === num 
-                        ? 'bg-[#3872fa] text-black border-[#3872fa] shadow-md shadow-emerald-500/20 scale-105' 
+                        ? 'bg-brand-primary text-black border-brand-primary shadow-md shadow-emerald-500/20 scale-105' 
                         : step > num
-                          ? 'bg-blue-50 text-[#3872fa] border-emerald-800'
+                          ? 'bg-blue-50 text-brand-primary border-emerald-800'
                           : 'bg-white text-slate-400 border-slate-100'
                     }`}
                   >
@@ -198,7 +198,7 @@ export const Onboarding: React.FC = () => {
               ))}
             </div>
             <div className="text-center mt-6 space-y-1">
-              <h3 className="text-xs uppercase tracking-widest font-extrabold text-[#3872fa]">
+              <h3 className="text-xs uppercase tracking-widest font-extrabold text-brand-primary">
                 {step === 1 && 'Step 1: Account details'}
                 {step === 2 && 'Step 2: Business details'}
                 {step === 3 && 'Step 3: Hotel settings'}
@@ -223,33 +223,33 @@ export const Onboarding: React.FC = () => {
           <div className="space-y-6">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Full Name</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Full Name</label>
                 <input 
                   type="text" 
                   placeholder="e.g. Rahul Sharma" 
                   value={userName} 
                   onChange={e => setUserName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Email Address</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Email Address</label>
                 <input 
                   type="email" 
                   placeholder="e.g. rahul@sharma.com" 
                   value={userEmail} 
                   onChange={e => setUserEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Secure Password</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Secure Password</label>
                 <input 
                   type="password" 
                   placeholder="••••••••" 
                   value={userPass} 
                   onChange={e => setUserPass(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
             </div>
@@ -257,7 +257,7 @@ export const Onboarding: React.FC = () => {
               <button 
                 onClick={() => setStep(2)}
                 disabled={!userName || !userEmail}
-                className="px-6 py-3 rounded-full bg-[#3872fa] hover:bg-emerald-400 text-[#0b130e] font-bold text-sm disabled:opacity-40 disabled:hover:bg-[#3872fa] transition-all cursor-pointer"
+                className="px-6 py-3 rounded-full bg-brand-primary hover:bg-brand-hover text-white font-bold text-sm disabled:opacity-40 disabled:hover:bg-brand-primary transition-all cursor-pointer"
               >
                 Continue
               </button>
@@ -270,21 +270,21 @@ export const Onboarding: React.FC = () => {
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Hotel Name</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Hotel Name</label>
                 <input 
                   type="text" 
                   placeholder="e.g. Goa Palms Beach Resort" 
                   value={hotelName} 
                   onChange={e => setHotelName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Business Type</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Business Type</label>
                 <select 
                   value={businessType} 
                   onChange={e => setBusinessType(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white"
                 >
                   <option value="Boutique Hotel">Boutique Hotel</option>
                   <option value="Luxury Resort">Luxury Resort</option>
@@ -294,51 +294,51 @@ export const Onboarding: React.FC = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Business Phone</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Business Phone</label>
                 <input 
                   type="text" 
                   placeholder="e.g. +91 98765 00000" 
                   value={phone} 
                   onChange={e => setPhone(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Business Email</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Business Email</label>
                 <input 
                   type="email" 
                   placeholder="e.g. reservations@hotel.com" 
                   value={email} 
                   onChange={e => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Street Address</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Street Address</label>
                 <input 
                   type="text" 
                   placeholder="e.g. Calangute Main Road, near beach" 
                   value={address} 
                   onChange={e => setAddress(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">City</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">City</label>
                 <input 
                   type="text" 
                   placeholder="e.g. Goa" 
                   value={city} 
                   onChange={e => setCity(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Currency</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Currency</label>
                 <select 
                   value={currency} 
                   onChange={e => setCurrency(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white"
                 >
                   <option value="INR">INR (₹)</option>
                   <option value="USD">USD ($)</option>
@@ -349,14 +349,14 @@ export const Onboarding: React.FC = () => {
             <div className="flex justify-between pt-4">
               <button 
                 onClick={() => setStep(1)}
-                className="px-6 py-2.5 rounded-full border border-emerald-900 text-[#3872fa] font-bold text-sm cursor-pointer"
+                className="px-6 py-2.5 rounded-full border border-emerald-900 text-brand-primary font-bold text-sm cursor-pointer"
               >
                 Back
               </button>
               <button 
                 onClick={() => setStep(3)}
                 disabled={!hotelName || !city}
-                className="px-6 py-3 rounded-full bg-[#3872fa] hover:bg-emerald-400 text-[#0b130e] font-bold text-sm disabled:opacity-40 transition-all cursor-pointer"
+                className="px-6 py-3 rounded-full bg-brand-primary hover:bg-brand-hover text-white font-bold text-sm disabled:opacity-40 transition-all cursor-pointer"
               >
                 Continue
               </button>
@@ -369,48 +369,48 @@ export const Onboarding: React.FC = () => {
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Hotel Description</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Hotel Description</label>
                 <textarea 
                   rows={2}
                   placeholder="Summarize your property experience for guests..." 
                   value={description} 
                   onChange={e => setDescription(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Check-In Time</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Check-In Time</label>
                 <input 
                   type="time" 
                   value={checkInTime} 
                   onChange={e => setCheckInTime(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Check-Out Time</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Check-Out Time</label>
                 <input 
                   type="time" 
                   value={checkOutTime} 
                   onChange={e => setCheckOutTime(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Guest Wi-Fi Password</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Guest Wi-Fi Password</label>
                 <input 
                   type="text" 
                   value={wifiPassword} 
                   onChange={e => setWifiPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white" 
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Breakfast Policy</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Breakfast Policy</label>
                 <select 
                   value={breakfastPolicy} 
                   onChange={e => setBreakfastPolicy(e.target.value as any)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-[#3872fa] text-sm bg-white"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white"
                 >
                   <option value="included">Free Breakfast Included</option>
                   <option value="paid">Paid Breakfast Available</option>
@@ -420,7 +420,7 @@ export const Onboarding: React.FC = () => {
 
               {/* Amenities Manager */}
               <div className="md:col-span-2 space-y-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa]">General Amenities</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary">General Amenities</label>
                 <div className="flex gap-2">
                   <input 
                     type="text" 
@@ -431,23 +431,23 @@ export const Onboarding: React.FC = () => {
                   />
                   <button 
                     onClick={addAmenity} 
-                    className="px-4 py-2 bg-blue-50 text-[#3872fa] rounded-lg hover:bg-emerald-900 text-xs font-bold"
+                    className="px-4 py-2 bg-blue-50 text-brand-primary rounded-lg hover:bg-emerald-900 text-xs font-bold"
                   >
                     Add
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2 pt-2">
                   {amenities.map((a, i) => (
-                    <span key={i} className="px-3 py-1 rounded-full bg-blue-50 text-[#3872fa] border border-slate-200 text-xs flex items-center gap-1.5">
+                    <span key={i} className="px-3 py-1 rounded-full bg-blue-50 text-brand-primary border border-slate-200 text-xs flex items-center gap-1.5">
                       {a}
-                      <button onClick={() => removeAmenity(i)} className="text-[#3872fa] hover:text-red-400">×</button>
+                      <button onClick={() => removeAmenity(i)} className="text-brand-primary hover:text-red-400">×</button>
                     </span>
                   ))}
                 </div>
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-1.5">Hotel Image (Optional)</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Hotel Image (Optional)</label>
                 
                 {logoUrl && (
                   <div className="relative group w-full h-40 border border-slate-200 rounded-xl overflow-hidden shadow-lg bg-slate-50 mb-3">
@@ -493,8 +493,8 @@ export const Onboarding: React.FC = () => {
                   onClick={() => fileInputRef.current?.click()}
                   className={`w-full py-6 px-4 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
                     dragOver 
-                      ? 'border-[#3872fa] bg-blue-50' 
-                      : 'border-slate-200 hover:border-[#3872fa] bg-slate-50 hover:bg-blue-50/5'
+                      ? 'border-brand-primary bg-blue-50' 
+                      : 'border-slate-200 hover:border-brand-primary bg-slate-50 hover:bg-blue-50/5'
                   }`}
                 >
                   <input
@@ -517,7 +517,7 @@ export const Onboarding: React.FC = () => {
                     accept="image/*"
                     className="hidden"
                   />
-                  <Upload className="w-6 h-6 text-[#3872fa] mb-2" />
+                  <Upload className="w-6 h-6 text-brand-primary mb-2" />
                   <span className="text-xs font-bold text-slate-500 leading-none">
                     {dragOver ? 'Drop hotel image here' : 'Drop hotel image, or click to browse'}
                   </span>
@@ -529,13 +529,13 @@ export const Onboarding: React.FC = () => {
             <div className="flex justify-between pt-4">
               <button 
                 onClick={() => setStep(2)}
-                className="px-6 py-2.5 rounded-full border border-emerald-900 text-[#3872fa] font-bold text-sm cursor-pointer"
+                className="px-6 py-2.5 rounded-full border border-emerald-900 text-brand-primary font-bold text-sm cursor-pointer"
               >
                 Back
               </button>
               <button 
                 onClick={() => setStep(4)}
-                className="px-6 py-3 rounded-full bg-[#3872fa] hover:bg-emerald-400 text-[#0b130e] font-bold text-sm transition-all cursor-pointer"
+                className="px-6 py-3 rounded-full bg-brand-primary hover:bg-brand-hover text-white font-bold text-sm transition-all cursor-pointer"
               >
                 Continue
               </button>
@@ -549,12 +549,12 @@ export const Onboarding: React.FC = () => {
             
             {/* Room type list */}
             <div className="space-y-3">
-              <span className="block text-xs font-bold uppercase tracking-wider text-[#3872fa]">Current Room inventory</span>
+              <span className="block text-xs font-bold uppercase tracking-wider text-brand-primary">Current Room inventory</span>
               {rooms.map((rm, idx) => (
                 <div key={idx} className="flex justify-between items-center p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs">
                   <div>
                     <span className="block font-bold text-slate-800 text-sm">{rm.name}</span>
-                    <span className="block text-[#3872fa]/80 font-semibold mt-1">
+                    <span className="block text-brand-primary/80 font-semibold mt-1">
                       {rm.type} • {rm.maxGuests} Guests max • {currency === 'INR' ? '₹' : '$'}{rm.basePrice}/night • {rm.count} Rooms available
                     </span>
                     <span className="block text-slate-500 mt-1 italic">
@@ -579,7 +579,7 @@ export const Onboarding: React.FC = () => {
               </span>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#3872fa] mb-1">Room Name</label>
+                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Room Name</label>
                   <input 
                     type="text" 
                     placeholder="e.g. Sea View Deluxe Suite" 
@@ -589,7 +589,7 @@ export const Onboarding: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#3872fa] mb-1">Room Type</label>
+                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Room Type</label>
                   <select 
                     value={roomType} 
                     onChange={e => setRoomType(e.target.value)}
@@ -602,7 +602,7 @@ export const Onboarding: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#3872fa] mb-1">Max Guests</label>
+                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Max Guests</label>
                   <input 
                     type="number" 
                     value={roomGuests} 
@@ -611,7 +611,7 @@ export const Onboarding: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#3872fa] mb-1">Price per Night</label>
+                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Price per Night</label>
                   <input 
                     type="number" 
                     value={roomPrice} 
@@ -620,7 +620,7 @@ export const Onboarding: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#3872fa] mb-1">Number of Rooms</label>
+                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Number of Rooms</label>
                   <input 
                     type="number" 
                     value={roomCount} 
@@ -629,7 +629,7 @@ export const Onboarding: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-[#3872fa] mb-1">Amenities (comma separated)</label>
+                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Amenities (comma separated)</label>
                   <input 
                     type="text" 
                     placeholder="King Bed, Balcony, Wi-Fi" 
@@ -641,7 +641,7 @@ export const Onboarding: React.FC = () => {
               </div>
               <button 
                 onClick={addRoomType}
-                className="w-full py-2 bg-blue-50 hover:bg-emerald-900 text-[#3872fa] font-bold text-xs rounded border border-emerald-800 transition-colors"
+                className="w-full py-2 bg-blue-50 hover:bg-emerald-900 text-brand-primary font-bold text-xs rounded border border-emerald-800 transition-colors"
               >
                 Add Room Category to Setup
               </button>
@@ -650,14 +650,14 @@ export const Onboarding: React.FC = () => {
             <div className="flex justify-between pt-4">
               <button 
                 onClick={() => setStep(3)}
-                className="px-6 py-2.5 rounded-full border border-emerald-900 text-[#3872fa] font-bold text-sm cursor-pointer"
+                className="px-6 py-2.5 rounded-full border border-emerald-900 text-brand-primary font-bold text-sm cursor-pointer"
               >
                 Back
               </button>
               <button 
                 onClick={() => setStep(5)}
                 disabled={rooms.length === 0}
-                className="px-6 py-3 rounded-full bg-[#3872fa] hover:bg-emerald-400 text-[#0b130e] font-bold text-sm disabled:opacity-40 transition-all cursor-pointer"
+                className="px-6 py-3 rounded-full bg-brand-primary hover:bg-brand-hover text-white font-bold text-sm disabled:opacity-40 transition-all cursor-pointer"
               >
                 Continue
               </button>
@@ -672,7 +672,7 @@ export const Onboarding: React.FC = () => {
               
               {/* Primary Color Picker */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-2">Primary Accent Color</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">Primary Accent Color</label>
                 <div className="grid grid-cols-6 gap-2">
                   {colors.map((c, i) => (
                     <button
@@ -691,12 +691,12 @@ export const Onboarding: React.FC = () => {
 
               {/* Font Selection */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-2">Typography Font style</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">Typography Font style</label>
                 <div className="grid grid-cols-3 gap-3">
                   <button
                     onClick={() => setFontFamily('outfit')}
                     className={`p-4 rounded-xl border text-center transition-all ${
-                      fontFamily === 'outfit' ? 'bg-blue-50 border-[#3872fa]' : 'bg-slate-50 border-slate-200'
+                      fontFamily === 'outfit' ? 'bg-blue-50 border-brand-primary' : 'bg-slate-50 border-slate-200'
                     }`}
                   >
                     <span className="block font-bold text-sm font-outfit">Outfit</span>
@@ -705,7 +705,7 @@ export const Onboarding: React.FC = () => {
                   <button
                     onClick={() => setFontFamily('sans')}
                     className={`p-4 rounded-xl border text-center transition-all ${
-                      fontFamily === 'sans' ? 'bg-blue-50 border-[#3872fa]' : 'bg-slate-50 border-slate-200'
+                      fontFamily === 'sans' ? 'bg-blue-50 border-brand-primary' : 'bg-slate-50 border-slate-200'
                     }`}
                   >
                     <span className="block font-bold text-sm font-sans">Jakarta Sans</span>
@@ -714,7 +714,7 @@ export const Onboarding: React.FC = () => {
                   <button
                     onClick={() => setFontFamily('serif')}
                     className={`p-4 rounded-xl border text-center transition-all ${
-                      fontFamily === 'serif' ? 'bg-blue-50 border-[#3872fa]' : 'bg-slate-50 border-slate-200'
+                      fontFamily === 'serif' ? 'bg-blue-50 border-brand-primary' : 'bg-slate-50 border-slate-200'
                     }`}
                   >
                     <span className="block font-bold text-sm font-serif">Playfair styled</span>
@@ -725,12 +725,12 @@ export const Onboarding: React.FC = () => {
 
               {/* Button Style */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#3872fa] mb-2">Button Shape Style</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">Button Shape Style</label>
                 <div className="grid grid-cols-3 gap-3">
                   <button
                     onClick={() => setButtonStyle('rounded-full')}
                     className={`py-3 rounded-full border text-xs font-bold text-center transition-all ${
-                      buttonStyle === 'rounded-full' ? 'bg-blue-50 border-[#3872fa]' : 'bg-slate-50 border-slate-200'
+                      buttonStyle === 'rounded-full' ? 'bg-blue-50 border-brand-primary' : 'bg-slate-50 border-slate-200'
                     }`}
                   >
                     Pill Shape
@@ -738,7 +738,7 @@ export const Onboarding: React.FC = () => {
                   <button
                     onClick={() => setButtonStyle('rounded-md')}
                     className={`py-3 rounded-md border text-xs font-bold text-center transition-all ${
-                      buttonStyle === 'rounded-md' ? 'bg-blue-50 border-[#3872fa]' : 'bg-slate-50 border-slate-200'
+                      buttonStyle === 'rounded-md' ? 'bg-blue-50 border-brand-primary' : 'bg-slate-50 border-slate-200'
                     }`}
                   >
                     Rounded Box
@@ -746,7 +746,7 @@ export const Onboarding: React.FC = () => {
                   <button
                     onClick={() => setButtonStyle('square')}
                     className={`py-3 rounded-none border text-xs font-bold text-center transition-all ${
-                      buttonStyle === 'square' ? 'bg-blue-50 border-[#3872fa]' : 'bg-slate-50 border-slate-200'
+                      buttonStyle === 'square' ? 'bg-blue-50 border-brand-primary' : 'bg-slate-50 border-slate-200'
                     }`}
                   >
                     Sharp Square
@@ -758,13 +758,13 @@ export const Onboarding: React.FC = () => {
             <div className="flex justify-between pt-4">
               <button 
                 onClick={() => setStep(4)}
-                className="px-6 py-2.5 rounded-full border border-emerald-900 text-[#3872fa] font-bold text-sm cursor-pointer"
+                className="px-6 py-2.5 rounded-full border border-emerald-900 text-brand-primary font-bold text-sm cursor-pointer"
               >
                 Back
               </button>
               <button 
                 onClick={() => setStep(6)}
-                className="px-6 py-3 rounded-full bg-[#3872fa] hover:bg-emerald-400 text-[#0b130e] font-bold text-sm transition-all cursor-pointer"
+                className="px-6 py-3 rounded-full bg-brand-primary hover:bg-brand-hover text-white font-bold text-sm transition-all cursor-pointer"
               >
                 Continue
               </button>
@@ -786,7 +786,7 @@ export const Onboarding: React.FC = () => {
                   key={tmpl.id}
                   onClick={() => setTemplate(tmpl.id as any)}
                   className={`p-6 rounded-xl border text-left flex flex-col justify-between h-40 transition-all ${
-                    template === tmpl.id ? 'bg-blue-50 border-[#3872fa] shadow-lg shadow-blue-500/10' : 'bg-slate-50 border-slate-200'
+                    template === tmpl.id ? 'bg-blue-50 border-brand-primary shadow-lg shadow-blue-500/10' : 'bg-slate-50 border-slate-200'
                   }`}
                 >
                   <div>
@@ -794,8 +794,8 @@ export const Onboarding: React.FC = () => {
                     <span className="block text-xs text-slate-500 mt-2 leading-relaxed">{tmpl.desc}</span>
                   </div>
                   <div className="flex justify-between items-center w-full mt-4">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#3872fa]">Choose Template</span>
-                    {template === tmpl.id && <CheckCircle className="w-4.5 h-4.5 text-[#3872fa]" />}
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">Choose Template</span>
+                    {template === tmpl.id && <CheckCircle className="w-4.5 h-4.5 text-brand-primary" />}
                   </div>
                 </button>
               ))}
@@ -811,13 +811,13 @@ export const Onboarding: React.FC = () => {
             <div className="flex justify-between pt-4">
               <button 
                 onClick={() => setStep(5)}
-                className="px-6 py-2.5 rounded-full border border-emerald-900 text-[#3872fa] font-bold text-sm cursor-pointer"
+                className="px-6 py-2.5 rounded-full border border-emerald-900 text-brand-primary font-bold text-sm cursor-pointer"
               >
                 Back
               </button>
               <button 
                 onClick={handleLaunch}
-                className="px-8 py-3 rounded-full bg-gradient-to-r from-[#3872fa] to-[#6366f1] text-black font-extrabold text-sm transition-all cursor-pointer shadow-lg shadow-blue-500/10"
+                className="px-8 py-3 rounded-full bg-gradient-to-r from-brand-primary to-[#6366f1] text-black font-extrabold text-sm transition-all cursor-pointer shadow-lg shadow-blue-500/10"
               >
                 Launch Platform
               </button>
@@ -828,7 +828,7 @@ export const Onboarding: React.FC = () => {
         {/* STEP 7: Launch Screen */}
         {step === 7 && (
           <div className="text-center py-10 space-y-8">
-            <div className="w-16 h-16 bg-[#3872fa]/10 border border-[#3872fa] text-[#3872fa] rounded-full flex items-center justify-center mx-auto shadow-lg shadow-blue-500/10">
+            <div className="w-16 h-16 bg-brand-primary/10 border border-brand-primary text-brand-primary rounded-full flex items-center justify-center mx-auto shadow-lg shadow-blue-500/10">
               <Rocket className="w-8 h-8" />
             </div>
 
@@ -837,7 +837,7 @@ export const Onboarding: React.FC = () => {
               <p className="text-slate-500 text-sm max-w-md mx-auto">
                 We've established your isolated organization tenant and generated your storefront layout at:
               </p>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 text-[#3872fa] text-xs font-bold font-mono">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 text-brand-primary text-xs font-bold font-mono">
                 /site/{registeredSubdomain}
               </div>
             </div>
@@ -849,12 +849,12 @@ export const Onboarding: React.FC = () => {
                 rel="noreferrer"
                 className="px-6 py-3.5 rounded-full border border-emerald-800 hover:bg-emerald-900/20 text-slate-800 font-bold text-xs flex items-center justify-center gap-2"
               >
-                <Eye className="w-4 h-4 text-[#3872fa]" />
+                <Eye className="w-4 h-4 text-brand-primary" />
                 View Website
               </a>
               <button 
                 onClick={handleFinalize}
-                className="px-6 py-3.5 rounded-full bg-gradient-to-r from-[#3872fa] to-[#6366f1] text-black font-extrabold text-xs shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                className="px-6 py-3.5 rounded-full bg-gradient-to-r from-brand-primary to-[#6366f1] text-black font-extrabold text-xs shadow-lg flex items-center justify-center gap-2 cursor-pointer"
               >
                 Go to Dashboard
               </button>
