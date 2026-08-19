@@ -405,10 +405,10 @@ export const BookingsTab: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs font-semibold text-text-primary">
+            <form onSubmit={handleSubmit} className="space-y-4 text-sm font-semibold text-text-primary">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Guest Full Name</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Guest Full Name</label>
                   <input
                     type="text"
                     required
@@ -418,7 +418,7 @@ export const BookingsTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Guest Email or Phone</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Guest Email or Phone</label>
                   <input
                     type="text"
                     required
@@ -429,7 +429,7 @@ export const BookingsTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Room Category</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Room Category</label>
                   <select
                     value={roomType}
                     onChange={e => setRoomType(e.target.value)}
@@ -441,7 +441,7 @@ export const BookingsTab: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Room Number Alloc</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Room Number Alloc</label>
                   <input
                     type="text"
                     required
@@ -451,7 +451,7 @@ export const BookingsTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Check-in Date</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Check-in Date</label>
                   <input
                     type="date"
                     required
@@ -461,7 +461,7 @@ export const BookingsTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Check-out Date</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Check-out Date</label>
                   <input
                     type="date"
                     required
@@ -471,7 +471,7 @@ export const BookingsTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Total Guests Count</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Total Guests Count</label>
                   <input
                     type="number"
                     min={1}
@@ -481,7 +481,7 @@ export const BookingsTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Price Paid ({currencySymbol})</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Price Paid ({currencySymbol})</label>
                   <input
                     type="number"
                     min={0}
@@ -491,7 +491,7 @@ export const BookingsTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Reservation Status</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Reservation Status</label>
                   <select
                     value={status}
                     onChange={e => setStatus(e.target.value as any)}
@@ -505,7 +505,7 @@ export const BookingsTab: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Payment Status</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Payment Status</label>
                   <select
                     value={paymentStatus}
                     onChange={e => setPaymentStatus(e.target.value as any)}
@@ -519,7 +519,7 @@ export const BookingsTab: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Reservation Details & Notes</label>
+                <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Reservation Details & Notes</label>
                 <textarea
                   rows={2}
                   value={notes}

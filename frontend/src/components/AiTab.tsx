@@ -132,7 +132,7 @@ export const AiTab: React.FC = () => {
             
             {/* Conversation list sidebar */}
             <div className="w-72 bg-white border border-border-subtle rounded-2xl flex flex-col overflow-hidden shadow-sm shrink-0">
-              <span className="block text-[10px] uppercase font-bold text-text-secondary tracking-widest border-b border-border-subtle px-4 py-3 bg-bg-page">
+              <span className="block text-[11px] uppercase font-bold text-text-secondary tracking-widest border-b border-border-subtle px-4 py-3 bg-bg-page">
                 Ongoing Chats
               </span>
               <div className="flex-1 overflow-y-auto divide-y divide-border-subtle/60">

@@ -13,9 +13,8 @@
   --text-lg: 1.1875rem; /* 19px */
   --text-lg--line-height: 1.75rem; /* 28px */
 
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-outfit: "Lexend", system-ui, -apple-system, sans-serif;
-  --font-lexend: "Lexend", system-ui, -apple-system, sans-serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-outfit: "Outfit", system-ui, -apple-system, sans-serif;
   --font-serif: "Playfair Display", Georgia, serif;
   
   /* Electric Blue & Slate Light Theme Colors */
@@ -37,7 +36,7 @@
 }
 
 body {
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   background-color: #f8fafc;
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
@@ -46,12 +45,12 @@ body {
 
 /* Ensure inputs, buttons, and select dropdowns inherit the font but use local backgrounds */
 input, select, textarea, button {
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
 
 /* Modern clean heading styles */
 h1, h2, h3, h4 {
-  font-family: "Lexend", sans-serif;
+  font-family: "Outfit", sans-serif;
   font-weight: 600;
   letter-spacing: -0.015em;
   color: #0f172a;

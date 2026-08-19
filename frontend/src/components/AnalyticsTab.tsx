@@ -113,7 +113,7 @@ export const AnalyticsTab: React.FC = () => {
         ].map((m, i) => (
           <div key={i} className="bg-white border border-border-subtle rounded-2xl p-5 shadow-xs flex justify-between items-center">
             <div className="space-y-1">
-              <span className="text-[10px] uppercase font-bold text-text-secondary tracking-wider">{m.label}</span>
+              <span className="text-[11px] uppercase font-bold text-text-secondary tracking-wider">{m.label}</span>
               <h3 className="text-xl font-extrabold text-text-primary font-outfit">{m.val}</h3>
             </div>
             <span className={`p-2 rounded-xl ${m.color}`}>

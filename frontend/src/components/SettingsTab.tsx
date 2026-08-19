@@ -118,7 +118,7 @@ export const SettingsTab: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4.5">
             <div>
-              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Hotel Name</label>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Hotel Name</label>
               <input 
                 type="text" 
                 value={name} 
@@ -128,7 +128,7 @@ export const SettingsTab: React.FC = () => {
             </div>
             
             <div>
-              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Guest Wi-Fi Password</label>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Guest Wi-Fi Password</label>
               <input 
                 type="text" 
                 value={wifiPassword} 
@@ -138,7 +138,7 @@ export const SettingsTab: React.FC = () => {
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Street Address</label>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Street Address</label>
               <input 
                 type="text" 
                 value={address} 
@@ -148,7 +148,7 @@ export const SettingsTab: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">City</label>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">City</label>
               <input 
                 type="text" 
                 value={city} 
@@ -158,7 +158,7 @@ export const SettingsTab: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Country</label>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Country</label>
               <input 
                 type="text" 
                 value={country} 
@@ -168,7 +168,7 @@ export const SettingsTab: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Contact Phone</label>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Contact Phone</label>
               <input 
                 type="text" 
                 value={phone} 
@@ -178,7 +178,7 @@ export const SettingsTab: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Contact Email</label>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Contact Email</label>
               <input 
                 type="email" 
                 value={email} 
@@ -188,7 +188,7 @@ export const SettingsTab: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Check-in time</label>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Check-in time</label>
               <input 
                 type="time" 
                 value={checkInTime} 
@@ -198,7 +198,7 @@ export const SettingsTab: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Checkout deadline</label>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Checkout deadline</label>
               <input 
                 type="time" 
                 value={checkOutTime} 
@@ -218,7 +218,7 @@ export const SettingsTab: React.FC = () => {
 
           <div className="grid grid-cols-1 gap-4.5">
             <div>
-              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Breakfast Policy</label>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Breakfast Policy</label>
               <select 
                 value={breakfastPolicy} 
                 onChange={e => setBreakfastPolicy(e.target.value as any)}
@@ -231,7 +231,7 @@ export const SettingsTab: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1.5">Cancellation Policy</label>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Cancellation Policy</label>
               <textarea 
                 rows={3}
                 value={cancellationPolicy} 

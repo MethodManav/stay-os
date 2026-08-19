@@ -205,10 +205,10 @@ export const RoomsTab: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs font-semibold text-text-primary">
+            <form onSubmit={handleSubmit} className="space-y-4 text-sm font-semibold text-text-primary">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Room Category Name</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Room Category Name</label>
                   <input
                     type="text"
                     required
@@ -219,7 +219,7 @@ export const RoomsTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Room Type Class</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Room Type Class</label>
                   <select
                     value={type}
                     onChange={e => setType(e.target.value)}
@@ -232,7 +232,7 @@ export const RoomsTab: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Max Guests Limit</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Max Guests Limit</label>
                   <input
                     type="number"
                     min={1}
@@ -242,7 +242,7 @@ export const RoomsTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Base Price / Night ({currencySymbol})</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Base Price / Night ({currencySymbol})</label>
                   <input
                     type="number"
                     min={0}
@@ -252,7 +252,7 @@ export const RoomsTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Total Rooms Count</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Total Rooms Count</label>
                   <input
                     type="number"
                     min={1}
@@ -262,7 +262,7 @@ export const RoomsTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Current State Status</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Current State Status</label>
                   <select
                     value={status}
                     onChange={e => setStatus(e.target.value as any)}
@@ -276,7 +276,7 @@ export const RoomsTab: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Room Cover Image URL</label>
+                <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Room Cover Image URL</label>
                 <input
                   type="text"
                   value={image}
@@ -287,7 +287,7 @@ export const RoomsTab: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Amenities List (comma separated)</label>
+                <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Amenities List (comma separated)</label>
                 <input
                   type="text"
                   value={amenitiesText}

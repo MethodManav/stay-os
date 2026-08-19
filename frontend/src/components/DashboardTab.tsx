@@ -75,7 +75,7 @@ export const DashboardTab: React.FC = () => {
         {/* Today's Revenue */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-2 flex flex-col justify-between">
           <div className="flex justify-between items-start">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Today's Revenue</span>
+            <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider">Today's Revenue</span>
             <span className="px-2 py-0.5 rounded text-[10px] font-extrabold text-[#22c55e] bg-emerald-50 flex items-center gap-0.5">
               14.5%
               <TrendingUp className="w-2.5 h-2.5" />
@@ -92,7 +92,7 @@ export const DashboardTab: React.FC = () => {
         {/* Room Occupancy */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-2 flex flex-col justify-between">
           <div className="flex justify-between items-start">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Occupancy</span>
+            <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider">Occupancy</span>
             <span className="px-2 py-0.5 rounded text-[10px] font-extrabold text-[#22c55e] bg-emerald-50 flex items-center gap-0.5">
               3.2%
               <TrendingUp className="w-2.5 h-2.5" />
@@ -109,7 +109,7 @@ export const DashboardTab: React.FC = () => {
         {/* Check-ins */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-2 flex flex-col justify-between">
           <div className="flex justify-between items-start">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Check-ins</span>
+            <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider">Check-ins</span>
             <span className="px-2 py-0.5 rounded text-[10px] font-extrabold text-[#f97316] bg-orange-55/70 flex items-center gap-0.5">
               12.0%
               <TrendingUp className="w-2.5 h-2.5" />
@@ -126,7 +126,7 @@ export const DashboardTab: React.FC = () => {
         {/* Check-outs */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-2 flex flex-col justify-between">
           <div className="flex justify-between items-start">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Check-outs</span>
+            <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider">Check-outs</span>
             <span className="px-2 py-0.5 rounded text-[10px] font-extrabold text-[#f97316] bg-orange-55/70 flex items-center gap-0.5">
               8.3%
               <TrendingUp className="w-2.5 h-2.5" />
@@ -143,7 +143,7 @@ export const DashboardTab: React.FC = () => {
         {/* Active Bookings */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-2 flex flex-col justify-between">
           <div className="flex justify-between items-start">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Active Bookings</span>
+            <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider">Active Bookings</span>
             <span className="px-2 py-0.5 rounded text-[10px] font-extrabold text-[#22c55e] bg-emerald-50 flex items-center gap-0.5">
               25.2%
               <TrendingUp className="w-2.5 h-2.5" />

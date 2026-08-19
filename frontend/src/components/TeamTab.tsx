@@ -169,9 +169,9 @@ export const TeamTab: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs font-semibold text-text-primary">
+            <form onSubmit={handleSubmit} className="space-y-4 text-sm font-semibold text-text-primary">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Full Name</label>
+                <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Full Name</label>
                 <input
                   type="text"
                   required
@@ -183,7 +183,7 @@ export const TeamTab: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Email Address</label>
+                <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Email Address</label>
                 <input
                   type="email"
                   required
@@ -195,7 +195,7 @@ export const TeamTab: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Access Role Permission</label>
+                <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Access Role Permission</label>
                 <select
                   value={role}
                   onChange={e => setRole(e.target.value as any)}

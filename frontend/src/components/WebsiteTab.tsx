@@ -206,7 +206,7 @@ export const WebsiteTab: React.FC = () => {
             {/* Sections Sub-Tab */}
             {activeTab === 'sections' && (
               <div className="space-y-3">
-                <span className="block text-[10px] uppercase font-bold text-text-secondary tracking-widest border-b border-border-subtle pb-1.5 mb-2">Section Layout Order</span>
+                <span className="block text-[11px] uppercase font-bold text-text-secondary tracking-widest border-b border-border-subtle pb-1.5 mb-2">Section Layout Order</span>
                 {website.sections.map((sec, idx) => {
                   const isExpanded = expandedSection === sec.id;
                   return (
@@ -291,7 +291,7 @@ export const WebsiteTab: React.FC = () => {
                 
                 {/* Accent Palette Picker */}
                 <div className="space-y-2">
-                  <span className="block text-[10px] uppercase font-bold text-text-secondary">Accent Brand Colors</span>
+                  <span className="block text-[11px] uppercase font-bold text-text-secondary">Accent Brand Colors</span>
                   <div className="grid grid-cols-2 gap-2">
                     {colors.map(col => (
                       <button
@@ -310,7 +310,7 @@ export const WebsiteTab: React.FC = () => {
 
                 {/* Font selection */}
                 <div className="space-y-2">
-                  <span className="block text-[10px] uppercase font-bold text-text-secondary">Font Typography Family</span>
+                  <span className="block text-[11px] uppercase font-bold text-text-secondary">Font Typography Family</span>
                   <div className="grid grid-cols-1 gap-2">
                     {(['outfit', 'sans', 'serif'] as const).map(fontVal => (
                       <button
@@ -331,7 +331,7 @@ export const WebsiteTab: React.FC = () => {
 
                 {/* Button Style selector */}
                 <div className="space-y-2">
-                  <span className="block text-[10px] uppercase font-bold text-text-secondary">Button Border Style</span>
+                  <span className="block text-[11px] uppercase font-bold text-text-secondary">Button Border Style</span>
                   <div className="grid grid-cols-3 gap-2">
                     {(['rounded-full', 'rounded-md', 'square'] as const).map(btnVal => (
                       <button
@@ -354,7 +354,7 @@ export const WebsiteTab: React.FC = () => {
             {/* Templates Sub-Tab */}
             {activeTab === 'templates' && (
               <div className="space-y-3">
-                <span className="block text-[10px] uppercase font-bold text-text-secondary tracking-widest border-b border-border-subtle pb-1.5 mb-2">Web Template Selection</span>
+                <span className="block text-[11px] uppercase font-bold text-text-secondary tracking-widest border-b border-border-subtle pb-1.5 mb-2">Web Template Selection</span>
                 {templates.map(tmpl => (
                   <button
                     key={tmpl.id}

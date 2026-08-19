@@ -48,7 +48,7 @@ export const PaymentsTab: React.FC = () => {
         ].map((m, i) => (
           <div key={i} className="bg-white border border-border-subtle rounded-2xl p-5 shadow-xs flex justify-between items-center">
             <div className="space-y-1">
-              <span className="text-[10px] uppercase font-bold text-text-secondary tracking-wider">{m.label}</span>
+              <span className="text-[11px] uppercase font-bold text-text-secondary tracking-wider">{m.label}</span>
               <h3 className="text-xl font-extrabold text-text-primary font-outfit">
                 {currencySymbol}{m.val.toLocaleString()}
               </h3>
@@ -140,7 +140,7 @@ export const PaymentsTab: React.FC = () => {
             <span className="text-[10px] text-text-secondary">Bind credit processing settings</span>
           </div>
 
-          <div className="space-y-4 text-xs font-semibold text-text-primary">
+          <div className="space-y-4 text-sm font-semibold text-text-primary">
             {/* Razorpay Switch */}
             <div className="p-3.5 border border-border-subtle bg-bg-page rounded-xl space-y-2">
               <div className="flex justify-between items-center">

@@ -264,10 +264,10 @@ export const CustomersTab: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs font-semibold text-text-primary">
+            <form onSubmit={handleSubmit} className="space-y-4 text-sm font-semibold text-text-primary">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Guest Full Name</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Guest Full Name</label>
                   <input
                     type="text"
                     required
@@ -278,7 +278,7 @@ export const CustomersTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Email Address</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Email Address</label>
                   <input
                     type="email"
                     value={email}
@@ -288,7 +288,7 @@ export const CustomersTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Phone Number</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Phone Number</label>
                   <input
                     type="text"
                     value={phone}
@@ -298,7 +298,7 @@ export const CustomersTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Last Visit Date</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Last Visit Date</label>
                   <input
                     type="date"
                     value={lastVisit}
@@ -307,7 +307,7 @@ export const CustomersTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Total Bookings Count</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Total Bookings Count</label>
                   <input
                     type="number"
                     min={0}
@@ -317,7 +317,7 @@ export const CustomersTab: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Total Spending ({currencySymbol})</label>
+                  <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Total Spending ({currencySymbol})</label>
                   <input
                     type="number"
                     min={0}
@@ -330,7 +330,7 @@ export const CustomersTab: React.FC = () => {
 
               {/* Tag selector */}
               <div>
-                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-2">Category Badges</label>
+                <label className="block text-[11px] uppercase font-bold text-text-secondary mb-2">Category Badges</label>
                 <div className="flex flex-wrap gap-2">
                   {allAvailableTags.map(tagVal => (
                     <button
@@ -350,7 +350,7 @@ export const CustomersTab: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Special Preferences</label>
+                <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Special Preferences</label>
                 <input
                   type="text"
                   value={preferences}
@@ -361,7 +361,7 @@ export const CustomersTab: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-bold text-text-secondary mb-1">Staff Observation Notes</label>
+                <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Staff Observation Notes</label>
                 <textarea
                   rows={2}
                   value={notes}

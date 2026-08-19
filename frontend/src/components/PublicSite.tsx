@@ -443,7 +443,7 @@ export const PublicSite: React.FC = () => {
         if (sec.type === 'testimonials') {
           return (
             <section key={sec.id} className="py-24 px-6 bg-slate-900 text-white text-center space-y-4">
-              <h2 className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">{sec.title}</h2>
+              <h2 className="text-[11px] uppercase font-bold text-slate-500 tracking-wider">{sec.title}</h2>
               <p className="text-lg sm:text-xl italic max-w-2xl mx-auto leading-relaxed font-medium">
                 "{sec.content.quote}"
               </p>

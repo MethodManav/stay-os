@@ -92,7 +92,7 @@ export const DashboardLayout: React.FC = () => {
           
           {tenantMenuOpen && (
             <div className="absolute left-4 right-4 top-16 bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1.5 max-h-48 overflow-y-auto">
-              <span className="block text-[10px] uppercase font-bold text-slate-400 tracking-widest px-3 py-1 mb-1">Switch Hotel</span>
+              <span className="block text-[11px] uppercase font-bold text-slate-400 tracking-widest px-3 py-1 mb-1">Switch Hotel</span>
               {tenants.map(t => (
                 <button
                   key={t.id}
@@ -281,7 +281,7 @@ export const DashboardLayout: React.FC = () => {
               </div>
 
               <div className="p-4 border-b border-slate-100">
-                <span className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Hotel Profile</span>
+                <span className="block text-[11px] uppercase font-bold text-slate-400 mb-1">Hotel Profile</span>
                 <span className="block text-sm font-bold text-slate-800">{activeTenant?.name}</span>
               </div>
 

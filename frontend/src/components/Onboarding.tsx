@@ -579,7 +579,7 @@ export const Onboarding: React.FC = () => {
               </span>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Room Name</label>
+                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Room Name</label>
                   <input 
                     type="text" 
                     placeholder="e.g. Sea View Deluxe Suite" 
@@ -589,7 +589,7 @@ export const Onboarding: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Room Type</label>
+                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Room Type</label>
                   <select 
                     value={roomType} 
                     onChange={e => setRoomType(e.target.value)}
@@ -602,7 +602,7 @@ export const Onboarding: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Max Guests</label>
+                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Max Guests</label>
                   <input 
                     type="number" 
                     value={roomGuests} 
@@ -611,7 +611,7 @@ export const Onboarding: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Price per Night</label>
+                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Price per Night</label>
                   <input 
                     type="number" 
                     value={roomPrice} 
@@ -620,7 +620,7 @@ export const Onboarding: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Number of Rooms</label>
+                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Number of Rooms</label>
                   <input 
                     type="number" 
                     value={roomCount} 
@@ -629,7 +629,7 @@ export const Onboarding: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-brand-primary mb-1">Amenities (comma separated)</label>
+                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Amenities (comma separated)</label>
                   <input 
                     type="text" 
                     placeholder="King Bed, Balcony, Wi-Fi" 

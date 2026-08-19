@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { 
+import { Loader2 } from 'lucide-react';
+import {
   getTenants,
   type Tenant, 
   type SaaSUser, 
@@ -198,6 +199,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [activeTenant, setActiveTenantState] = useState<Tenant | null>(null);
   const [currentUser, setCurrentUser] = useState<SaaSUser | null>(null);
   const [onboardingCompleted, setOnboardingCompletedState] = useState(false);
+  const [isAuthReady, setIsAuthReady] = useState(false);
 
   const syncState = async () => {
     try {
@@ -283,7 +285,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   useEffect(() => {
-    syncState();
+    syncState().finally(() => setIsAuthReady(true));
   }, []);
 
   const switchTenant = (id: string) => {
@@ -667,6 +669,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     api.clearSession();
     syncState();
   };
+
+  if (!isAuthReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-bg-page">
+        <Loader2 className="w-6 h-6 text-brand-primary animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <AppContext.Provider value={{
