@@ -6,7 +6,8 @@ import {
   Trash2,
   CheckCircle,
   Eye,
-  Upload
+  Upload,
+  AlertCircle
 } from 'lucide-react';
 import type { Room } from '../db';
 
@@ -14,6 +15,7 @@ export const Onboarding: React.FC = () => {
   const { registerNewTenant, triggerOnboardingState } = useApp();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const [error, setError] = useState('');
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -110,37 +112,43 @@ export const Onboarding: React.FC = () => {
     setRooms(rooms.filter((_, i) => i !== index));
   };
 
-  const handleLaunch = () => {
-    // Save to context DB
-    const newT = registerNewTenant(
-      hotelName || 'My Boutique Resort',
-      businessType,
-      {
-        address,
-        city,
-        country,
-        currency,
-        timezone,
-        checkInTime,
-        checkOutTime,
-        wifiPassword,
-        breakfastPolicy,
-        description: description || `Welcome to ${hotelName || 'My Boutique Resort'}. Experience pure relaxation.`,
-        phone: phone || '+91 99999 88888',
-        email: email || 'reservations@hotel.com'
-      },
-      {
-        logo: logoUrl || '🏨',
-        primaryColor,
-        secondaryColor,
-        font: fontFamily,
-        buttonStyle
-      },
-      rooms as Room[],
-      template
-    );
-    setRegisteredSubdomain(newT.subdomain);
-    setStep(7);
+  const handleLaunch = async () => {
+    try {
+      setError('');
+      // Save to context DB
+      const newT = await registerNewTenant(
+        { name: userName, email: userEmail, pass: userPass },
+        hotelName || 'My Boutique Resort',
+        businessType,
+        {
+          address,
+          city,
+          country,
+          currency,
+          timezone,
+          checkInTime,
+          checkOutTime,
+          wifiPassword,
+          breakfastPolicy,
+          description: description || `Welcome to ${hotelName || 'My Boutique Resort'}. Experience pure relaxation.`,
+          phone: phone || '+91 99999 88888',
+          email: email || 'reservations@hotel.com'
+        },
+        {
+          logo: logoUrl || '🏨',
+          primaryColor,
+          secondaryColor,
+          font: fontFamily,
+          buttonStyle
+        },
+        rooms as Room[],
+        template
+      );
+      setRegisteredSubdomain(newT.subdomain);
+      setStep(7);
+    } catch (err: any) {
+      setError(err.message || 'Onboarding failed. Please verify your details.');
+    }
   };
 
   const handleFinalize = () => {
@@ -792,6 +800,13 @@ export const Onboarding: React.FC = () => {
                 </button>
               ))}
             </div>
+
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 text-red-650 rounded-xl text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
 
             <div className="flex justify-between pt-4">
               <button 

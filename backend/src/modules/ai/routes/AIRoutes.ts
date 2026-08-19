@@ -36,6 +36,13 @@ export const createAIRouter = (controller: AIController): Router => {
     controller.updateStatus
   );
 
+  // Append a message to conversation thread (Restricted to OWNER, ADMIN, MANAGER, and STAFF)
+  router.post(
+    '/conversations/:id/messages',
+    authorizeRoles('OWNER', 'ADMIN', 'MANAGER', 'STAFF'),
+    controller.addMessage
+  );
+
   // Hook for simulating incoming guest messages
   router.post(
     '/message',

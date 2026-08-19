@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useApp } from '../AppContext';
-import type { Room } from '../db';
+import type { Room, Tenant, TenantBranding, TenantSettings, WebsiteTheme } from '../db';
+import { api } from '../api';
 import { 
   MapPin, 
   Wifi, 
@@ -17,12 +18,74 @@ import {
   ChevronRight
 } from 'lucide-react';
 
+const mapPublicToTenant = (business: any, website: any, roomTypes: any[]): Tenant => {
+  const settings: TenantSettings = {
+    address: business.address || '',
+    city: business.city || '',
+    country: business.country || '',
+    currency: business.currency || 'INR',
+    timezone: business.timezone || 'IST (UTC+5:30)',
+    checkInTime: business.checkInTime || '14:00',
+    checkOutTime: business.checkOutTime || '11:00',
+    wifiPassword: '',
+    breakfastPolicy: 'none',
+    description: business.description || '',
+    cancellationPolicy: 'Standard cancellation policy.',
+    phone: business.phone || '',
+    email: business.email || ''
+  };
+
+  const branding: TenantBranding = {
+    logo: business.logo || '🏨',
+    primaryColor: website?.theme?.primaryColor || '#0f766e',
+    secondaryColor: website?.theme?.secondaryColor || '#0d9488',
+    font: (website?.theme?.font || 'outfit') as any,
+    buttonStyle: (website?.theme?.buttonStyle || 'rounded-full') as any
+  };
+
+  const mappedRooms: Room[] = roomTypes.map((rt: any) => ({
+    id: rt.id || rt._id,
+    name: rt.name,
+    type: rt.name,
+    maxGuests: rt.capacity,
+    basePrice: rt.pricePerNight,
+    count: 10,
+    status: 'available',
+    amenities: rt.amenities || [],
+    image: rt.images?.[0] || 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85'
+  }));
+
+  const mappedWebsite: WebsiteTheme = {
+    template: website?.templateId || 'modern',
+    sections: (website?.sections || []).map((s: any) => ({
+      id: s.id,
+      type: s.type,
+      title: s.title,
+      visible: s.visible,
+      content: s.content || {}
+    }))
+  };
+
+  return {
+    id: business.id || business._id || '',
+    subdomain: business.slug || '',
+    name: business.name,
+    branding,
+    settings,
+    rooms: mappedRooms,
+    bookings: [],
+    guests: [],
+    conversations: [],
+    website: mappedWebsite,
+    team: []
+  };
+};
+
 export const PublicSite: React.FC = () => {
   const { subdomain } = useParams<{ subdomain: string }>();
-  const { tenants, addBooking } = useApp();
-  
-  // Find matching tenant
-  const tenant = tenants.find(t => t.subdomain === subdomain) || tenants[0];
+  const [tenant, setTenant] = useState<Tenant | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [errorState, setErrorState] = useState('');
   
   // Navigation
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -43,12 +106,36 @@ export const PublicSite: React.FC = () => {
 
   // AI Assistant Chat Widget
   const [aiChatOpen, setAiChatOpen] = useState(false);
-  const [messages, setMessages] = useState<Array<{ sender: 'guest' | 'ai'; text: string; link?: string }>>([
-    { sender: 'ai', text: `Hello! Welcome to ${tenant?.name || 'our resort'}. I am your AI receptionist. Ask me anything about our room rates, check-in policies, wifi, or request a booking reservation!` }
-  ]);
+  const [messages, setMessages] = useState<Array<{ sender: 'guest' | 'ai'; text: string; link?: string }>>([]);
   const [aiInput, setAiInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const chatBottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const loadTenant = async () => {
+      try {
+        setLoading(true);
+        setErrorState('');
+        const data = await api.getPublicBusiness(subdomain!);
+        const roomTypes = await api.getPublicRooms(subdomain!);
+        
+        const mappedTenant = mapPublicToTenant(data.business, data.website, roomTypes);
+        setTenant(mappedTenant);
+        
+        setMessages([
+          { sender: 'ai', text: `Hello! Welcome to ${mappedTenant.name}. I am your AI receptionist concierge. Ask me anything about our room rates, check-in policies, wifi, or request a booking reservation!` }
+        ]);
+      } catch (err: any) {
+        console.error('Failed to load public tenant profile:', err);
+        setErrorState(err.message || 'Hotel profile not found.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (subdomain) {
+      loadTenant();
+    }
+  }, [subdomain]);
 
   useEffect(() => {
     if (chatBottomRef.current) {
@@ -56,12 +143,23 @@ export const PublicSite: React.FC = () => {
     }
   }, [messages, aiChatOpen]);
 
-  if (!tenant) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center text-center p-6 text-[#1a1a1e]">
+        <div className="space-y-4">
+          <Clock className="w-10 h-10 animate-spin mx-auto text-[#1b4332]" />
+          <h2 className="text-xl font-bold font-outfit">Loading Hotel Portal...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  if (errorState || !tenant) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center text-center p-6 text-[#1a1a1e]">
         <div className="space-y-4">
           <h1 className="text-3xl font-extrabold">404: Hotel Profile Not Found</h1>
-          <p className="text-sm text-slate-500">This property subdomain is not registered on the platform.</p>
+          <p className="text-sm text-slate-500">{errorState || 'This property subdomain is not registered on the platform.'}</p>
           <Link to="/" className="inline-block px-5 py-2.5 bg-emerald-700 text-white rounded-lg font-bold">Go to StayOS home</Link>
         </div>
       </div>
@@ -88,26 +186,32 @@ export const PublicSite: React.FC = () => {
     e.preventDefault();
     if (!selectedRoom) return;
 
-    // Call state provider booking adding trigger
-    const newB = addBooking({
-      guestId: guestEmail || guestPhone,
-      guestName,
-      roomType: selectedRoom.type,
-      roomNumber: `${Math.floor(100 + Math.random() * 200)}`,
-      checkIn,
-      checkOut,
-      status: 'confirmed',
-      amountPaid: totalCost,
-      paymentStatus: 'paid',
-      guestsCount,
-      notes,
-      paymentMethod: 'Razorpay Sandbox'
-    });
+    try {
+      const [firstName, ...rest] = guestName.split(' ');
+      const lastName = rest.join(' ') || 'Guest';
 
-    setBookingSuccess(newB.id);
+      const res = await api.createPublicBooking(subdomain!, {
+        roomTypeId: selectedRoom.id,
+        checkIn,
+        checkOut,
+        numberOfGuests: guestsCount,
+        guestDetails: {
+          firstName,
+          lastName,
+          email: guestEmail,
+          phone: guestPhone,
+          country: 'India'
+        }
+      });
+
+      setBookingSuccess(res.data.bookingId || `B-${Math.floor(1000 + Math.random() * 9000)}`);
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || 'Booking reservation failed. Please check date availability.');
+    }
   };
 
-  const handleAiSend = (e: React.FormEvent) => {
+  const handleAiSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!aiInput.trim()) return;
 
@@ -116,42 +220,41 @@ export const PublicSite: React.FC = () => {
     setAiInput('');
     setIsTyping(true);
 
-    setTimeout(() => {
-      let aiText = `I am happy to assist you at ${tenant.name}. Please contact our front desk at ${tenant.settings.phone} for details.`;
-      
-      const q = userQuery.toLowerCase();
-      
-      // Match query words
-      if (q.includes('wifi') || q.includes('internet')) {
-        aiText = `Our guest Wi-Fi password is '${tenant.settings.wifiPassword || 'stayos_guests'}'. You can connect throughout the lobby and rooms.`;
-      } else if (q.includes('cancellation') || q.includes('cancel')) {
-        aiText = `Our cancellation policy states: ${tenant.settings.cancellationPolicy}`;
-      } else if (q.includes('breakfast')) {
-        aiText = `Breakfast details: Our policy is marked as '${tenant.settings.breakfastPolicy}'. It features continental buffets.`;
-      } else if (q.includes('checkin') || q.includes('check-in') || q.includes('checkout') || q.includes('check-out')) {
-        aiText = `Check-in starts at ${tenant.settings.checkInTime} and Check-out is scheduled at ${tenant.settings.checkOutTime}. Let us know if you require adjustments.`;
-      } else if (q.includes('price') || q.includes('room') || q.includes('rate') || q.includes('cost') || q.includes('deluxe') || q.includes('suite') || q.includes('available')) {
-        const roomDetails = tenant.rooms.map(r => `${r.name} (${currencySymbol}${r.basePrice.toLocaleString()}/night)`).join(', ');
-        aiText = `We currently offer these rooms: ${roomDetails}. Would you like me to book a room for you?`;
-      } else if (q.includes('book') || q.includes('reserve') || q.includes('reservation')) {
-        // Direct integration booking trigger link inside chat!
-        aiText = `I would be delighted to reserve a room for you. Select your room to initiate reservation:`;
-        setIsTyping(false);
-        setMessages(prev => [
-          ...prev, 
-          { sender: 'ai', text: aiText },
-          ...tenant.rooms.map(r => ({
-            sender: 'ai' as const,
-            text: `Book ${r.name} for ${currencySymbol}${r.basePrice}/night`,
-            link: r.id
-          }))
-        ]);
-        return;
+    try {
+      let guestPhoneNum = localStorage.getItem('stayos_guest_phone');
+      if (!guestPhoneNum) {
+        guestPhoneNum = '+91 99' + Math.floor(10000000 + Math.random() * 90000000);
+        localStorage.setItem('stayos_guest_phone', guestPhoneNum);
       }
 
+      const res = await api.sendGuestMessage(guestName || 'Guest User', guestPhoneNum, userQuery);
       setIsTyping(false);
-      setMessages(prev => [...prev, { sender: 'ai', text: aiText }]);
-    }, 1200);
+
+      const allMsgs = res.data.messages || [];
+      const aiReply = allMsgs[allMsgs.length - 1];
+
+      if (aiReply) {
+        const q = userQuery.toLowerCase();
+        if (q.includes('book') || q.includes('reserve') || q.includes('reservation')) {
+          setMessages(prev => [
+            ...prev,
+            { sender: 'ai', text: aiReply.text },
+            ...tenant.rooms.map((r: any) => ({
+              sender: 'ai' as const,
+              text: `Book ${r.name} for ${currencySymbol}${r.basePrice}/night`,
+              link: r.id
+            }))
+          ]);
+        } else {
+          setMessages(prev => [...prev, { sender: 'ai', text: aiReply.text }]);
+        }
+      } else {
+        setMessages(prev => [...prev, { sender: 'ai', text: `I am happy to assist you at ${tenant.name}. Please contact our front desk at ${tenant.settings.phone} for details.` }]);
+      }
+    } catch (err) {
+      setIsTyping(false);
+      setMessages(prev => [...prev, { sender: 'ai', text: 'I am currently having trouble connecting to my concierge brain. Please try again in a few moments.' }]);
+    }
   };
 
   const handleLinkClick = (roomId: string) => {

@@ -97,6 +97,38 @@ export class AIService {
     return conversation;
   }
 
+  public async addMessage(
+    organizationId: string,
+    businessId: string,
+    id: string,
+    sender: 'guest' | 'staff' | 'ai',
+    text: string
+  ): Promise<IConversationDocument> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundError('Conversation not found');
+    }
+
+    const conversation = await ConversationModel.findOne({
+      _id: new Types.ObjectId(id),
+      organizationId: new Types.ObjectId(organizationId),
+      businessId: new Types.ObjectId(businessId)
+    }).exec();
+
+    if (!conversation) {
+      throw new NotFoundError('Conversation not found');
+    }
+
+    conversation.messages.push({
+      sender,
+      text,
+      timestamp: new Date()
+    });
+    conversation.unread = sender === 'guest';
+
+    await conversation.save();
+    return conversation;
+  }
+
   public async updateConversationStatus(
     organizationId: string,
     businessId: string,

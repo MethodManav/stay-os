@@ -54,6 +54,25 @@ export class AIController {
     }
   };
 
+  public addMessage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const orgId = req.organizationId!;
+      const businessId = req.businessId!;
+      const { id } = req.params;
+      const { sender, text } = req.body;
+
+      const conversation = await this.aiService.addMessage(orgId, businessId, id, sender, text);
+
+      res.status(200).json({
+        success: true,
+        data: conversation,
+        message: 'Message added successfully'
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public updateStatus = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const orgId = req.organizationId!;

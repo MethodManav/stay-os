@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useApp } from '../AppContext';
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { api } from '../api';
+
 
 export const LoginSignup: React.FC = () => {
   const { triggerOnboardingState } = useApp();
@@ -12,26 +14,46 @@ export const LoginSignup: React.FC = () => {
   
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       setError('Please fill in all credential fields.');
       return;
     }
     
-    // Auto validate and redirect
-    triggerOnboardingState(true);
-    if (email === 'superadmin@stayos.com') {
-      const superUser = {
-        id: "usr-super",
-        name: "SuperAdmin",
-        email: "superadmin@stayos.com",
-        tenants: []
+    try {
+      setError('');
+      // In case of mock superadmin, bypass or check credentials
+      if (email === 'superadmin@stayos.com' && password === 'password123') {
+        const superUser = {
+          id: "usr-super",
+          name: "SuperAdmin",
+          email: "superadmin@stayos.com",
+          tenants: []
+        };
+        localStorage.setItem("stayos_v1_user", JSON.stringify(superUser));
+        triggerOnboardingState(true);
+        navigate('/admin');
+        return;
+      }
+
+      const data = await api.login({ email, password });
+      
+      const loggedInUser = {
+        id: data.user.id,
+        name: data.user.name,
+        email: data.user.email,
+        tenants: data.user.organizations.map((org: any) => ({
+          tenantId: org.organizationId,
+          role: org.role.toLowerCase()
+        }))
       };
-      localStorage.setItem("stayos_v1_user", JSON.stringify(superUser));
-      navigate('/admin');
-    } else {
+      
+      localStorage.setItem("stayos_v1_user", JSON.stringify(loggedInUser));
+      triggerOnboardingState(true);
       navigate('/app/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'Invalid email or password.');
     }
   };
 
