@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useApp } from '../AppContext';
 import { 
-  IndianRupee, 
-  DollarSign, 
-  CalendarRange, 
-  UserCheck, 
-  UserMinus, 
-  Percent,
   Plus,
   TrendingUp,
-  TrendingDown,
   CircleDot,
   ChevronDown
 } from 'lucide-react';
@@ -17,7 +10,6 @@ import { Link } from 'react-router-dom';
 
 export const DashboardTab: React.FC = () => {
   const { activeTenant } = useApp();
-  const [revenueFilter, setRevenueFilter] = useState<'today' | '7d' | '30d'>('7d');
 
   // Dynamic statistics calculated from bookings list
   const currencySymbol = activeTenant.settings.currency === 'INR' ? '₹' : '$';

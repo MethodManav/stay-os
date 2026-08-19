@@ -1,16 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { 
-  Tenant, 
-  SaaSUser, 
-  Booking, 
-  Guest, 
-  Room, 
-  Message, 
-  Conversation, 
-  WebsiteTheme, 
-  TenantBranding, 
-  TenantSettings, 
-  TeamMember
+import { 
+  getTenants,
+  type Tenant, 
+  type SaaSUser, 
+  type Booking, 
+  type Guest, 
+  type Room, 
+  type Conversation, 
+  type WebsiteTheme, 
+  type TenantBranding, 
+  type TenantSettings, 
+  type TeamMember
 } from './db';
 import { api } from './api';
 
@@ -633,16 +633,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     await syncState();
   };
 
-  const addTeamMember = async (memberData: Omit<TeamMember, 'id'>): Promise<void> => {
+  const addTeamMember = async (_memberData: Omit<TeamMember, 'id'>): Promise<void> => {
     // Backend has no separate team endpoints, mock locally by keeping local updates
     await syncState();
   };
 
-  const updateTeamMember = async (updatedMember: TeamMember): Promise<void> => {
+  const updateTeamMember = async (_updatedMember: TeamMember): Promise<void> => {
     await syncState();
   };
 
-  const deleteTeamMember = async (id: string): Promise<void> => {
+  const deleteTeamMember = async (_id: string): Promise<void> => {
     await syncState();
   };
 

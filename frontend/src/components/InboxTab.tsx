@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, Send, Flag, CheckCircle, Smartphone, AlertTriangle, MessageSquare } from 'lucide-react';
 import { useApp } from '../AppContext';
-import type { Conversation, Message } from '../db';
 
 export const InboxTab: React.FC = () => {
   const { activeTenant, addMessage, updateConversationStatus } = useApp();

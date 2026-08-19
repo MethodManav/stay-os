@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useApp } from '../AppContext';
 import type { Room, Tenant, TenantBranding, TenantSettings, WebsiteTheme } from '../db';
 import { api } from '../api';
 import { 
@@ -102,7 +101,6 @@ export const PublicSite: React.FC = () => {
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
   const [guestsCount, setGuestsCount] = useState(2);
-  const notes = '';
 
   // AI Assistant Chat Widget
   const [aiChatOpen, setAiChatOpen] = useState(false);
@@ -182,7 +180,7 @@ export const PublicSite: React.FC = () => {
     setBookingModalOpen(true);
   };
 
-  const handleCompleteBooking = (e: React.FormEvent) => {
+  const handleCompleteBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedRoom) return;
 
