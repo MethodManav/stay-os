@@ -6,7 +6,7 @@ import { api } from '../api';
 
 
 export const LoginSignup: React.FC = () => {
-  const { triggerOnboardingState } = useApp();
+  const { triggerOnboardingState, syncState } = useApp();
   const [email, setEmail] = useState('admin@admin.com');
   const [password, setPassword] = useState('password123');
   const [showPassword, setShowPassword] = useState(false);
@@ -50,6 +50,7 @@ export const LoginSignup: React.FC = () => {
       };
       
       localStorage.setItem("stayos_v1_user", JSON.stringify(loggedInUser));
+      await syncState();
       triggerOnboardingState(true);
       navigate('/app/dashboard');
     } catch (err: any) {

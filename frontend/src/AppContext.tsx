@@ -159,6 +159,7 @@ interface AppContextType {
   currentUser: SaaSUser | null;
   onboardingCompleted: boolean;
   switchTenant: (id: string) => void;
+  syncState: () => Promise<void>;
   updateActiveTenant: (tenant: Tenant) => void;
   updateAllTenants: (tenants: Tenant[]) => void;
   registerNewTenant: (
@@ -685,6 +686,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       currentUser,
       onboardingCompleted,
       switchTenant,
+      syncState,
       updateActiveTenant,
       updateAllTenants,
       registerNewTenant,
