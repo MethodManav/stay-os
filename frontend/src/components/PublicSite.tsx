@@ -667,8 +667,8 @@ export const PublicSite: React.FC = () => {
                   <Bot className="w-4.5 h-4.5" />
                 </div>
                 <div>
-                  <span className="block text-xs font-bold">AI Receptionist Concierge</span>
-                  <span className="block text-[11px] opacity-85 mt-0.5 leading-none">Answers instantly 24/7</span>
+                  <span className="block text-sm font-bold">AI Receptionist Concierge</span>
+                  <span className="block text-xs opacity-85 mt-0.5 leading-none">Answers instantly 24/7</span>
                 </div>
               </div>
 
@@ -683,7 +683,7 @@ export const PublicSite: React.FC = () => {
                 const isGuest = m.sender === 'guest';
                 return (
                   <div key={i} className={`flex gap-2.5 max-w-[80%] ${isGuest ? 'ml-auto flex-row-reverse text-right' : ''}`}>
-                    <div className={`w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-[10px] shrink-0 shadow-inner ${
+                    <div className={`w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-xs shrink-0 shadow-inner ${
                       isGuest ? 'bg-slate-100 text-slate-800' : 'bg-emerald-950 text-emerald-400'
                     }`}>
                       {isGuest ? 'G' : 'AI'}
@@ -693,13 +693,13 @@ export const PublicSite: React.FC = () => {
                       {m.link ? (
                         <button
                           onClick={() => handleLinkClick(m.link!)}
-                          className="p-2.5 rounded-xl text-[10px] font-bold text-left bg-emerald-100 hover:bg-emerald-600 border border-emerald-250 text-emerald-900 hover:text-white transition-all flex items-center justify-between w-full cursor-pointer"
+                          className="p-2.5 rounded-xl text-xs font-bold text-left bg-emerald-100 hover:bg-emerald-600 border border-emerald-250 text-emerald-900 hover:text-white transition-all flex items-center justify-between w-full cursor-pointer"
                         >
                           <span>{m.text}</span>
                           <ChevronRight className="w-3.5 h-3.5" />
                         </button>
                       ) : (
-                        <div className={`p-2.5 rounded-xl text-[10px] font-semibold leading-relaxed ${
+                        <div className={`p-2.5 rounded-xl text-xs font-normal leading-relaxed ${
                           isGuest ? 'bg-[#1b4332] text-white' : 'bg-white text-slate-700 border border-slate-200'
                         }`} style={{ backgroundColor: isGuest ? primaryColor : undefined }}>
                           {m.text}
@@ -711,10 +711,10 @@ export const PublicSite: React.FC = () => {
               })}
               {isTyping && (
                 <div className="flex gap-2 max-w-[80%]">
-                  <div className="w-7 h-7 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-[10px] shrink-0">
+                  <div className="w-7 h-7 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0">
                     AI
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white border border-slate-200 text-[10px] text-slate-400 italic font-medium flex items-center gap-1">
+                  <div className="p-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-400 italic font-medium flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5 animate-spin" /> Thinking...
                   </div>
                 </div>
