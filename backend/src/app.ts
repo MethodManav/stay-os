@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 import { AppConfig } from './config/AppConfig';
 import { Logger } from './shared/utils/Logger';
 import { ErrorHandler } from './core/errors/ErrorHandler';
@@ -25,6 +26,7 @@ app.use(
 // Payload parsers
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser());
 
 // Wire Morgan HTTP logging to Winston
 const morganMiddleware = morgan(

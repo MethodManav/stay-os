@@ -5,34 +5,11 @@ interface RequestOptions extends RequestInit {
 }
 
 class ApiClient {
-  private accessToken: string | null = null;
   private organizationId: string | null = null;
-  private refreshPromise: Promise<string | null> | null = null;
+  private refreshPromise: Promise<boolean> | null = null;
 
   constructor() {
-    this.accessToken = localStorage.getItem('stayos_access_token');
     this.organizationId = localStorage.getItem('stayos_active_tenant_id');
-  }
-
-  public setAccessToken(token: string | null) {
-    this.accessToken = token;
-    if (token) {
-      localStorage.setItem('stayos_access_token', token);
-    } else {
-      localStorage.removeItem('stayos_access_token');
-    }
-  }
-
-  public setRefreshToken(token: string | null) {
-    if (token) {
-      localStorage.setItem('stayos_refresh_token', token);
-    } else {
-      localStorage.removeItem('stayos_refresh_token');
-    }
-  }
-
-  public getRefreshToken(): string | null {
-    return localStorage.getItem('stayos_refresh_token');
   }
 
   public setOrganizationId(id: string | null) {
@@ -49,21 +26,13 @@ class ApiClient {
   }
 
   public clearSession() {
-    this.setAccessToken(null);
-    this.setRefreshToken(null);
     this.setOrganizationId(null);
     localStorage.removeItem('stayos_v1_user');
     localStorage.removeItem('stayos_v1_onboarding_completed');
   }
-
-  private async refreshAccessTokens(): Promise<string | null> {
+  private async refreshAccessTokens(): Promise<boolean> {
     if (this.refreshPromise) {
       return this.refreshPromise;
-    }
-
-    const refreshToken = this.getRefreshToken();
-    if (!refreshToken) {
-      return null;
     }
 
     this.refreshPromise = (async () => {
@@ -71,7 +40,7 @@ class ApiClient {
         const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ refreshToken })
+          credentials: 'include'
         });
 
         if (!response.ok) {
@@ -79,16 +48,10 @@ class ApiClient {
         }
 
         const json = await response.json();
-        if (json.success && json.data) {
-          const { accessToken, refreshToken: newRefreshToken } = json.data;
-          this.setAccessToken(accessToken);
-          this.setRefreshToken(newRefreshToken);
-          return accessToken;
-        }
-        return null;
+        return json.success;
       } catch (err) {
         this.clearSession();
-        return null;
+        return false;
       } finally {
         this.refreshPromise = null;
       }
@@ -105,31 +68,24 @@ class ApiClient {
       headers['Content-Type'] = 'application/json';
     }
 
-    if (this.accessToken) {
-      headers['Authorization'] = `Bearer ${this.accessToken}`;
-    }
-
     if (this.organizationId) {
       headers['x-organization-id'] = this.organizationId;
     }
 
     const finalOptions: RequestInit = {
       ...options,
-      headers
+      headers,
+      credentials: 'include'
     };
 
     let response = await fetch(url, finalOptions);
 
     // Auto-refresh on 401 Unauthorized
-    if (response.status === 401 && this.getRefreshToken()) {
-      const newAccessToken = await this.refreshAccessTokens();
-      if (newAccessToken) {
-        // Retry request with fresh token
-        headers['Authorization'] = `Bearer ${newAccessToken}`;
-        response = await fetch(url, {
-          ...options,
-          headers
-        });
+    if (response.status === 401 && path !== '/auth/login' && path !== '/auth/refresh') {
+      const refreshed = await this.refreshAccessTokens();
+      if (refreshed) {
+        // Retry request
+        response = await fetch(url, finalOptions);
       }
     }
 
@@ -147,9 +103,7 @@ class ApiClient {
       method: 'POST',
       body: JSON.stringify(credentials)
     });
-    this.setAccessToken(json.data.tokens.accessToken);
-    this.setRefreshToken(json.data.tokens.refreshToken);
-    if (json.data.user?.organizations?.length > 0) {
+    if (json.data?.user?.organizations?.length > 0) {
       this.setOrganizationId(json.data.user.organizations[0].organizationId);
     }
     return json.data;
@@ -160,9 +114,7 @@ class ApiClient {
       method: 'POST',
       body: JSON.stringify(data)
     });
-    this.setAccessToken(json.data.tokens.accessToken);
-    this.setRefreshToken(json.data.tokens.refreshToken);
-    if (json.data.organization?.id) {
+    if (json.data?.organization?.id) {
       this.setOrganizationId(json.data.organization.id);
     }
     return json.data;
@@ -170,13 +122,9 @@ class ApiClient {
 
   public async logout() {
     try {
-      const refreshToken = this.getRefreshToken();
-      if (refreshToken) {
-        await this.request('/auth/logout', {
-          method: 'POST',
-          body: JSON.stringify({ refreshToken })
-        });
-      }
+      await this.request('/auth/logout', {
+        method: 'POST'
+      });
     } catch (e) {
       // Ignore logout errors
     } finally {

@@ -146,6 +146,12 @@ export const Onboarding: React.FC = () => {
       );
       setRegisteredSubdomain(newT.subdomain);
       setStep(7);
+      
+      // Automatically redirect to application dashboard after 3 seconds
+      setTimeout(() => {
+        triggerOnboardingState(true);
+        navigate('/app/dashboard');
+      }, 3000);
     } catch (err: any) {
       setError(err.message || 'Onboarding failed. Please verify your details.');
     }
@@ -186,7 +192,7 @@ export const Onboarding: React.FC = () => {
                   <div 
                     className={`w-9 h-9 rounded-full flex items-center justify-center text-[13px] font-bold transition-all border ${
                       step === num 
-                        ? 'bg-brand-primary text-black border-brand-primary shadow-md shadow-emerald-500/20 scale-105' 
+                        ? 'bg-brand-primary text-white border-brand-primary shadow-md shadow-emerald-500/20 scale-105' 
                         : step > num
                           ? 'bg-blue-50 text-brand-primary border-emerald-800'
                           : 'bg-white text-slate-400 border-slate-100'
@@ -431,7 +437,7 @@ export const Onboarding: React.FC = () => {
                   />
                   <button 
                     onClick={addAmenity} 
-                    className="px-4 py-2 bg-blue-50 text-brand-primary rounded-lg hover:bg-emerald-900 text-xs font-bold"
+                    className="px-4 py-2 bg-blue-50 text-brand-primary rounded-lg hover:bg-emerald-900 hover:text-white text-sm font-bold"
                   >
                     Add
                   </button>
@@ -579,21 +585,21 @@ export const Onboarding: React.FC = () => {
               </span>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Room Name</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Room Name</label>
                   <input 
                     type="text" 
                     placeholder="e.g. Sea View Deluxe Suite" 
                     value={roomName} 
                     onChange={e => setRoomName(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 text-xs rounded text-slate-800 focus:outline-none" 
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Room Type</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Room Type</label>
                   <select 
                     value={roomType} 
                     onChange={e => setRoomType(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 text-xs rounded text-slate-800 focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white"
                   >
                     <option value="Deluxe Room">Deluxe Room</option>
                     <option value="Premium Suite">Premium Suite</option>
@@ -602,46 +608,46 @@ export const Onboarding: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Max Guests</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Max Guests</label>
                   <input 
                     type="number" 
                     value={roomGuests} 
                     onChange={e => setRoomGuests(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 text-xs rounded text-slate-800 focus:outline-none" 
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Price per Night</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Price per Night</label>
                   <input 
                     type="number" 
                     value={roomPrice} 
                     onChange={e => setRoomPrice(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 text-xs rounded text-slate-800 focus:outline-none" 
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Number of Rooms</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Number of Rooms</label>
                   <input 
                     type="number" 
                     value={roomCount} 
                     onChange={e => setRoomCount(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 text-xs rounded text-slate-800 focus:outline-none" 
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] uppercase font-bold text-brand-primary mb-1">Amenities (comma separated)</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-brand-primary mb-1.5">Amenities (comma separated)</label>
                   <input 
                     type="text" 
                     placeholder="King Bed, Balcony, Wi-Fi" 
                     value={roomAmenitiesText} 
                     onChange={e => setRoomAmenitiesText(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 text-xs rounded text-slate-800 focus:outline-none" 
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-primary text-sm bg-white" 
                   />
                 </div>
               </div>
               <button 
                 onClick={addRoomType}
-                className="w-full py-2 bg-blue-50 hover:bg-emerald-900 text-brand-primary font-bold text-xs rounded border border-emerald-800 transition-colors"
+                className="w-full py-3 bg-blue-50 hover:bg-emerald-900 hover:text-white text-brand-primary font-bold text-base rounded-xl border border-emerald-800 transition-colors"
               >
                 Add Room Category to Setup
               </button>
@@ -683,7 +689,7 @@ export const Onboarding: React.FC = () => {
                       }`}
                       style={{ backgroundColor: c.primary }}
                     >
-                      <span className="bg-black/50 text-[10px] text-slate-800 px-1.5 py-0.5 rounded font-medium">{c.name}</span>
+                      <span className="bg-black/50 text-[10px] text-white px-1.5 py-0.5 rounded font-medium">{c.name}</span>
                     </button>
                   ))}
                 </div>
@@ -817,7 +823,7 @@ export const Onboarding: React.FC = () => {
               </button>
               <button 
                 onClick={handleLaunch}
-                className="px-8 py-3 rounded-full bg-gradient-to-r from-brand-primary to-[#6366f1] text-black font-extrabold text-sm transition-all cursor-pointer shadow-lg shadow-blue-500/10"
+                className="px-8 py-3 rounded-full bg-gradient-to-r from-brand-primary to-[#6366f1] text-white font-extrabold text-base transition-all cursor-pointer shadow-lg shadow-blue-500/10"
               >
                 Launch Platform
               </button>
@@ -854,7 +860,7 @@ export const Onboarding: React.FC = () => {
               </a>
               <button 
                 onClick={handleFinalize}
-                className="px-6 py-3.5 rounded-full bg-gradient-to-r from-brand-primary to-[#6366f1] text-black font-extrabold text-xs shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                className="px-6 py-3.5 rounded-full bg-gradient-to-r from-brand-primary to-[#6366f1] text-white font-extrabold text-base shadow-lg flex items-center justify-center gap-2 cursor-pointer"
               >
                 Go to Dashboard
               </button>

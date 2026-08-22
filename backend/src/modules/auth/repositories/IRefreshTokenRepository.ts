@@ -1,9 +1,10 @@
 import { IRefreshTokenDocument } from '../models/RefreshTokenModel';
+import { ClientSession } from 'mongoose';
 
 export interface IRefreshTokenRepository {
-  create(userId: string, token: string, expiresAt: Date): Promise<IRefreshTokenDocument>;
-  findByToken(token: string): Promise<IRefreshTokenDocument | null>;
-  revoke(token: string): Promise<void>;
-  revokeAllForUser(userId: string): Promise<void>;
-  rotate(oldToken: string, newToken: string, expiresAt: Date): Promise<IRefreshTokenDocument>;
+  create(userId: string, token: string, expiresAt: Date, session?: ClientSession): Promise<IRefreshTokenDocument>;
+  findByToken(token: string, session?: ClientSession): Promise<IRefreshTokenDocument | null>;
+  revoke(token: string, session?: ClientSession): Promise<void>;
+  revokeAllForUser(userId: string, session?: ClientSession): Promise<void>;
+  rotate(oldToken: string, newToken: string, expiresAt: Date, session?: ClientSession): Promise<IRefreshTokenDocument>;
 }

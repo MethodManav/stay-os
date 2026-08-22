@@ -4,14 +4,17 @@ import { UnauthorizedError } from '../errors/UnauthorizedError';
 
 export const AuthMiddleware = (req: Request, _res: Response, next: NextFunction): void => {
   try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new UnauthorizedError('Authentication token is required');
+    let token = req.cookies?.accessToken;
+
+    if (!token) {
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        token = authHeader.split(' ')[1];
+      }
     }
 
-    const token = authHeader.split(' ')[1];
     if (!token) {
-      throw new UnauthorizedError('Authentication token is invalid');
+      throw new UnauthorizedError('Authentication token is required');
     }
 
     const decoded = TokenUtility.verifyAccessToken(token);

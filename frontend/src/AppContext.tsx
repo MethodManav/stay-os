@@ -204,16 +204,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const syncState = async () => {
     try {
-      const refreshToken = api.getRefreshToken();
-      if (!refreshToken) {
+      let meRes;
+      try {
+        meRes = await api.getMe();
+      } catch (err) {
         setTenants([]);
         setActiveTenantState(null);
         setCurrentUser(null);
         setOnboardingCompletedState(false);
         return;
       }
-
-      const meRes = await api.getMe();
       const user = meRes.data.user;
 
       const loggedInUser: SaaSUser = {

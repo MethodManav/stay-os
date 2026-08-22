@@ -10,7 +10,7 @@ import { TokenUtility, TokenPayload } from '../../../shared/utils/TokenUtility';
 import { ConflictError } from '../../../core/errors/ConflictError';
 import { UnauthorizedError } from '../../../core/errors/UnauthorizedError';
 import { NotFoundError } from '../../../core/errors/NotFoundError';
-
+import mongoose, { ClientSession } from 'mongoose';
 export interface AuthTokens {
   accessToken: string;
   refreshToken: string;
@@ -49,16 +49,20 @@ export class AuthService {
     currency: string;
     timezone: string;
   }): Promise<OnboardResponse> {
-    // 1. Check uniqueness
-    const existingUser = await this.userRepository.findByEmail(params.email);
-    if (existingUser) {
-      throw new ConflictError('A user with this email address already exists');
-    }
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-    const existingOrg = await this.organizationRepository.findBySlug(params.orgSlug);
-    if (existingOrg) {
-      throw new ConflictError('An organization with this slug already exists');
-    }
+    try {
+      // 1. Check uniqueness
+      const existingUser = await this.userRepository.findByEmail(params.email, session);
+      if (existingUser) {
+        throw new ConflictError('A user with this email address already exists');
+      }
+
+      const existingOrg = await this.organizationRepository.findBySlug(params.orgSlug, session);
+      if (existingOrg) {
+        throw new ConflictError('An organization with this slug already exists');
+      }
 
     // 2. Hash Password
     const passwordHash = await PasswordUtility.hash(params.passwordHash);
@@ -70,7 +74,7 @@ export class AuthService {
       passwordHash,
       organizations: [],
       status: 'ACTIVE'
-    });
+    }, session);
 
     // 4. Create Organization
     const organization = await this.organizationRepository.create({
@@ -78,10 +82,10 @@ export class AuthService {
       slug: params.orgSlug,
       ownerId: user.id as any,
       status: 'ACTIVE'
-    });
+    }, session);
 
     // 5. Add OWNER membership role to the user record
-    const updatedUser = await this.userRepository.addOrganization(user.id, organization.id, 'OWNER');
+    const updatedUser = await this.userRepository.addOrganization(user.id, organization.id, 'OWNER', session);
     if (!updatedUser) {
       throw new Error('Failed to associate organization with user');
     }
@@ -105,18 +109,25 @@ export class AuthService {
       amenities: [],
       images: [],
       status: 'ACTIVE'
-    });
+    }, session);
 
     // 7. Generate tokens
-    const tokens = await this.generateTokensForUser(updatedUser);
+    const tokens = await this.generateTokensForUser(updatedUser, session);
 
+    await session.commitTransaction();
     return {
       user: updatedUser,
       tokens,
       organization,
       business
     };
+  } catch (error) {
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
   }
+}
 
   public async register(name: string, email: string, password: string): Promise<AuthResponse> {
     const existingUser = await this.userRepository.findByEmail(email);
@@ -207,7 +218,7 @@ export class AuthService {
     await this.refreshTokenRepository.revokeAllForUser(userId);
   }
 
-  private async generateTokensForUser(user: IUserDocument): Promise<AuthTokens> {
+  private async generateTokensForUser(user: IUserDocument, session?: ClientSession): Promise<AuthTokens> {
     const payload = this.buildTokenPayload(user);
     const accessToken = TokenUtility.generateAccessToken(payload);
     const refreshToken = TokenUtility.generateRefreshToken(user.id);
@@ -216,8 +227,7 @@ export class AuthService {
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
 
-    await this.refreshTokenRepository.create(user.id, refreshToken, expiresAt);
-
+    await this.refreshTokenRepository.create(user.id, refreshToken, expiresAt, session);
     return { accessToken, refreshToken };
   }
 

@@ -1,30 +1,30 @@
-import { Types } from 'mongoose';
+import { Types, ClientSession } from 'mongoose';
 import { IOrganizationRepository } from './IOrganizationRepository';
 import { OrganizationModel, IOrganization, IOrganizationDocument } from '../models/OrganizationModel';
 
 export class MongoOrganizationRepository implements IOrganizationRepository {
-  public async create(org: Partial<IOrganization>): Promise<IOrganizationDocument> {
+  public async create(org: Partial<IOrganization>, session?: ClientSession): Promise<IOrganizationDocument> {
     const newOrg = new OrganizationModel(org);
-    return newOrg.save();
+    return newOrg.save({ session });
   }
 
-  public async findById(id: string): Promise<IOrganizationDocument | null> {
+  public async findById(id: string, session?: ClientSession): Promise<IOrganizationDocument | null> {
     if (!Types.ObjectId.isValid(id)) return null;
-    return OrganizationModel.findById(id).exec();
+    return OrganizationModel.findById(id).session(session || null).exec();
   }
 
-  public async findBySlug(slug: string): Promise<IOrganizationDocument | null> {
-    return OrganizationModel.findOne({ slug: slug.toLowerCase() }).exec();
+  public async findBySlug(slug: string, session?: ClientSession): Promise<IOrganizationDocument | null> {
+    return OrganizationModel.findOne({ slug: slug.toLowerCase() }).session(session || null).exec();
   }
 
-  public async update(id: string, data: Partial<IOrganization>): Promise<IOrganizationDocument | null> {
+  public async update(id: string, data: Partial<IOrganization>, session?: ClientSession): Promise<IOrganizationDocument | null> {
     if (!Types.ObjectId.isValid(id)) return null;
-    return OrganizationModel.findByIdAndUpdate(id, data, { new: true }).exec();
+    return OrganizationModel.findByIdAndUpdate(id, data, { new: true, session }).exec();
   }
 
-  public async delete(id: string): Promise<boolean> {
+  public async delete(id: string, session?: ClientSession): Promise<boolean> {
     if (!Types.ObjectId.isValid(id)) return false;
-    const result = await OrganizationModel.findByIdAndDelete(id).exec();
+    const result = await OrganizationModel.findByIdAndDelete(id, { session }).exec();
     return result !== null;
   }
 }
