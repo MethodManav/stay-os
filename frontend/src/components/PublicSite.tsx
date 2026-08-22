@@ -329,10 +329,10 @@ export const PublicSite: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/35 z-10" />
               
               <div className="relative z-20 space-y-6 max-w-3xl">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight font-outfit">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg leading-tight font-outfit">
                   {sec.content.headline}
                 </h1>
-                <p className="text-base sm:text-lg text-slate-200 max-w-xl mx-auto font-medium leading-relaxed">
+                <p className="text-base sm:text-lg text-slate-100 font-bold max-w-xl mx-auto leading-relaxed drop-shadow-md">
                   {sec.content.subheadline}
                 </p>
                 <button
@@ -588,12 +588,12 @@ export const PublicSite: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-3 bg-slate-50 border border-slate-150 rounded-xl flex justify-between items-center text-xs">
+                <div className="p-4 bg-slate-50 border border-slate-150 rounded-xl flex justify-between items-center">
                   <div>
-                    <span className="block font-bold text-slate-700">Total Settlement Quote ({nights} nights)</span>
-                    <span className="text-[10px] text-slate-500 mt-0.5">Includes taxes and policies</span>
+                    <span className="block text-lg font-bold text-slate-700">Total Settlement Quote ({nights} nights)</span>
+                    <span className="text-sm text-slate-500 mt-0.5">Includes taxes and policies</span>
                   </div>
-                  <span className="text-base font-extrabold text-slate-900">
+                  <span className="text-3xl font-extrabold text-slate-900">
                     {currencySymbol}{totalCost.toLocaleString()}
                   </span>
                 </div>

@@ -10,6 +10,7 @@ export interface IUser {
   email: string;
   passwordHash: string;
   status: 'ACTIVE' | 'SUSPENDED';
+  isSuperAdmin?: boolean;
   organizations: IUserOrganization[];
   createdAt: Date;
   updatedAt: Date;
@@ -53,6 +54,10 @@ const UserSchema = new Schema<IUserDocument>(
       type: String,
       enum: ['ACTIVE', 'SUSPENDED'],
       default: 'ACTIVE'
+    },
+    isSuperAdmin: {
+      type: Boolean,
+      default: false
     },
     organizations: [UserOrganizationSchema]
   },

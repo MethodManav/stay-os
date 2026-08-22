@@ -4,7 +4,7 @@ export interface IOrganization {
   name: string;
   slug: string;
   ownerId: Types.ObjectId;
-  status: 'ACTIVE' | 'SUSPENDED';
+  status: 'PENDING' | 'ACTIVE' | 'SUSPENDED';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -33,8 +33,8 @@ const OrganizationSchema = new Schema<IOrganizationDocument>(
     },
     status: {
       type: String,
-      enum: ['ACTIVE', 'SUSPENDED'],
-      default: 'ACTIVE'
+      enum: ['PENDING', 'ACTIVE', 'SUSPENDED'],
+      default: 'PENDING'
     }
   },
   {

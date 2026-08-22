@@ -21,7 +21,7 @@ export class OrganizationService {
       name,
       slug,
       ownerId: ownerId as any,
-      status: 'ACTIVE'
+      status: 'PENDING'
     });
 
     // Add OWNER membership to the user

@@ -22,7 +22,7 @@ export class BusinessService {
     const business = await this.businessRepository.create({
       ...data,
       organizationId: organizationId as any,
-      status: 'ACTIVE'
+      status: 'PENDING'
     });
 
     return business;

@@ -22,7 +22,7 @@ export interface IBusiness {
   amenities: string[];
   logo?: string;
   images: string[];
-  status: 'ACTIVE' | 'INACTIVE';
+  status: 'PENDING' | 'ACTIVE' | 'INACTIVE';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -132,8 +132,8 @@ const BusinessSchema = new Schema<IBusinessDocument>(
     },
     status: {
       type: String,
-      enum: ['ACTIVE', 'INACTIVE'],
-      default: 'ACTIVE'
+      enum: ['PENDING', 'ACTIVE', 'INACTIVE'],
+      default: 'PENDING'
     }
   },
   {

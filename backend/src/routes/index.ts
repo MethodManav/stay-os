@@ -11,7 +11,8 @@ import {
   paymentRouter,
   aiRouter,
   analyticsRouter,
-  publicRouter
+  publicRouter,
+  adminRouter
 } from '../core/bootstrap';
 
 const rootRouter = Router();
@@ -38,5 +39,6 @@ rootRouter.use('/payments', paymentRouter);
 rootRouter.use('/ai', aiRouter);
 rootRouter.use('/analytics', analyticsRouter);
 rootRouter.use('/public/businesses', publicRouter);
+rootRouter.use('/admin', adminRouter);
 
 export default rootRouter;

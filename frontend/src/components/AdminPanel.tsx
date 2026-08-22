@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { useApp } from '../AppContext';
 import type { Tenant, Room, SaaSUser } from '../db';
 import { 
@@ -10,7 +10,6 @@ import {
   Terminal, 
   Plus, 
   Search, 
-  ArrowLeft, 
   Trash2, 
   ExternalLink, 
   Database, 
@@ -24,7 +23,8 @@ import {
   Calendar,
   MessageSquare,
   Sliders,
-  Play
+  Play,
+  LogOut
 } from 'lucide-react';
 
 interface SystemLog {
@@ -36,7 +36,7 @@ interface SystemLog {
 
 export const AdminPanel: React.FC = () => {
   const { tenants, updateAllTenants, handleLogout, resetAll } = useApp();
-  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState<'overview' | 'hotels' | 'users' | 'ai-simulator' | 'logs'>('overview');
   
   // Search & Filtering
@@ -467,44 +467,10 @@ export const AdminPanel: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-bg-page text-slate-800 font-sans antialiased flex flex-col">
-      {/* Header bar */}
-      <header className="h-20 bg-white border-b border-slate-200/60 flex items-center justify-between px-6 md:px-8 shrink-0 sticky top-0 z-40">
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={() => navigate('/app/dashboard')}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 text-brand-primary text-xs font-bold hover:bg-brand-primary hover:text-white transition-all shadow-sm cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Exit Admin</span>
-          </button>
-          <div className="h-4 w-px bg-slate-200" />
-          <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-            <span>Administration</span>
-            <span>/</span>
-            <span className="text-brand-primary font-extrabold">SaaS Super Admin</span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs text-slate-500 font-semibold">Production Node Cluster: Healthy</span>
-          </div>
-          <button 
-            onClick={handleLogout}
-            className="text-xs font-bold text-slate-500 hover:text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all cursor-pointer border border-transparent hover:border-red-200"
-          >
-            Logout admin
-          </button>
-        </div>
-      </header>
-
-      {/* Main Workspace split */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar */}
-        <aside className="w-64 bg-white border-r border-slate-200 shrink-0 flex flex-col justify-between py-6 px-4">
-          <div className="space-y-6">
+    <div className="h-screen bg-bg-page text-slate-800 font-sans antialiased flex overflow-hidden">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white border-r border-slate-200 shrink-0 flex flex-col justify-between py-6 px-4 h-full overflow-y-auto z-20">
+        <div className="space-y-6">
             {/* Top Logo Segment */}
             <div className="h-20 flex items-center gap-3 px-2 border-b border-slate-100 -mt-6 -mx-4 mb-4">
               <div className="flex gap-1 items-center px-2">
@@ -622,8 +588,23 @@ export const AdminPanel: React.FC = () => {
           </div>
         </aside>
 
-        {/* Content Pane */}
-        <main className="flex-1 overflow-y-auto p-8 bg-bg-page">
+        {/* Right Content */}
+        <div className="flex-1 flex flex-col min-w-0 h-full">
+          {/* Header bar */}
+          <header className="h-20 bg-white border-b border-slate-200/60 flex items-center justify-end px-6 md:px-8 shrink-0 z-10">
+            <button 
+              onClick={handleLogout}
+              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all cursor-pointer flex items-center gap-2"
+              title="Logout"
+            >
+              <span className="text-sm font-bold">Logout</span>
+              <LogOut className="w-5 h-5" />
+            </button>
+          </header>
+
+          <div className="flex-1 overflow-hidden flex flex-col relative">
+            {/* Content Pane */}
+            <main className="flex-1 overflow-y-auto p-8 bg-bg-page">
           {/* TAB 1: OVERVIEW */}
           {activeTab === 'overview' && (
             <div className="space-y-8 animate-in fade-in duration-200">
@@ -1437,6 +1418,7 @@ export const AdminPanel: React.FC = () => {
           </div>
         </div>
       )}
+        </div>
     </div>
   );
 };
