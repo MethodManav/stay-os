@@ -19,6 +19,7 @@ import {
   X,
   LogOut
 } from 'lucide-react';
+import { PremiumUpgradeModal } from './PremiumUpgradeModal';
 
 export const DashboardLayout: React.FC = () => {
   const { tenants, activeTenant, currentUser, switchTenant, handleLogout } = useApp();
@@ -27,6 +28,7 @@ export const DashboardLayout: React.FC = () => {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
 
   const notifications = [
     { id: 1, text: "New booking B-2004 received from Rajesh Iyer", time: "5m ago" },
@@ -113,20 +115,34 @@ export const DashboardLayout: React.FC = () => {
         <nav className="flex-1 py-6 px-4 space-y-1 overflow-y-auto">
           {navLinks.map((link) => {
             const Icon = link.icon;
+            const isRestricted = ['/app/website', '/app/ai', '/app/analytics', '/app/team'].includes(link.to);
+            const isLocked = isRestricted && activeTenant?.settings?.subscriptionTier === 'free';
+            
             return (
               <NavLink
                 key={link.to}
-                to={link.to}
+                to={isLocked ? '#' : link.to}
+                onClick={(e) => {
+                  if (isLocked) {
+                    e.preventDefault();
+                    setUpgradeModalOpen(true);
+                  }
+                }}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
-                    isActive
+                  `flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
+                    isActive && !isLocked
                       ? 'bg-blue-50 text-brand-primary border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
                       : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
                   }`
                 }
               >
-                <Icon className="w-4 h-4 shrink-0" />
-                <span>{link.label}</span>
+                <div className="flex items-center gap-3">
+                  <Icon className="w-4 h-4 shrink-0" />
+                  <span>{link.label}</span>
+                </div>
+                {isLocked && (
+                  <span className="text-[9px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">PRO</span>
+                )}
               </NavLink>
             );
           })}
@@ -288,19 +304,35 @@ export const DashboardLayout: React.FC = () => {
               <nav className="flex-1 py-4 px-4 space-y-1.5 overflow-y-auto">
                 {navLinks.map((link) => {
                   const Icon = link.icon;
+                  const isRestricted = ['/app/website', '/app/ai', '/app/analytics', '/app/team'].includes(link.to);
+                  const isLocked = isRestricted && activeTenant?.settings?.subscriptionTier === 'free';
+                  
                   return (
                     <NavLink
                       key={link.to}
-                      to={link.to}
-                      onClick={() => setMobileNavOpen(false)}
+                      to={isLocked ? '#' : link.to}
+                      onClick={(e) => {
+                        if (isLocked) {
+                          e.preventDefault();
+                          setMobileNavOpen(false);
+                          setUpgradeModalOpen(true);
+                        } else {
+                          setMobileNavOpen(false);
+                        }
+                      }}
                       className={({ isActive }) =>
-                        `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-all ${
-                          isActive ? 'bg-blue-50 text-brand-primary' : 'text-slate-650 hover:bg-slate-50 hover:text-slate-900'
+                        `flex items-center justify-between gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-all ${
+                          isActive && !isLocked ? 'bg-blue-50 text-brand-primary' : 'text-slate-650 hover:bg-slate-50 hover:text-slate-900'
                         }`
                       }
                     >
-                      <Icon className="w-4 h-4 shrink-0" />
-                      <span>{link.label}</span>
+                      <div className="flex items-center gap-3">
+                        <Icon className="w-4 h-4 shrink-0" />
+                        <span>{link.label}</span>
+                      </div>
+                      {isLocked && (
+                        <span className="text-[9px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">PRO</span>
+                      )}
                     </NavLink>
                   );
                 })}
@@ -320,6 +352,7 @@ export const DashboardLayout: React.FC = () => {
         </main>
       </div>
 
+      <PremiumUpgradeModal isOpen={upgradeModalOpen} onClose={() => setUpgradeModalOpen(false)} />
     </div>
   );
 };

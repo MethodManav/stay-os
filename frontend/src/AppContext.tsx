@@ -39,7 +39,8 @@ const mapBackendToTenant = (
     description: business.description || '',
     cancellationPolicy: business.cancellationPolicy || 'Free cancellation up to 48 hours before check-in.',
     phone: business.phone || '',
-    email: business.email || ''
+    email: business.email || '',
+    subscriptionTier: business.subscriptionTier || 'free'
   };
 
   // Map branding
@@ -631,8 +632,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       description: settings.description,
       cancellationPolicy: settings.cancellationPolicy,
       phone: settings.phone,
-      email: settings.email
+      email: settings.email,
+      subscriptionTier: settings.subscriptionTier
     });
+    
+    // Optimistically update local active tenant state to reflect tier changes immediately
+    if (activeTenant) {
+      updateActiveTenant({
+        ...activeTenant,
+        settings: {
+          ...activeTenant.settings,
+          ...settings
+        }
+      });
+    }
+
     await syncState();
   };
 

@@ -31,7 +31,8 @@ const mapPublicToTenant = (business: any, website: any, roomTypes: any[]): Tenan
     description: business.description || '',
     cancellationPolicy: 'Standard cancellation policy.',
     phone: business.phone || '',
-    email: business.email || ''
+    email: business.email || '',
+    subscriptionTier: business.subscriptionTier || 'free'
   };
 
   const branding: TenantBranding = {
@@ -456,13 +457,13 @@ export const PublicSite: React.FC = () => {
           return (
             <section key={sec.id} id="location" className="py-24 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
-                <h2 className="text-xs uppercase tracking-widest font-extrabold" style={{ color: primaryColor }}>{sec.title}</h2>
-                <h3 className="text-2xl font-extrabold text-slate-800 font-outfit">Contact & Directions</h3>
+                <h2 className="text-sm uppercase tracking-widest font-extrabold" style={{ color: primaryColor }}>{sec.title}</h2>
+                <h3 className="text-4xl font-extrabold text-slate-800 font-outfit">Contact & Directions</h3>
                 
-                <div className="space-y-4 text-xs font-semibold text-slate-600">
-                  <p className="flex items-center gap-2.5"><MapPin className="w-4 h-4 text-[#a3c2b2]" /> {sec.content.address}</p>
-                  <p className="flex items-center gap-2.5"><Phone className="w-4 h-4 text-[#a3c2b2]" /> {tenant.settings.phone}</p>
-                  <p className="flex items-center gap-2.5"><Mail className="w-4 h-4 text-[#a3c2b2]" /> {tenant.settings.email}</p>
+                <div className="space-y-5 text-base sm:text-lg font-semibold text-slate-600">
+                  <p className="flex items-center gap-4"><MapPin className="w-6 h-6 text-[#a3c2b2]" /> {sec.content.address}</p>
+                  <p className="flex items-center gap-4"><Phone className="w-6 h-6 text-[#a3c2b2]" /> {tenant.settings.phone}</p>
+                  <p className="flex items-center gap-4"><Mail className="w-6 h-6 text-[#a3c2b2]" /> {tenant.settings.email}</p>
                 </div>
               </div>
 
@@ -642,7 +643,8 @@ export const PublicSite: React.FC = () => {
       )}
 
       {/* Floating AI Receptionist widget */}
-      <div className="fixed bottom-6 right-6 z-50">
+      {tenant.settings.subscriptionTier === 'premium' && (
+        <div className="fixed bottom-6 right-6 z-50">
         
         {/* Toggle bubble button */}
         {!aiChatOpen && (
@@ -744,6 +746,7 @@ export const PublicSite: React.FC = () => {
         )}
 
       </div>
+      )}
 
     </div>
   );

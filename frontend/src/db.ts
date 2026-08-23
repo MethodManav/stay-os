@@ -20,6 +20,7 @@ export interface TenantSettings {
   cancellationPolicy: string;
   phone: string;
   email: string;
+  subscriptionTier?: 'free' | 'premium';
 }
 
 export interface Room {
@@ -149,7 +150,8 @@ const defaultAzureHaven: Tenant = {
     description: "A premium luxury resort nestled by the beach in Goa. Experience coastal fine dining, bespoke hospitality, and private infinity pools.",
     cancellationPolicy: "Free cancellation up to 48 hours before check-in. Late cancellations will be charged the first night.",
     phone: "+91 98765 00123",
-    email: "reservations@azurehavengoa.com"
+    email: "reservations@azurehavengoa.com",
+    subscriptionTier: "premium"
   },
   rooms: [
     {
@@ -633,7 +635,8 @@ export const createNewTenant = (
       description: settings.description || `Welcome to ${hotelName}. Powered by StayOS.`,
       cancellationPolicy: settings.cancellationPolicy || "Free cancellation 24 hours prior to check-in.",
       phone: settings.phone || "",
-      email: settings.email || ""
+      email: settings.email || "",
+      subscriptionTier: settings.subscriptionTier || "free"
     },
     rooms: rooms.map((r, i) => ({ ...r, id: `rm-${i}-${Date.now()}` })),
     bookings: [],
