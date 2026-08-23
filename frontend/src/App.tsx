@@ -17,6 +17,7 @@ import { TeamTab } from './components/TeamTab';
 import { SettingsTab } from './components/SettingsTab';
 import { PublicSite } from './components/PublicSite';
 import { AdminPanel } from './components/AdminPanel';
+import { SuperAdminLogin } from './components/SuperAdminLogin';
 
 // Auth Route Guard wrapper
 const OnboardingGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -70,6 +71,7 @@ export default function App() {
 
           {/* Super Admin Panel Portal */}
           <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/admin-login" element={<SuperAdminLogin />} />
 
           {/* Fallback Redirects */}
           <Route path="*" element={<Navigate to="/" replace />} />

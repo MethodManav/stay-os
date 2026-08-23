@@ -7,8 +7,8 @@ import { api } from '../api';
 
 export const LoginSignup: React.FC = () => {
   const { triggerOnboardingState, syncState } = useApp();
-  const [email, setEmail] = useState('admin@admin.com');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   
@@ -215,38 +215,6 @@ export const LoginSignup: React.FC = () => {
             </button>
           </form>
 
-          {/* Registration Notice / Demo Login Mode */}
-          <div className="p-4 rounded-xl bg-brand-light border border-blue-100 text-xs text-[#1e40af] leading-relaxed font-medium space-y-3">
-            <div>
-              <span className="font-bold text-[#1d4ed8] block mb-1">Hotel Manager:</span>
-              Pre-filled with `admin@admin.com`. Just click **Sign In** to log in to the hotel portal.
-            </div>
-            <div className="border-t border-blue-200/50 pt-2 flex justify-between items-center gap-2">
-              <div>
-                <span className="font-bold text-indigo-700 block mb-0.5">SaaS Platform Admin:</span>
-                Access the Super Admin panel.
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail('superadmin@stayos.com');
-                  setPassword('superadmin123');
-                  triggerOnboardingState(true);
-                  const superUser = {
-                    id: "usr-super",
-                    name: "SuperAdmin",
-                    email: "superadmin@stayos.com",
-                    tenants: []
-                  };
-                  localStorage.setItem("stayos_v1_user", JSON.stringify(superUser));
-                  navigate('/admin');
-                }}
-                className="bg-indigo-650 hover:bg-indigo-700 text-white font-extrabold px-3 py-1.5 rounded-lg transition-all text-[10px] cursor-pointer shrink-0"
-              >
-                Super Admin Login
-              </button>
-            </div>
-          </div>
 
           {/* Redirect to signup */}
           <div className="text-center pt-2 border-t border-slate-100 text-xs text-slate-500 font-medium">

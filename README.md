@@ -159,6 +159,20 @@ StayOS/
 
 ---
 
+### 3. Login Routes & Demo Credentials
+
+**Hotel Manager Portal**
+- **URL**: `http://localhost:5173/login`
+- **Email**: `admin@admin.com`
+- **Password**: `password123`
+
+**Super Admin Panel**
+- **URL**: `http://localhost:5173/admin-login`
+- **Email**: `superadmin@stayos.com`
+- **Password**: `superadmin123`
+
+---
+
 ## 🧪 Running Tests & Quality Checks
 
 ### Backend Test Suite
