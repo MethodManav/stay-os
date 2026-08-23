@@ -6,15 +6,11 @@ import {
   LayoutDashboard, 
   Building, 
   Users, 
-  Bot, 
   Terminal, 
   Plus, 
   Search, 
   Trash2, 
   ExternalLink, 
-  Database, 
-  Activity, 
-  Wifi, 
   UserPlus, 
   Sparkles, 
   RefreshCw,
@@ -519,58 +515,11 @@ export const AdminPanel: React.FC = () => {
                   <Users className="w-4 h-4" />
                   <span>SaaS Accounts</span>
                 </button>
-                <button
-                  onClick={() => setActiveTab('ai-simulator')}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
-                    activeTab === 'ai-simulator'
-                      ? 'bg-blue-50 text-brand-primary border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
-                      : 'text-slate-655 border-transparent hover:bg-slate-50 hover:text-slate-900'
-                  }`}
-                >
-                  <Bot className="w-4 h-4" />
-                  <span>WhatsApp AI Simulator</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab('logs')}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
-                    activeTab === 'logs'
-                      ? 'bg-blue-50 text-brand-primary border-blue-100/30 font-bold shadow-sm shadow-blue-500/5'
-                      : 'text-slate-655 border-transparent hover:bg-slate-50 hover:text-slate-900'
-                  }`}
-                >
-                  <Terminal className="w-4 h-4" />
-                  <span>System Console Logs</span>
-                </button>
+
               </nav>
             </div>
 
-            {/* Quick Status widgets */}
-            <div className="space-y-3 pt-4 border-t border-slate-100">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2">Microservices</span>
-              <div className="space-y-2 text-[11px] font-semibold text-slate-600">
-                <div className="flex items-center justify-between px-2 py-1 rounded bg-slate-50 border border-slate-200/60">
-                  <div className="flex items-center gap-1.5">
-                    <Database className="w-3.5 h-3.5 text-cyan-600" />
-                    <span>Platform DB</span>
-                  </div>
-                  <span className="text-emerald-600 flex items-center gap-1"><Activity className="w-2.5 h-2.5 animate-pulse" /> Online</span>
-                </div>
-                <div className="flex items-center justify-between px-2 py-1 rounded bg-slate-50 border border-slate-200/60">
-                  <div className="flex items-center gap-1.5">
-                    <Bot className="w-3.5 h-3.5 text-indigo-650" />
-                    <span>OpenAI API</span>
-                  </div>
-                  <span className="text-emerald-600 flex items-center gap-1"><Activity className="w-2.5 h-2.5" /> Normal</span>
-                </div>
-                <div className="flex items-center justify-between px-2 py-1 rounded bg-slate-50 border border-slate-200/60">
-                  <div className="flex items-center gap-1.5">
-                    <Wifi className="w-3.5 h-3.5 text-pink-600" />
-                    <span>WhatsApp GW</span>
-                  </div>
-                  <span className="text-emerald-600 flex items-center gap-1"><Activity className="w-2.5 h-2.5 animate-pulse" /> Live</span>
-                </div>
-              </div>
-            </div>
+
           </div>
 
           {/* System settings/purging */}

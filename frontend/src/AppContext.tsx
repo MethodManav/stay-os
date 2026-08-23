@@ -664,6 +664,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setActiveTenantState(null);
     setCurrentUser(null);
     setOnboardingCompletedState(false);
+    window.location.href = '/login';
   };
 
   const resetAll = () => {

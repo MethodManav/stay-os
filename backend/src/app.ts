@@ -8,7 +8,7 @@ import { Logger } from './shared/utils/Logger';
 import { ErrorHandler } from './core/errors/ErrorHandler';
 import { NotFoundError } from './core/errors/NotFoundError';
 import rootRouter from './routes';
-import { RateLimitMiddleware } from './core/middleware/RateLimitMiddleware';
+// import { RateLimitMiddleware } from './core/middleware/RateLimitMiddleware';
 
 const app = express();
 
@@ -40,7 +40,7 @@ const morganMiddleware = morgan(
 app.use(morganMiddleware);
 
 // Apply rate limiting to all requests
-app.use(RateLimitMiddleware);
+// app.use(RateLimitMiddleware);
 
 // Register API routes
 app.use('/api/v1', rootRouter);
