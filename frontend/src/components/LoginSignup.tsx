@@ -92,7 +92,7 @@ export const LoginSignup: React.FC = () => {
               to continue.
             </h1>
             <p className="text-sm text-slate-500 leading-relaxed font-normal">
-              By signing up, you will gain access to exclusive content, special offers, and be the first to hear about exciting news and updates.
+              Access your StayOS dashboard to manage your properties, monitor real-time bookings, and configure your automated AI receptionists.
             </p>
           </div>
 
@@ -232,10 +232,10 @@ export const LoginSignup: React.FC = () => {
         <div className="max-w-xl w-full text-center space-y-6 z-10 flex flex-col items-center">
           {/* Header titles */}
           <h2 className="text-3xl xl:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight max-w-md">
-            The simplest way to manage your workspace.
+            The intelligent operating system for modern hospitality.
           </h2>
           <p className="text-sm xl:text-base text-slate-500 max-w-sm">
-            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint velit officia consequat duis.
+            Streamline your hotel operations, automate guest communication via WhatsApp, and drive direct bookings with our all-in-one platform.
           </p>
 
           {/* CSS-rendered live mockup card (mimicking the dashboard in user screenshot) */}
@@ -248,13 +248,13 @@ export const LoginSignup: React.FC = () => {
                   <div className="w-2.5 h-5 rounded-full bg-gradient-to-b from-brand-primary to-[#4f46e5] rotate-[25deg]"></div>
                   <div className="w-2.5 h-6 rounded-full bg-gradient-to-b from-[#4f46e5] to-[#7c3aed] rotate-[25deg] -translate-y-0.5"></div>
                 </div>
-                <span className="font-bold text-slate-900 text-xs">isomorphic</span>
+                <span className="font-bold text-slate-900 text-xs">stayos</span>
               </div>
               <div className="flex gap-4 text-[10px] text-slate-400 font-semibold">
                 <span className="text-brand-primary font-bold">Dashboard</span>
-                <span>Products</span>
-                <span>E-Commerce</span>
-                <span>Smart Board</span>
+                <span>Properties</span>
+                <span>Bookings</span>
+                <span>AI Concierge</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 rounded-full bg-slate-100"></div>
@@ -267,8 +267,8 @@ export const LoginSignup: React.FC = () => {
               {/* Sales Overview Title block */}
               <div className="flex justify-between items-center">
                 <div>
-                  <h3 className="font-bold text-text-primary text-sm">Sales Overview</h3>
-                  <span className="text-[10px] text-slate-400">View current sales summary and activity</span>
+                  <h3 className="font-bold text-text-primary text-sm">Hotel Performance</h3>
+                  <span className="text-[10px] text-slate-400">View current revenue summary and activity</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] px-2.5 py-1 bg-white border border-slate-200 rounded-md font-semibold text-slate-500 shadow-sm cursor-default flex items-center">
@@ -284,7 +284,7 @@ export const LoginSignup: React.FC = () => {
               <div className="grid grid-cols-3 gap-3">
                 {/* Card 1: Total Earnings */}
                 <div className="bg-white border-l-4 border-l-[#7c3aed] border border-slate-200 rounded-xl p-3.5 shadow-sm space-y-1.5 relative overflow-hidden">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Earnings</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Revenue</span>
                   <span className="text-lg font-black text-slate-900 block">$12,402</span>
                   {/* Wave line placeholder */}
                   <svg className="w-full h-8 text-[#7c3aed]/40" viewBox="0 0 100 30" preserveAspectRatio="none">
@@ -295,8 +295,8 @@ export const LoginSignup: React.FC = () => {
 
                 {/* Card 2: Referral Sales */}
                 <div className="bg-white border-l-4 border-l-brand-primary border border-slate-200 rounded-xl p-3.5 shadow-sm space-y-1.5 relative overflow-hidden">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Referral Sales</span>
-                  <span className="text-lg font-black text-slate-900 block">$3,302</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Direct Bookings</span>
+                  <span className="text-lg font-black text-slate-900 block">342</span>
                   {/* Wave line placeholder */}
                   <svg className="w-full h-8 text-brand-primary/40" viewBox="0 0 100 30" preserveAspectRatio="none">
                     <path d="M0,15 Q20,25 40,10 T80,22 T100,5" stroke="currentColor" strokeWidth="2.5" fill="none" />
@@ -306,8 +306,8 @@ export const LoginSignup: React.FC = () => {
 
                 {/* Card 3: Purchases */}
                 <div className="bg-white border-l-4 border-l-[#ef4444] border border-slate-200 rounded-xl p-3.5 shadow-sm space-y-1.5 relative overflow-hidden">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Purchases</span>
-                  <span className="text-lg font-black text-slate-900 block">$9,200</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Occupancy Rate</span>
+                  <span className="text-lg font-black text-slate-900 block">82%</span>
                   {/* Wave line placeholder */}
                   <svg className="w-full h-8 text-[#ef4444]/40" viewBox="0 0 100 30" preserveAspectRatio="none">
                     <path d="M0,5 Q20,20 40,8 T80,25 T100,15" stroke="currentColor" strokeWidth="2.5" fill="none" />
@@ -323,8 +323,8 @@ export const LoginSignup: React.FC = () => {
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-slate-800 text-[10px]">Monthly Revenue</span>
                     <div className="flex gap-1.5 text-[10px] font-bold">
-                      <span className="text-brand-primary flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-brand-primary inline-block"></span>New Orders</span>
-                      <span className="text-[#7c3aed] flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-[#7c3aed] inline-block"></span>Shipped</span>
+                      <span className="text-brand-primary flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-brand-primary inline-block"></span>Direct</span>
+                      <span className="text-[#7c3aed] flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-[#7c3aed] inline-block"></span>OTA</span>
                     </div>
                   </div>
                   {/* CSS graph bars */}
@@ -347,7 +347,7 @@ export const LoginSignup: React.FC = () => {
                       <div className="w-4 h-4 rounded-full bg-brand-primary/10 flex items-center justify-center text-[10px] font-extrabold text-brand-primary">JW</div>
                       <div className="flex-1 min-w-0">
                         <p className="text-[10px] font-bold text-slate-800 truncate leading-none">James Warren</p>
-                        <span className="text-[10px] text-slate-400 block mt-0.5">Purchased Membership</span>
+                        <span className="text-[10px] text-slate-400 block mt-0.5">Booked Deluxe Room</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-1.5">
