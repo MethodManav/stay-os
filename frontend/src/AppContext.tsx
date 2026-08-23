@@ -143,6 +143,7 @@ const mapBackendToTenant = (
     id: business.id || business._id,
     subdomain: business.slug || '',
     name: business.name,
+    status: business.status || 'ACTIVE',
     branding,
     settings,
     rooms: mappedRooms,

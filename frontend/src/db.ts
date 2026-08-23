@@ -107,6 +107,7 @@ export interface Tenant {
   id: string;
   subdomain: string;
   name: string;
+  status?: 'PENDING' | 'ACTIVE' | 'INACTIVE';
   branding: TenantBranding;
   settings: TenantSettings;
   rooms: Room[];

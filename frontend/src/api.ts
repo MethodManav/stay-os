@@ -114,8 +114,9 @@ class ApiClient {
       method: 'POST',
       body: JSON.stringify(data)
     });
-    if (json.data?.organization?.id) {
-      this.setOrganizationId(json.data.organization.id);
+    const orgId = json.data?.organization?.id || json.data?.organization?._id;
+    if (orgId) {
+      this.setOrganizationId(orgId);
     }
     return json.data;
   }

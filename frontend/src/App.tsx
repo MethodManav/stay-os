@@ -21,7 +21,10 @@ import { SuperAdminLogin } from './components/SuperAdminLogin';
 
 // Auth Route Guard wrapper
 const OnboardingGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { onboardingCompleted } = useApp();
+  const { onboardingCompleted, currentUser } = useApp();
+  if (!currentUser) {
+    return <Navigate to="/login" replace />;
+  }
   if (!onboardingCompleted) {
     return <Navigate to="/signup" replace />;
   }

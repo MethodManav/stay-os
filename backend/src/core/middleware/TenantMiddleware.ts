@@ -34,7 +34,7 @@ export const TenantMiddleware = async (req: Request, _res: Response, next: NextF
       throw new ForbiddenError('Organization not found');
     }
 
-    if (org.status !== 'ACTIVE') {
+    if (org.status === 'SUSPENDED') {
       throw new ForbiddenError('Organization is suspended');
     }
 

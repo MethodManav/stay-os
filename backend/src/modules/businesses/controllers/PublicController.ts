@@ -7,6 +7,7 @@ import { IRoomRepository } from '../../rooms/repositories/IRoomRepository';
 import { IBookingRepository } from '../../bookings/repositories/IBookingRepository';
 import { BadRequestError } from '../../../core/errors/BadRequestError';
 import { ConflictError } from '../../../core/errors/ConflictError';
+import { NotFoundError } from '../../../core/errors/NotFoundError';
 
 export class PublicController {
   constructor(
@@ -22,6 +23,10 @@ export class PublicController {
     try {
       const { slug } = req.params;
       const business = await this.businessService.getBusinessBySlug(slug);
+      
+      if (business.status !== 'ACTIVE') {
+        throw new NotFoundError('Business not found or pending verification');
+      }
 
       // Find website for this business
       let website: any = null;
@@ -77,6 +82,10 @@ export class PublicController {
     try {
       const { slug } = req.params;
       const business = await this.businessService.getBusinessBySlug(slug);
+
+      if (business.status !== 'ACTIVE') {
+        throw new NotFoundError('Business not found or pending verification');
+      }
       
       const roomTypes = await this.roomService.getRoomTypes(business.organizationId.toString(), {
         businessId: business.id
@@ -123,6 +132,10 @@ export class PublicController {
       }
 
       const business = await this.businessService.getBusinessBySlug(slug);
+
+      if (business.status !== 'ACTIVE') {
+        throw new NotFoundError('Business not found or pending verification');
+      }
       const orgId = business.organizationId.toString();
 
       // Retrieve all room types & all available physical rooms
@@ -178,6 +191,10 @@ export class PublicController {
       const checkOutDate = new Date(checkOut);
 
       const business = await this.businessService.getBusinessBySlug(slug);
+
+      if (business.status !== 'ACTIVE') {
+        throw new NotFoundError('Business not found or pending verification');
+      }
       const orgId = business.organizationId.toString();
 
       // Find physical rooms of this room type

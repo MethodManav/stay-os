@@ -52,9 +52,9 @@ export const DashboardLayout: React.FC = () => {
     { to: '/app/bookings', label: 'Bookings', icon: Calendar },
     { to: '/app/rooms', label: 'Rooms', icon: Bed },
     { to: '/app/customers', label: 'Guests CRM', icon: Users },
-    { to: '/app/website', label: 'Website Builder', icon: Globe },
-    { to: '/app/ai', label: 'AI Receptionist', icon: Bot },
     { to: '/app/payments', label: 'Payments', icon: CreditCard },
+    ...(activeTenant?.status !== 'PENDING' ? [{ to: '/app/website', label: 'Website Builder', icon: Globe }] : []),
+    { to: '/app/ai', label: 'AI Receptionist', icon: Bot },
     { to: '/app/analytics', label: 'Analytics', icon: BarChart3 },
     { to: '/app/team', label: 'Team', icon: UserSquare2 },
     { to: '/app/settings', label: 'Settings', icon: Settings },
@@ -194,15 +194,17 @@ export const DashboardLayout: React.FC = () => {
           <div className="flex items-center gap-4">
             
             {/* Live website shortcut */}
-            <a 
-              href={`/site/${activeTenant?.subdomain}`} 
-              target="_blank" 
-              rel="noreferrer"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 text-brand-primary text-xs font-bold hover:bg-brand-primary hover:text-white transition-all shadow-sm"
-            >
-              <Globe className="w-3.5 h-3.5" />
-              <span>Live Website</span>
-            </a>
+            {activeTenant?.status !== 'PENDING' && (
+              <a 
+                href={`/site/${activeTenant?.subdomain}`} 
+                target="_blank" 
+                rel="noreferrer"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 text-brand-primary text-xs font-bold hover:bg-brand-primary hover:text-white transition-all shadow-sm"
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span>Live Website</span>
+              </a>
+            )}
 
             {/* Notification bell */}
             <div className="relative">
@@ -256,13 +258,7 @@ export const DashboardLayout: React.FC = () => {
                   >
                     My Settings
                   </button>
-                  <button 
-                    onClick={() => { setProfileMenuOpen(false); navigate('/admin'); }}
-                    className="w-full text-left px-3.5 py-2 hover:bg-indigo-50 font-semibold text-indigo-650 flex items-center justify-between cursor-pointer border-t border-b border-slate-100/80"
-                  >
-                    <span>SaaS Admin Portal</span>
-                    <span className="text-[11px] uppercase font-black px-1.5 py-0.5 rounded bg-indigo-50 border border-indigo-100">Super</span>
-                  </button>
+
                   <button 
                     onClick={onLogout}
                     className="w-full text-left px-3.5 py-2 hover:bg-red-50 text-red-600 font-bold cursor-pointer"
@@ -348,6 +344,14 @@ export const DashboardLayout: React.FC = () => {
 
         {/* Dashboard Main Workspace Content */}
         <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-bg-page">
+          {activeTenant?.status === 'PENDING' && (
+            <div className="mb-6 p-4 rounded-xl border border-amber-200 bg-amber-50 text-amber-800 flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-sm">Verification Pending</h3>
+                <p className="text-xs mt-1">Your hotel is currently under review by our team. Website publishing and public bookings are disabled until approved.</p>
+              </div>
+            </div>
+          )}
           <Outlet />
         </main>
       </div>

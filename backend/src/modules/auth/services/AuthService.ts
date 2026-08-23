@@ -81,7 +81,7 @@ export class AuthService {
       name: params.orgName,
       slug: params.orgSlug,
       ownerId: user.id as any,
-      status: 'ACTIVE'
+      status: 'PENDING'
     }, session);
 
     // 5. Add OWNER membership role to the user record
@@ -108,7 +108,7 @@ export class AuthService {
       breakfastPolicy: 'none',
       amenities: [],
       images: [],
-      status: 'ACTIVE'
+      status: 'PENDING'
     }, session);
 
     // 7. Generate tokens
