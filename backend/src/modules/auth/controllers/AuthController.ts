@@ -58,7 +58,7 @@ export class AuthController {
 
   public refresh = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const refreshToken = req.cookies?.refreshToken;
+      const refreshToken = req.cookies?.refreshToken || req.body?.refreshToken;
       if (!refreshToken) {
         res.status(401).json({ success: false, message: 'No refresh token provided' });
         return;
@@ -77,7 +77,7 @@ export class AuthController {
 
   public logout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const refreshToken = req.cookies?.refreshToken;
+      const refreshToken = req.cookies?.refreshToken || req.body?.refreshToken;
       if (refreshToken) {
         await this.authService.logout(refreshToken);
       }

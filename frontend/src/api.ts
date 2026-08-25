@@ -6,10 +6,26 @@ interface RequestOptions extends RequestInit {
 
 class ApiClient {
   private organizationId: string | null = null;
+  private accessToken: string | null = null;
+  private refreshToken: string | null = null;
   private refreshPromise: Promise<boolean> | null = null;
 
   constructor() {
     this.organizationId = localStorage.getItem('stayos_active_tenant_id');
+    this.accessToken = localStorage.getItem('stayos_access_token');
+    this.refreshToken = localStorage.getItem('stayos_refresh_token');
+  }
+
+  public setTokens(accessToken: string | null, refreshToken: string | null) {
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
+    if (accessToken && refreshToken) {
+      localStorage.setItem('stayos_access_token', accessToken);
+      localStorage.setItem('stayos_refresh_token', refreshToken);
+    } else {
+      localStorage.removeItem('stayos_access_token');
+      localStorage.removeItem('stayos_refresh_token');
+    }
   }
 
   public setOrganizationId(id: string | null) {
@@ -27,6 +43,7 @@ class ApiClient {
 
   public clearSession() {
     this.setOrganizationId(null);
+    this.setTokens(null, null);
     localStorage.removeItem('stayos_v1_user');
     localStorage.removeItem('stayos_v1_onboarding_completed');
   }
@@ -40,6 +57,7 @@ class ApiClient {
         const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refreshToken: this.refreshToken }),
           credentials: 'include'
         });
 
@@ -48,6 +66,9 @@ class ApiClient {
         }
 
         const json = await response.json();
+        if (json.data && json.data.accessToken) {
+          this.setTokens(json.data.accessToken, json.data.refreshToken);
+        }
         return json.success;
       } catch (err) {
         this.clearSession();
@@ -70,6 +91,10 @@ class ApiClient {
 
     if (this.organizationId) {
       headers['x-organization-id'] = this.organizationId;
+    }
+
+    if (this.accessToken) {
+      headers['Authorization'] = `Bearer ${this.accessToken}`;
     }
 
     const finalOptions: RequestInit = {
@@ -103,6 +128,9 @@ class ApiClient {
       method: 'POST',
       body: JSON.stringify(credentials)
     });
+    if (json.data?.tokens) {
+      this.setTokens(json.data.tokens.accessToken, json.data.tokens.refreshToken);
+    }
     if (json.data?.user?.organizations?.length > 0) {
       this.setOrganizationId(json.data.user.organizations[0].organizationId);
     }
@@ -114,6 +142,9 @@ class ApiClient {
       method: 'POST',
       body: JSON.stringify(data)
     });
+    if (json.data?.tokens) {
+      this.setTokens(json.data.tokens.accessToken, json.data.tokens.refreshToken);
+    }
     const orgId = json.data?.organization?.id || json.data?.organization?._id;
     if (orgId) {
       this.setOrganizationId(orgId);
@@ -124,7 +155,8 @@ class ApiClient {
   public async logout() {
     try {
       await this.request('/auth/logout', {
-        method: 'POST'
+        method: 'POST',
+        body: JSON.stringify({ refreshToken: this.refreshToken })
       });
     } catch (e) {
       // Ignore logout errors
