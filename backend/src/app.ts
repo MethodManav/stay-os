@@ -45,6 +45,11 @@ app.use(morganMiddleware);
 // Register API routes
 app.use('/api/v1', rootRouter);
 
+// Root health check route
+app.get('/', (_req, res) => {
+  res.status(200).json({ status: 'ok', message: 'StayOS API is running' });
+});
+
 // Fallback for unmatched routes (HTTP 404)
 app.use((req, _res, next) => {
   next(new NotFoundError(`Cannot ${req.method} ${req.originalUrl}`));

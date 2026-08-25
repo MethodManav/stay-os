@@ -9,21 +9,21 @@ export class AuthController {
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
       secure: isProd,
-      sameSite: 'lax',
+      sameSite: isProd ? 'none' : 'lax',
       maxAge: 15 * 60 * 1000 // 15 mins
     });
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       secure: isProd,
-      sameSite: 'lax',
+      sameSite: isProd ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
   }
 
   private clearTokenCookies(res: Response) {
     const isProd = process.env.NODE_ENV === 'production';
-    res.clearCookie('accessToken', { httpOnly: true, secure: isProd, sameSite: 'lax' });
-    res.clearCookie('refreshToken', { httpOnly: true, secure: isProd, sameSite: 'lax' });
+    res.clearCookie('accessToken', { httpOnly: true, secure: isProd, sameSite: isProd ? 'none' : 'lax' });
+    res.clearCookie('refreshToken', { httpOnly: true, secure: isProd, sameSite: isProd ? 'none' : 'lax' });
   }
 
   public register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {

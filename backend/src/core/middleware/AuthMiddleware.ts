@@ -26,8 +26,12 @@ export const AuthMiddleware = (req: Request, _res: Response, next: NextFunction)
     };
 
     next();
-  } catch (error) {
-    next(new UnauthorizedError('Invalid or expired authentication token'));
+  } catch (error: any) {
+    if (error instanceof UnauthorizedError) {
+      next(error);
+    } else {
+      next(new UnauthorizedError('Invalid or expired authentication token'));
+    }
   }
 };
 
