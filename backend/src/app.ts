@@ -8,6 +8,8 @@ import { Logger } from './shared/utils/Logger';
 import { ErrorHandler } from './core/errors/ErrorHandler';
 import { NotFoundError } from './core/errors/NotFoundError';
 import rootRouter from './routes';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './docs/swagger.json';
 // import { RateLimitMiddleware } from './core/middleware/RateLimitMiddleware';
 
 const app = express();
@@ -44,6 +46,9 @@ app.use(morganMiddleware);
 
 // Register API routes
 app.use('/api/v1', rootRouter);
+
+// Register Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Root health check route
 app.get('/', (_req, res) => {

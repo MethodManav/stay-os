@@ -1,0 +1,658 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "StayOS SaaS API",
+    "version": "1.0.0",
+    "description": "API documentation for StayOS, a multi-tenant hotel management SaaS. This API provides comprehensive endpoints for managing hotel properties, bookings, guests, rooms, AI receptionist conversations, and tenant organizations. Designed for consumption by both frontend applications and MCP (Model Context Protocol) AI Agents."
+  },
+  "servers": [
+    {
+      "url": "/api/v1",
+      "description": "StayOS API v1 Base Path"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT authorization for StayOS endpoints. Provide the access token retrieved from the login endpoint."
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Detailed error message"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "summary": "Register a new SaaS user",
+        "description": "Creates a new user account in the StayOS platform. Does not create a hotel profile.",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Log in to StayOS",
+        "description": "Authenticates a user and returns an access token, refresh token, and user profile data. Crucial for MCP initialization.",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful, returns tokens."
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Log out",
+        "description": "Invalidates the current session tokens.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Logged out"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "Get current user profile",
+        "description": "Returns the currently authenticated user profile, including their organizations and roles.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved"
+          }
+        }
+      }
+    },
+    "/businesses": {
+      "post": {
+        "summary": "Create a new business profile (Hotel)",
+        "description": "Creates a new hotel, resort, or boutique profile under the authenticated user's organization.",
+        "tags": [
+          "Businesses"
+        ],
+        "responses": {
+          "201": {
+            "description": "Business created"
+          }
+        }
+      }
+    },
+    "/businesses/me": {
+      "get": {
+        "summary": "Get the active business profile",
+        "description": "Returns detailed information about the active hotel business based on the current tenant context. Includes settings, policies, and branding.",
+        "tags": [
+          "Businesses"
+        ],
+        "responses": {
+          "200": {
+            "description": "Active business profile"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update the active business profile",
+        "description": "Modifies the settings of the current hotel business, such as check-in time, policies, and subscription tier.",
+        "tags": [
+          "Businesses"
+        ],
+        "responses": {
+          "200": {
+            "description": "Business profile updated"
+          }
+        }
+      }
+    },
+    "/bookings": {
+      "get": {
+        "summary": "List all bookings",
+        "description": "Retrieves all reservations for the current hotel. MCP Agents can use this to check hotel occupancy or find a specific guest's reservation.",
+        "tags": [
+          "Bookings"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of booking objects"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new booking",
+        "description": "Creates a new room reservation. Requires guest details, room assignment, check-in and check-out dates, and payment status.",
+        "tags": [
+          "Bookings"
+        ],
+        "responses": {
+          "201": {
+            "description": "Booking created"
+          }
+        }
+      }
+    },
+    "/bookings/{id}": {
+      "get": {
+        "summary": "Get a specific booking",
+        "description": "Retrieves comprehensive details about a single reservation by its ID.",
+        "tags": [
+          "Bookings"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking object"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a booking",
+        "description": "Modifies an existing reservation (e.g., changing dates, assigning a different room, or updating payment status).",
+        "tags": [
+          "Bookings"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a booking",
+        "description": "Permanently removes a reservation record. (Usually, canceling is preferred over deleting).",
+        "tags": [
+          "Bookings"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking deleted"
+          }
+        }
+      }
+    },
+    "/bookings/{id}/check-in": {
+      "post": {
+        "summary": "Check-in a guest",
+        "description": "Updates the booking status to CHECKED_IN. Use this when the guest arrives at the hotel.",
+        "tags": [
+          "Bookings"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Checked in successfully"
+          }
+        }
+      }
+    },
+    "/bookings/{id}/check-out": {
+      "post": {
+        "summary": "Check-out a guest",
+        "description": "Updates the booking status to CHECKED_OUT. Use this when the guest leaves the hotel.",
+        "tags": [
+          "Bookings"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Checked out successfully"
+          }
+        }
+      }
+    },
+    "/bookings/{id}/cancel": {
+      "post": {
+        "summary": "Cancel a booking",
+        "description": "Updates the booking status to CANCELLED. Applies cancellation policies.",
+        "tags": [
+          "Bookings"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking cancelled"
+          }
+        }
+      }
+    },
+    "/rooms": {
+      "get": {
+        "summary": "List all rooms",
+        "description": "Retrieves the complete physical room inventory for the hotel, including their current status (available, occupied, maintenance).",
+        "tags": [
+          "Rooms"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of rooms"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new room",
+        "description": "Creates a new physical room in the hotel inventory.",
+        "tags": [
+          "Rooms"
+        ],
+        "responses": {
+          "201": {
+            "description": "Room created"
+          }
+        }
+      }
+    },
+    "/rooms/{id}": {
+      "get": {
+        "summary": "Get room details",
+        "description": "Retrieves details about a specific room.",
+        "tags": [
+          "Rooms"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room object"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update room status",
+        "description": "Updates a room (e.g., changing its status to maintenance or updating its floor number).",
+        "tags": [
+          "Rooms"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a room",
+        "description": "Removes a room from the hotel inventory.",
+        "tags": [
+          "Rooms"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room deleted"
+          }
+        }
+      }
+    },
+    "/guests": {
+      "get": {
+        "summary": "List all guests",
+        "description": "Retrieves the hotel CRM guest database, including historical visits and total spending.",
+        "tags": [
+          "Guests"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of guest profiles"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create guest profile",
+        "description": "Adds a new guest to the CRM database.",
+        "tags": [
+          "Guests"
+        ],
+        "responses": {
+          "201": {
+            "description": "Guest created"
+          }
+        }
+      }
+    },
+    "/guests/{id}": {
+      "get": {
+        "summary": "Get a guest profile",
+        "description": "Retrieves a specific guest profile by ID.",
+        "tags": [
+          "Guests"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Guest profile"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update guest profile",
+        "description": "Updates a guest's contact information or preferences.",
+        "tags": [
+          "Guests"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Guest updated"
+          }
+        }
+      }
+    },
+    "/ai/conversations": {
+      "get": {
+        "summary": "List AI conversations",
+        "description": "Retrieves active and past WhatsApp/Web chat conversations managed by the AI Receptionist.",
+        "tags": [
+          "AI"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of conversations"
+          }
+        }
+      }
+    },
+    "/ai/conversations/{id}": {
+      "get": {
+        "summary": "Get AI conversation history",
+        "description": "Retrieves the full message history for a specific AI conversation thread.",
+        "tags": [
+          "AI"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conversation details"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update conversation status",
+        "description": "Marks a conversation as resolved, escalated, or read.",
+        "tags": [
+          "AI"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conversation updated"
+          }
+        }
+      }
+    },
+    "/ai/conversations/{id}/messages": {
+      "post": {
+        "summary": "Send message to guest",
+        "description": "Allows human staff or the MCP agent to send a message directly into a guest conversation thread.",
+        "tags": [
+          "AI"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Message sent"
+          }
+        }
+      }
+    },
+    "/ai/kb": {
+      "get": {
+        "summary": "Get AI Knowledge Base",
+        "description": "Retrieves the custom knowledge base documents used by the AI Receptionist to answer guest queries.",
+        "tags": [
+          "AI"
+        ],
+        "responses": {
+          "200": {
+            "description": "Knowledge base rules"
+          }
+        }
+      },
+      "post": {
+        "summary": "Update AI Knowledge Base",
+        "description": "Trains the AI Receptionist with new rules, FAQs, or hotel policies.",
+        "tags": [
+          "AI"
+        ],
+        "responses": {
+          "200": {
+            "description": "Knowledge base updated"
+          }
+        }
+      }
+    },
+    "/analytics": {
+      "get": {
+        "summary": "Get hotel analytics dashboard",
+        "description": "Retrieves occupancy rates, revenue metrics, and booking trends for the hotel dashboard.",
+        "tags": [
+          "Analytics"
+        ],
+        "responses": {
+          "200": {
+            "description": "Analytics data"
+          }
+        }
+      }
+    }
+  }
+}

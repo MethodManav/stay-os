@@ -644,8 +644,7 @@ export const PublicSite: React.FC = () => {
       )}
 
       {/* Floating AI Receptionist widget */}
-      {tenant.subscriptionTier === 'premium' && (
-        <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 right-6 z-50">
         
         {/* Toggle bubble button */}
         {!aiChatOpen && (
@@ -747,7 +746,6 @@ export const PublicSite: React.FC = () => {
         )}
 
       </div>
-      )}
 
     </div>
   );
