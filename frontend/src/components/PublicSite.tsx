@@ -103,6 +103,8 @@ export const PublicSite: React.FC = () => {
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
   const [guestsCount, setGuestsCount] = useState(2);
+  const [isAvailable, setIsAvailable] = useState(false);
+  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
 
   // AI Assistant Chat Widget
   const [aiChatOpen, setAiChatOpen] = useState(false);
@@ -179,7 +181,30 @@ export const PublicSite: React.FC = () => {
   const handleOpenBookingModal = (room?: Room) => {
     setSelectedRoom(room || tenant.rooms[0]);
     setBookingSuccess(null);
+    setIsAvailable(false);
     setBookingModalOpen(true);
+  };
+
+  const handleCheckAvailability = async () => {
+    if (!selectedRoom || !checkIn || !checkOut) return;
+    
+    setIsCheckingAvailability(true);
+    try {
+      const data = await api.checkPublicAvailability(subdomain!, checkIn, checkOut);
+      const roomAvailable = data.find((rt: any) => rt.id === selectedRoom.id);
+      if (roomAvailable) {
+        setIsAvailable(true);
+      } else {
+        alert('This room is not available for the selected dates.');
+        setIsAvailable(false);
+      }
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || 'Error checking availability. Please try again.');
+      setIsAvailable(false);
+    } finally {
+      setIsCheckingAvailability(false);
+    }
   };
 
   const handleCompleteBooking = async (e: React.FormEvent) => {
@@ -517,7 +542,10 @@ export const PublicSite: React.FC = () => {
                     <label className="block text-[11px] uppercase font-bold text-slate-500 mb-1">Select Room Type</label>
                     <select
                       value={selectedRoom?.id || ''}
-                      onChange={e => setSelectedRoom(tenant.rooms.find(r => r.id === e.target.value) || null)}
+                      onChange={e => {
+                        setSelectedRoom(tenant.rooms.find(r => r.id === e.target.value) || null);
+                        setIsAvailable(false);
+                      }}
                       className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none"
                     >
                       {tenant.rooms.map(r => (
@@ -541,7 +569,10 @@ export const PublicSite: React.FC = () => {
                       type="date"
                       required
                       value={checkIn}
-                      onChange={e => setCheckIn(e.target.value)}
+                      onChange={e => {
+                        setCheckIn(e.target.value);
+                        setIsAvailable(false);
+                      }}
                       className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none"
                     />
                   </div>
@@ -551,7 +582,10 @@ export const PublicSite: React.FC = () => {
                       type="date"
                       required
                       value={checkOut}
-                      onChange={e => setCheckOut(e.target.value)}
+                      onChange={e => {
+                        setCheckOut(e.target.value);
+                        setIsAvailable(false);
+                      }}
                       className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none"
                     />
                   </div>
@@ -608,13 +642,29 @@ export const PublicSite: React.FC = () => {
                   >
                     Cancel
                   </button>
-                  <button
-                    type="submit"
-                    className="px-5 py-2 text-white font-bold rounded-lg shadow-sm"
-                    style={{ backgroundColor: primaryColor }}
-                  >
-                    Pay & Confirm
-                  </button>
+                  {!isAvailable ? (
+                    <button
+                      type="button"
+                      onClick={handleCheckAvailability}
+                      disabled={isCheckingAvailability}
+                      className="px-5 py-2 text-white font-bold rounded-lg shadow-sm disabled:opacity-70 flex items-center gap-2"
+                      style={{ backgroundColor: primaryColor }}
+                    >
+                      {isCheckingAvailability ? (
+                        <><Clock className="w-4 h-4 animate-spin" /> Checking...</>
+                      ) : (
+                        'Check Availability'
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="px-5 py-2 text-white font-bold rounded-lg shadow-sm"
+                      style={{ backgroundColor: primaryColor }}
+                    >
+                      Pay & Confirm
+                    </button>
+                  )}
                 </div>
               </form>
             ) : (
@@ -644,7 +694,8 @@ export const PublicSite: React.FC = () => {
       )}
 
       {/* Floating AI Receptionist widget */}
-      <div className="fixed bottom-6 right-6 z-50">
+      {tenant.subscriptionTier === 'premium' && (
+        <div className="fixed bottom-6 right-6 z-50">
         
         {/* Toggle bubble button */}
         {!aiChatOpen && (
@@ -746,6 +797,7 @@ export const PublicSite: React.FC = () => {
         )}
 
       </div>
+      )}
 
     </div>
   );
