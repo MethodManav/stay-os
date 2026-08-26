@@ -50,6 +50,11 @@ app.use('/api/v1', rootRouter);
 // Register Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+// Serve raw OpenAPI JSON
+app.get('/openapi.json', (_req, res) => {
+  res.json(swaggerDocument);
+});
+
 // Root health check route
 app.get('/', (_req, res) => {
   res.status(200).json({ status: 'ok', message: 'StayOS API is running' });
