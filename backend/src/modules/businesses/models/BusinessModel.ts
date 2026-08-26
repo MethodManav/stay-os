@@ -22,6 +22,7 @@ export interface IBusiness {
   amenities: string[];
   logo?: string;
   images: string[];
+  subscriptionTier: 'free' | 'premium';
   status: 'PENDING' | 'ACTIVE' | 'INACTIVE';
   createdAt: Date;
   updatedAt: Date;
@@ -134,6 +135,11 @@ const BusinessSchema = new Schema<IBusinessDocument>(
       type: String,
       enum: ['PENDING', 'ACTIVE', 'INACTIVE'],
       default: 'PENDING'
+    },
+    subscriptionTier: {
+      type: String,
+      enum: ['free', 'premium'],
+      default: 'free'
     }
   },
   {

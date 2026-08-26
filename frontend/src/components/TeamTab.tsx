@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../AppContext';
-import type { TeamMember } from '../db';
+import type { TeamMember } from '../types';
 import { 
   Plus, 
   Trash2, 

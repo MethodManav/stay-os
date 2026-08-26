@@ -472,7 +472,7 @@ export const WebsiteTab: React.FC = () => {
                         <div className="grid grid-cols-1 gap-3">
                           {activeTenant.rooms.map(rm => (
                             <div key={rm.id} className="border border-slate-100 rounded-lg overflow-hidden flex bg-white text-xs">
-                              <img src={rm.image} alt="" className="w-20 h-20 object-cover shrink-0" />
+                              <img src={rm.images?.[0]} alt="" className="w-20 h-20 object-cover shrink-0" />
                               <div className="p-2.5 flex-1 flex flex-col justify-between">
                                 <div>
                                   <h4 className="font-bold text-text-primary leading-snug">{rm.name}</h4>

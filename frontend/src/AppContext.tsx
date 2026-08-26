@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import {
-  getTenants,
   type Tenant, 
   type SaaSUser, 
   type Booking, 
@@ -12,7 +11,7 @@ import {
   type TenantBranding, 
   type TenantSettings, 
   type TeamMember
-} from './db';
+} from './types';
 import { api } from './api';
 
 const mapBackendToTenant = (
@@ -64,7 +63,7 @@ const mapBackendToTenant = (
       count: physical.length || 10,
       status: physical.length > 0 ? (physical.some(r => r.status === 'available') ? 'available' : 'occupied') : 'available',
       amenities: rt.amenities || [],
-      image: rt.images?.[0] || 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85'
+      images: rt.images?.length ? rt.images : ['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85']
     };
   });
 
@@ -161,7 +160,7 @@ interface AppContextType {
   currentUser: SaaSUser | null;
   onboardingCompleted: boolean;
   switchTenant: (id: string) => void;
-  syncState: () => Promise<void>;
+  syncState: () => Promise<Tenant[] | undefined>;
   updateActiveTenant: (tenant: Tenant) => void;
   updateAllTenants: (tenants: Tenant[]) => void;
   registerNewTenant: (
@@ -204,7 +203,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [onboardingCompleted, setOnboardingCompletedState] = useState(false);
   const [isAuthReady, setIsAuthReady] = useState(false);
 
-  const syncState = async () => {
+  const syncState = async (): Promise<Tenant[] | undefined> => {
     try {
       let meRes;
       try {
@@ -274,9 +273,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setTenants(tenantList);
         const active = tenantList.find(t => t.id === activeId) || tenantList[0] || null;
         setActiveTenantState(active);
+        return tenantList;
       } else {
         setTenants([]);
         setActiveTenantState(null);
+        return [];
       }
     } catch (err) {
       console.error('Error syncing backend state:', err);
@@ -284,6 +285,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setActiveTenantState(null);
       setCurrentUser(null);
       setOnboardingCompletedState(false);
+      return [];
     }
   };
 
@@ -373,7 +375,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         capacity: r.maxGuests,
         pricePerNight: r.basePrice,
         amenities: r.amenities,
-        images: [r.image]
+        images: r.images
       });
 
       // Create physical room instances under this category
@@ -389,8 +391,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     // Refresh context and return newly synced tenant
-    await syncState();
-    const all = getTenants(); // fallback logic
+    const all = (await syncState()) || [];
     return all.find(t => t.subdomain === orgSlug) || all[0];
   };
 
@@ -514,7 +515,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       capacity: roomData.maxGuests,
       pricePerNight: roomData.basePrice,
       amenities: roomData.amenities,
-      images: [roomData.image]
+      images: roomData.images
     });
 
     const rtId = rtRes.data.id || rtRes.data._id;
@@ -543,7 +544,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       capacity: updatedRoom.maxGuests,
       pricePerNight: updatedRoom.basePrice,
       amenities: updatedRoom.amenities,
-      images: [updatedRoom.image]
+      images: updatedRoom.images
     });
     await syncState();
   };

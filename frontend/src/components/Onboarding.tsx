@@ -9,7 +9,7 @@ import {
   Upload,
   AlertCircle
 } from 'lucide-react';
-import type { Room } from '../db';
+import type { Room } from '../types';
 
 export const Onboarding: React.FC = () => {
   const { registerNewTenant, triggerOnboardingState } = useApp();
@@ -55,7 +55,7 @@ export const Onboarding: React.FC = () => {
       count: 10,
       status: 'available',
       amenities: ['King Bed', 'AC', 'Wi-Fi', 'Tv'],
-      image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85'
+      images: ['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85']
     }
   ]);
   const [roomName, setRoomName] = useState('');
@@ -99,9 +99,9 @@ export const Onboarding: React.FC = () => {
       count: roomCount,
       status: 'available',
       amenities: rAmenities,
-      image: roomType === 'Premium Suite' 
-        ? 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=85' 
-        : 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85'
+      images: roomType === 'Premium Suite' 
+        ? ['https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=85'] 
+        : ['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85']
     };
     setRooms([...rooms, newRoom]);
     setRoomName('');

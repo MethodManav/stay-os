@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import type { Room, Tenant, TenantBranding, TenantSettings, WebsiteTheme } from '../db';
+import type { Room, Tenant, TenantBranding, TenantSettings, WebsiteTheme } from '../types';
 import { api } from '../api';
 import { 
   MapPin, 
@@ -52,7 +52,7 @@ const mapPublicToTenant = (business: any, website: any, roomTypes: any[]): Tenan
     count: 10,
     status: 'available',
     amenities: rt.amenities || [],
-    image: rt.images?.[0] || 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85'
+    images: rt.images?.length ? rt.images : ['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85']
   }));
 
   const mappedWebsite: WebsiteTheme = {
@@ -372,9 +372,9 @@ export const PublicSite: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {tenant.rooms.map((room) => (
                   <div key={room.id} className="border border-slate-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between group bg-white">
-                    <div className="h-56 bg-slate-150 overflow-hidden relative">
-                      <img src={room.image} alt={room.name} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" />
-                      <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-xl text-xs font-bold font-mono">
+                    <div className="h-64 relative bg-slate-100 overflow-hidden">
+                      <img src={room.images?.[0] || (room as any).image} alt={room.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-xl text-xs font-bold font-mono">
                         {currencySymbol}{room.basePrice.toLocaleString()} <span className="text-[11px] font-normal text-slate-350">/ night</span>
                       </div>
                     </div>

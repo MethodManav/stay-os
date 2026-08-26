@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { useApp } from '../AppContext';
-import type { Tenant, Room, SaaSUser } from '../db';
+import type { Tenant, Room, SaaSUser } from '../types';
 import { 
   LayoutDashboard, 
   Building, 
@@ -172,7 +172,7 @@ export const AdminPanel: React.FC = () => {
         count: 10,
         status: "available",
         amenities: ["Wi-Fi", "Air Conditioning", "Flat TV", "Coffee maker"],
-        image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85"
+        images: ["https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85"]
       },
       {
         id: `rm-2-${Date.now()}`,
@@ -183,7 +183,7 @@ export const AdminPanel: React.FC = () => {
         count: 5,
         status: "available",
         amenities: ["Ocean/Mountain View", "King Bed", "Minibar", "Bathtub", "High-speed Wi-Fi"],
-        image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=85"
+        images: ["https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=85"]
       }
     ];
 

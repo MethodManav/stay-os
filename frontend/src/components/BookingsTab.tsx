@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../AppContext';
-import type { Booking } from '../db';
+import type { Booking } from '../types';
 import { 
   Calendar as CalendarIcon, 
   List, 

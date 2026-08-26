@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useApp } from '../AppContext';
-import type { Room } from '../db';
+import type { Room } from '../types';
 import { 
   Plus, 
   Edit, 
   Trash2, 
   X, 
   Bed, 
-  Users
+  Users,
+  Upload
 } from 'lucide-react';
 
 export const RoomsTab: React.FC = () => {
@@ -23,7 +24,7 @@ export const RoomsTab: React.FC = () => {
   const [count, setCount] = useState(10);
   const [status, setStatus] = useState<Room['status']>('available');
   const [amenitiesText, setAmenitiesText] = useState('');
-  const [image, setImage] = useState('');
+  const [images, setImages] = useState<string[]>([]);
 
   const currencySymbol = activeTenant.settings.currency === 'INR' ? '₹' : '$';
   const rooms = activeTenant.rooms || [];
@@ -37,7 +38,7 @@ export const RoomsTab: React.FC = () => {
     setCount(10);
     setStatus('available');
     setAmenitiesText('King Bed, Ocean View, Free Wi-Fi, Air Conditioning');
-    setImage('https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85');
+    setImages(['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85']);
     setEditorOpen(true);
   };
 
@@ -50,7 +51,7 @@ export const RoomsTab: React.FC = () => {
     setCount(room.count);
     setStatus(room.status);
     setAmenitiesText(room.amenities.join(', '));
-    setImage(room.image);
+    setImages(room.images || ((room as any).image ? [(room as any).image] : []));
     setEditorOpen(true);
   };
 
@@ -68,7 +69,7 @@ export const RoomsTab: React.FC = () => {
         count,
         status,
         amenities: parsedAmenities,
-        image: image || 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85'
+        images: images.length > 0 ? images : ['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85']
       });
     } else {
       addRoom({
@@ -79,7 +80,7 @@ export const RoomsTab: React.FC = () => {
         count,
         status,
         amenities: parsedAmenities,
-        image: image || 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85'
+        images: images.length > 0 ? images : ['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85']
       });
     }
     setEditorOpen(false);
@@ -118,7 +119,7 @@ export const RoomsTab: React.FC = () => {
               {/* Image Header with status badges */}
               <div className="h-44 relative bg-slate-100 overflow-hidden">
                 <img 
-                  src={room.image} 
+                  src={room.images?.[0] || (room as any).image} 
                   alt={room.name} 
                   className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500" 
                 />
@@ -276,14 +277,71 @@ export const RoomsTab: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Room Cover Image URL</label>
-                <input
-                  type="text"
-                  value={image}
-                  placeholder="https://images.unsplash.com/photo-..."
-                  onChange={e => setImage(e.target.value)}
-                  className="w-full px-3 py-2 border border-border-subtle rounded-lg focus:outline-none"
-                />
+                <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1">Room Images</label>
+                <div 
+                  className="mt-1 border-2 border-dashed border-border-subtle rounded-xl p-4 text-center transition-colors relative overflow-hidden group"
+                >
+                  {images && images.length > 0 && !images[0].includes('placeholder') ? (
+                    <div className="grid grid-cols-3 gap-3 w-full">
+                      {images.map((img, idx) => (
+                        <div key={idx} className="relative h-24 rounded-lg overflow-hidden group/img shadow-sm border border-border-subtle">
+                          <img src={img} alt={`Preview ${idx}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setImages(prev => prev.filter((_, i) => i !== idx));
+                            }}
+                            className="absolute top-1.5 right-1.5 bg-black/70 hover:bg-red-500 text-white rounded-full p-1 opacity-0 group-hover/img:opacity-100 transition-all z-10 cursor-pointer shadow-md"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                      <div 
+                        className="h-24 rounded-lg border-2 border-dashed border-border-subtle flex flex-col items-center justify-center hover:bg-slate-50 transition-colors cursor-pointer"
+                        onClick={(e) => { e.stopPropagation(); document.getElementById('image-upload')?.click(); }}
+                      >
+                         <Plus className="w-5 h-5 text-slate-400 mb-1" />
+                         <span className="text-[10px] font-bold text-slate-500">Add More</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div 
+                      className="py-6 flex flex-col items-center hover:bg-slate-50 transition-colors w-full h-full cursor-pointer"
+                      onClick={() => document.getElementById('image-upload')?.click()}
+                    >
+                      <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                        <Upload className="w-4 h-4 text-slate-400" />
+                      </div>
+                      <span className="text-sm font-bold text-brand-primary">Click to upload images</span>
+                      <span className="text-xs text-text-secondary mt-1 font-semibold">PNG, JPG up to 5MB</span>
+                    </div>
+                  )}
+                  <input 
+                    id="image-upload" 
+                    type="file" 
+                    multiple
+                    accept="image/*" 
+                    className="hidden" 
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files || []);
+                      files.forEach(file => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setImages(prev => {
+                            // Replace default image if it's the only one
+                            if (prev.length === 1 && prev[0].includes('unsplash.com')) {
+                              return [reader.result as string];
+                            }
+                            return [...prev, reader.result as string];
+                          });
+                        };
+                        reader.readAsDataURL(file);
+                      });
+                    }} 
+                  />
+                </div>
               </div>
 
               <div>

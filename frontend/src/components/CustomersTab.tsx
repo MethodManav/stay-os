@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../AppContext';
-import type { Guest } from '../db';
+import type { Guest } from '../types';
 import { 
   Search, 
   Plus, 
