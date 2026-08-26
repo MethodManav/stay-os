@@ -143,6 +143,7 @@ const mapBackendToTenant = (
     subdomain: business.slug || '',
     name: business.name,
     status: business.status || 'ACTIVE',
+    subscriptionTier: business.subscriptionTier || 'free',
     branding,
     settings,
     rooms: mappedRooms,

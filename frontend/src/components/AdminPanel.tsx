@@ -191,6 +191,7 @@ export const AdminPanel: React.FC = () => {
       id: newId,
       subdomain,
       name: newHotelName,
+      subscriptionTier: 'free',
       branding: {
         primaryColor: "#3b82f6", // Indigo/Blue default
         secondaryColor: "#1d4ed8",

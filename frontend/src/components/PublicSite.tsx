@@ -70,6 +70,7 @@ const mapPublicToTenant = (business: any, website: any, roomTypes: any[]): Tenan
     id: business.id || business._id || '',
     subdomain: business.slug || '',
     name: business.name,
+    subscriptionTier: business.subscriptionTier || 'free',
     branding,
     settings,
     rooms: mappedRooms,
@@ -643,7 +644,7 @@ export const PublicSite: React.FC = () => {
       )}
 
       {/* Floating AI Receptionist widget */}
-      {tenant.settings.subscriptionTier === 'premium' && (
+      {tenant.subscriptionTier === 'premium' && (
         <div className="fixed bottom-6 right-6 z-50">
         
         {/* Toggle bubble button */}
