@@ -111,6 +111,7 @@ export const PublicSite: React.FC = () => {
   const [messages, setMessages] = useState<Array<{ sender: 'guest' | 'ai'; text: string; link?: string }>>([]);
   const [aiInput, setAiInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isChatbotEnabled, setIsChatbotEnabled] = useState(false);
   const chatBottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -123,6 +124,9 @@ export const PublicSite: React.FC = () => {
         
         const mappedTenant = mapPublicToTenant(data.business, data.website, roomTypes);
         setTenant(mappedTenant);
+
+        const chatbotStatus = await api.checkChatbotStatus(subdomain!);
+        setIsChatbotEnabled(chatbotStatus);
         
         setMessages([
           { sender: 'ai', text: `Hello! Welcome to ${mappedTenant.name}. I am your AI receptionist concierge. Ask me anything about our room rates, check-in policies, wifi, or request a booking reservation!` }
@@ -694,7 +698,7 @@ export const PublicSite: React.FC = () => {
       )}
 
       {/* Floating AI Receptionist widget */}
-      {tenant.subscriptionTier === 'premium' && (
+      {isChatbotEnabled && (
         <div className="fixed bottom-6 right-6 z-50">
         
         {/* Toggle bubble button */}

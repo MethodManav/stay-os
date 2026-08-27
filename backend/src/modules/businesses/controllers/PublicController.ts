@@ -250,5 +250,25 @@ export class PublicController {
       next(error);
     }
   };
+
+  public isChatbot = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { slug } = req.params;
+      const business = await this.businessService.getBusinessBySlug(slug);
+
+      if (business.status !== 'ACTIVE') {
+        throw new NotFoundError('Business not found or pending verification');
+      }
+
+      res.status(200).json({
+        success: true,
+        data: {
+          isChatbot: business.subscriptionTier === 'premium'
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 export default PublicController;

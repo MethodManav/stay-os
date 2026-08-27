@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { PublicController } from '../controllers/PublicController';
 import { validateRequest } from '../../../core/middleware/ValidationMiddleware';
 import rateLimit from 'express-rate-limit';
-import { createBookingSchema } from '../../bookings/validators/BookingValidator';
+import { createPublicBookingSchema } from '../../bookings/validators/BookingValidator';
 
 // Strict rate limiter for public reservation submissions to protect against automated spam/abuse
 const publicBookingLimiter = rateLimit({
@@ -35,9 +35,12 @@ export const createPublicRouter = (controller: PublicController): Router => {
   router.post(
     '/:slug/bookings',
     publicBookingLimiter,
-    validateRequest({ body: createBookingSchema }),
+    validateRequest({ body: createPublicBookingSchema }),
     controller.createBooking
   );
+
+  // Check if chatbot is enabled for this business
+  router.get('/:slug/isChatbot', controller.isChatbot);
 
   return router;
 };

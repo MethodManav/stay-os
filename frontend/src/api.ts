@@ -399,6 +399,16 @@ class ApiClient {
     }
     return json.data;
   }
+
+  public async checkChatbotStatus(slug: string) {
+    const url = `${API_BASE_URL}/public/businesses/${slug}/isChatbot`;
+    const response = await fetch(url);
+    const json = await response.json();
+    if (!response.ok) {
+      throw new Error(json.message || `Request failed with status ${response.status}`);
+    }
+    return json.data.isChatbot;
+  }
 }
 
 export const api = new ApiClient();
