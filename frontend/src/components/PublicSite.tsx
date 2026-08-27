@@ -105,6 +105,7 @@ export const PublicSite: React.FC = () => {
   const [guestsCount, setGuestsCount] = useState(2);
   const [isAvailable, setIsAvailable] = useState(false);
   const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
+  const [isSubmittingBooking, setIsSubmittingBooking] = useState(false);
 
   // AI Assistant Chat Widget
   const [aiChatOpen, setAiChatOpen] = useState(false);
@@ -213,7 +214,8 @@ export const PublicSite: React.FC = () => {
 
   const handleCompleteBooking = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedRoom) return;
+    if (!selectedRoom || isSubmittingBooking) return;
+    setIsSubmittingBooking(true);
 
     try {
       const [firstName, ...rest] = guestName.split(' ');
@@ -237,6 +239,8 @@ export const PublicSite: React.FC = () => {
     } catch (err: any) {
       console.error(err);
       alert(err.message || 'Booking reservation failed. Please check date availability.');
+    } finally {
+      setIsSubmittingBooking(false);
     }
   };
 
@@ -663,10 +667,15 @@ export const PublicSite: React.FC = () => {
                   ) : (
                     <button
                       type="submit"
-                      className="px-5 py-2 text-white font-bold rounded-lg shadow-sm"
+                      disabled={isSubmittingBooking}
+                      className="px-5 py-2 text-white font-bold rounded-lg shadow-sm disabled:opacity-70 flex items-center gap-2"
                       style={{ backgroundColor: primaryColor }}
                     >
-                      Pay & Confirm
+                      {isSubmittingBooking ? (
+                        <><Clock className="w-4 h-4 animate-spin" /> Processing...</>
+                      ) : (
+                        'Pay & Confirm'
+                      )}
                     </button>
                   )}
                 </div>
