@@ -233,7 +233,7 @@ export const PublicSite: React.FC = () => {
         }
       });
 
-      setBookingSuccess(res.data.bookingId || `B-${Math.floor(1000 + Math.random() * 9000)}`);
+      setBookingSuccess(res.bookingId || `B-${Math.floor(1000 + Math.random() * 9000)}`);
     } catch (err: any) {
       console.error(err);
       alert(err.message || 'Booking reservation failed. Please check date availability.');
@@ -678,7 +678,7 @@ export const PublicSite: React.FC = () => {
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-lg font-extrabold text-[#1a1a1e] font-outfit">Reservation Confirmed!</h3>
-                  <p className="text-xs text-slate-500">Your reservation has been locked and synced to the CRM database.</p>
+                  <p className="text-xs text-slate-500">Thank you for booking. We will send you an email with your booking details.</p>
                   <div className="inline-block px-3.5 py-1.5 rounded-lg bg-slate-50 border border-slate-150 font-mono font-bold text-xs text-slate-800 mt-2">
                     Reference ID: {bookingSuccess}
                   </div>
