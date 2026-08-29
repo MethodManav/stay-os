@@ -11,6 +11,7 @@ import {
   Trash2, 
   X
 } from 'lucide-react';
+import { Button } from './Button';
 
 export const BookingsTab: React.FC = () => {
   const { activeTenant, addBooking, updateBooking, deleteBooking } = useApp();
@@ -37,6 +38,7 @@ export const BookingsTab: React.FC = () => {
   const [paymentStatus, setPaymentStatus] = useState<Booking['paymentStatus']>('paid');
   const [paymentMethod, setPaymentMethod] = useState('Razorpay');
   const [notes, setNotes] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const currencySymbol = activeTenant.settings.currency === 'INR' ? '₹' : '$';
   const bookings = activeTenant.bookings || [];
@@ -85,43 +87,48 @@ export const BookingsTab: React.FC = () => {
     setEditorOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedBooking) {
-      // Edit
-      updateBooking({
-        ...selectedBooking,
-        guestName,
-        guestId: guestContact,
-        roomType,
-        roomNumber,
-        checkIn,
-        checkOut,
-        guestsCount,
-        amountPaid,
-        status,
-        paymentStatus,
-        paymentMethod,
-        notes
-      });
-    } else {
-      // Add
-      addBooking({
-        guestId: guestContact,
-        guestName,
-        roomType,
-        roomNumber,
-        checkIn,
-        checkOut,
-        status,
-        amountPaid,
-        paymentStatus,
-        guestsCount,
-        notes,
-        paymentMethod
-      });
+    setIsSubmitting(true);
+    try {
+      if (selectedBooking) {
+        // Edit
+        await updateBooking({
+          ...selectedBooking,
+          guestName,
+          guestId: guestContact,
+          roomType,
+          roomNumber,
+          checkIn,
+          checkOut,
+          guestsCount,
+          amountPaid,
+          status,
+          paymentStatus,
+          paymentMethod,
+          notes
+        });
+      } else {
+        // Add
+        await addBooking({
+          guestId: guestContact,
+          guestName,
+          roomType,
+          roomNumber,
+          checkIn,
+          checkOut,
+          status,
+          amountPaid,
+          paymentStatus,
+          guestsCount,
+          notes,
+          paymentMethod
+        });
+      }
+      setEditorOpen(false);
+    } finally {
+      setIsSubmitting(false);
     }
-    setEditorOpen(false);
   };
 
   // Calendar Timeline Coordinates (August 14 to August 28)
@@ -536,12 +543,13 @@ export const BookingsTab: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <button
+                <Button
                   type="submit"
+                  isLoading={isSubmitting}
                   className="px-5 py-2 bg-brand-primary hover:bg-brand-hover text-white font-bold rounded-lg cursor-pointer shadow-sm shadow-brand-primary/10"
                 >
                   Save Reservation
-                </button>
+                </Button>
               </div>
             </form>
           </div>

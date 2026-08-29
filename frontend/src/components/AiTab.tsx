@@ -8,6 +8,7 @@ import {
   BrainCircuit,
   TrendingUp
 } from 'lucide-react';
+import { Button } from './Button';
 
 export const AiTab: React.FC = () => {
   const { activeTenant, addMessage, updateConversationStatus } = useApp();
@@ -18,6 +19,7 @@ export const AiTab: React.FC = () => {
   );
   
   const [chatInput, setChatInput] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Custom rules states
   const [newRule, setNewRule] = useState('');
@@ -32,19 +34,21 @@ export const AiTab: React.FC = () => {
   const conversations = activeTenant.conversations || [];
   const selectedConv = conversations.find(c => c.id === selectedConvId) || conversations[0] || null;
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!chatInput.trim() || !selectedConv) return;
     
-    // Add staff reply message
-    addMessage(selectedConv.id, 'staff', chatInput.trim());
-    
-    // Auto simulate AI response after 1 second if conversation is not marked resolved
-    const currentInput = chatInput.trim();
-    setChatInput('');
+    setIsSubmitting(true);
+    try {
+      // Add staff reply message
+      addMessage(selectedConv.id, 'staff', chatInput.trim());
+      
+      // Auto simulate AI response after 1 second if conversation is not marked resolved
+      const currentInput = chatInput.trim();
+      setChatInput('');
 
-    if (selectedConv.status !== 'resolved') {
-      setTimeout(() => {
+      if (selectedConv.status !== 'resolved') {
+        await new Promise(resolve => setTimeout(resolve, 1000));
         let aiReply = "I am currently monitoring this conversation. A member of our staff will reach out to you shortly.";
         if (currentInput.toLowerCase().includes('wifi') || currentInput.toLowerCase().includes('internet')) {
           aiReply = `Sure! The Guest Wi-Fi password is '${activeTenant.settings.wifiPassword || 'azurehaven_guests'}'. Let me know if you face any issues.`;
@@ -54,7 +58,9 @@ export const AiTab: React.FC = () => {
           aiReply = "Breakfast is served daily from 7:00 AM to 10:30 AM. We offer local vegetarian options and continental selections.";
         }
         addMessage(selectedConv.id, 'ai', aiReply);
-      }, 1000);
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -233,12 +239,13 @@ export const AiTab: React.FC = () => {
                       onChange={e => setChatInput(e.target.value)}
                       className="flex-1 px-4 py-2 border border-border-subtle rounded-xl focus:outline-none focus:border-brand-primary text-xs text-text-primary bg-white"
                     />
-                    <button
+                    <Button
                       type="submit"
+                      isLoading={isSubmitting}
                       className="p-2 bg-brand-primary hover:bg-brand-hover text-white rounded-xl cursor-pointer transition-colors shadow-sm"
                     >
                       <Send className="w-4 h-4" />
-                    </button>
+                    </Button>
                   </form>
                 </>
               ) : (

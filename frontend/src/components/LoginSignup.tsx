@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useApp } from '../AppContext';
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { api } from '../api';
-
+import { Button } from './Button';
 
 export const LoginSignup: React.FC = () => {
   const { triggerOnboardingState, syncState } = useApp();
@@ -11,6 +11,7 @@ export const LoginSignup: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const navigate = useNavigate();
 
@@ -21,6 +22,7 @@ export const LoginSignup: React.FC = () => {
       return;
     }
     
+    setIsSubmitting(true);
     try {
       setError('');
       // In case of mock superadmin, bypass or check credentials
@@ -55,6 +57,8 @@ export const LoginSignup: React.FC = () => {
       navigate('/app/dashboard');
     } catch (err: any) {
       setError(err.message || 'Invalid email or password.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -207,12 +211,13 @@ export const LoginSignup: React.FC = () => {
             </div>
 
             {/* Submit Button */}
-            <button
+            <Button
               type="submit"
+              isLoading={isSubmitting}
               className="w-full py-3 bg-brand-primary hover:bg-brand-hover text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer text-center"
             >
               Sign In
-            </button>
+            </Button>
           </form>
 
 

@@ -10,11 +10,13 @@ import {
   Users,
   Upload
 } from 'lucide-react';
+import { Button } from './Button';
 
 export const RoomsTab: React.FC = () => {
   const { activeTenant, addRoom, updateRoom, deleteRoom } = useApp();
   const [editorOpen, setEditorOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Form states
   const [name, setName] = useState('');
@@ -55,35 +57,40 @@ export const RoomsTab: React.FC = () => {
     setEditorOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const parsedAmenities = amenitiesText.split(',').map(a => a.trim()).filter(Boolean);
-    
-    if (selectedRoom) {
-      updateRoom({
-        ...selectedRoom,
-        name,
-        type,
-        maxGuests,
-        basePrice,
-        count,
-        status,
-        amenities: parsedAmenities,
-        images: images.length > 0 ? images : ['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85']
-      });
-    } else {
-      addRoom({
-        name,
-        type,
-        maxGuests,
-        basePrice,
-        count,
-        status,
-        amenities: parsedAmenities,
-        images: images.length > 0 ? images : ['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85']
-      });
+    setIsSubmitting(true);
+    try {
+      const parsedAmenities = amenitiesText.split(',').map(a => a.trim()).filter(Boolean);
+      
+      if (selectedRoom) {
+        await updateRoom({
+          ...selectedRoom,
+          name,
+          type,
+          maxGuests,
+          basePrice,
+          count,
+          status,
+          amenities: parsedAmenities,
+          images: images.length > 0 ? images : ['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85']
+        });
+      } else {
+        await addRoom({
+          name,
+          type,
+          maxGuests,
+          basePrice,
+          count,
+          status,
+          amenities: parsedAmenities,
+          images: images.length > 0 ? images : ['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85']
+        });
+      }
+      setEditorOpen(false);
+    } finally {
+      setIsSubmitting(false);
     }
-    setEditorOpen(false);
   };
 
   return (
@@ -363,12 +370,13 @@ export const RoomsTab: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <button
+                <Button
                   type="submit"
+                  isLoading={isSubmitting}
                   className="px-5 py-2 bg-brand-primary hover:bg-brand-hover text-white font-bold rounded-lg cursor-pointer shadow-sm shadow-brand-primary/10"
                 >
                   Save Category
-                </button>
+                </Button>
               </div>
             </form>
           </div>

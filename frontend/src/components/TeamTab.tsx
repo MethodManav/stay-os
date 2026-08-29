@@ -9,11 +9,13 @@ import {
   Mail,
   Award
 } from 'lucide-react';
+import { Button } from './Button';
 
 export const TeamTab: React.FC = () => {
   const { activeTenant, addTeamMember, updateTeamMember, deleteTeamMember } = useApp();
   const [editorOpen, setEditorOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Form states
   const [name, setName] = useState('');
@@ -38,23 +40,28 @@ export const TeamTab: React.FC = () => {
     setEditorOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedMember) {
-      updateTeamMember({
-        ...selectedMember,
-        name,
-        email,
-        role
-      });
-    } else {
-      addTeamMember({
-        name,
-        email,
-        role
-      });
+    setIsSubmitting(true);
+    try {
+      if (selectedMember) {
+        await updateTeamMember({
+          ...selectedMember,
+          name,
+          email,
+          role
+        });
+      } else {
+        await addTeamMember({
+          name,
+          email,
+          role
+        });
+      }
+      setEditorOpen(false);
+    } finally {
+      setIsSubmitting(false);
     }
-    setEditorOpen(false);
   };
 
   return (
@@ -215,12 +222,13 @@ export const TeamTab: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <button
+                <Button
                   type="submit"
+                  isLoading={isSubmitting}
                   className="px-5 py-2 bg-brand-primary hover:bg-brand-hover text-white font-bold rounded-lg cursor-pointer shadow-sm shadow-brand-primary/10"
                 >
                   Confirm Member
-                </button>
+                </Button>
               </div>
             </form>
           </div>

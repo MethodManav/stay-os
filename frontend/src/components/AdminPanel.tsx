@@ -22,6 +22,7 @@ import {
   Play,
   LogOut
 } from 'lucide-react';
+import { Button } from './Button';
 
 interface SystemLog {
   id: string;
@@ -64,6 +65,9 @@ export const AdminPanel: React.FC = () => {
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserRole, setNewUserRole] = useState('admin');
   const [newUserTenantId, setNewUserTenantId] = useState('');
+
+  const [isSubmittingHotel, setIsSubmittingHotel] = useState(false);
+  const [isSubmittingUser, setIsSubmittingUser] = useState(false);
 
   // AI Configuration State
   const [aiModel, setAiModel] = useState('gpt-4o-mini');
@@ -153,144 +157,149 @@ export const AdminPanel: React.FC = () => {
   };
 
   // Add Hotel Handler
-  const handleAddHotel = (e: React.FormEvent) => {
+  const handleAddHotel = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newHotelName) return;
 
-    const subdomain = newHotelName.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-    const newId = `tenant-${subdomain}-${Date.now()}`;
+    setIsSubmittingHotel(true);
+    try {
+      const subdomain = newHotelName.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const newId = `tenant-${subdomain}-${Date.now()}`;
 
-    // Seed mock rooms
-    const basePriceNum = parseFloat(newHotelPrice) || 2999;
-    const defaultRooms: Room[] = [
-      {
-        id: `rm-1-${Date.now()}`,
-        name: "Standard Comfort Room",
-        type: "Standard Room",
-        maxGuests: 2,
-        basePrice: basePriceNum,
-        count: 10,
-        status: "available",
-        amenities: ["Wi-Fi", "Air Conditioning", "Flat TV", "Coffee maker"],
-        images: ["https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85"]
-      },
-      {
-        id: `rm-2-${Date.now()}`,
-        name: "Premium Deluxe Suite",
-        type: "Deluxe Suite",
-        maxGuests: 4,
-        basePrice: Math.round(basePriceNum * 1.8),
-        count: 5,
-        status: "available",
-        amenities: ["Ocean/Mountain View", "King Bed", "Minibar", "Bathtub", "High-speed Wi-Fi"],
-        images: ["https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=85"]
-      }
-    ];
-
-    const newTenant: Tenant = {
-      id: newId,
-      subdomain,
-      name: newHotelName,
-      subscriptionTier: 'free',
-      branding: {
-        primaryColor: "#3b82f6", // Indigo/Blue default
-        secondaryColor: "#1d4ed8",
-        font: "sans",
-        buttonStyle: "rounded-md"
-      },
-      settings: {
-        address: "101 Grand Boulevard, City Center",
-        city: "Mumbai",
-        country: "India",
-        currency: "INR",
-        timezone: "IST (UTC+5:30)",
-        checkInTime: "12:00",
-        checkOutTime: "10:00",
-        wifiPassword: `${subdomain}_wifi123`,
-        breakfastPolicy: "paid",
-        description: `Experience luxury hospitality at ${newHotelName}. Equipped with state-of-the-art room features and an automated WhatsApp AI Receptionist.`,
-        cancellationPolicy: "Flexible up to 24 hours prior to arrival.",
-        phone: newHotelPhone || "+91 22 9999 8888",
-        email: newHotelEmail || `info@${subdomain}.com`
-      },
-      rooms: defaultRooms,
-      bookings: [],
-      guests: [],
-      conversations: [
+      // Seed mock rooms
+      const basePriceNum = parseFloat(newHotelPrice) || 2999;
+      const defaultRooms: Room[] = [
         {
-          id: `c-init-${Date.now()}`,
-          guestName: "Guest Support Receptionist",
-          guestPhone: "+91 99999 88888",
-          status: "resolved",
-          unread: false,
-          createdAt: new Date().toISOString(),
-          messages: [
-            { id: "m-init-1", sender: "ai", text: `Welcome to ${newHotelName}'s AI WhatsApp Receptionist. Ask me about our rooms, amenities, or make bookings.`, timestamp: "Just now" }
+          id: `rm-1-${Date.now()}`,
+          name: "Standard Comfort Room",
+          type: "Standard Room",
+          maxGuests: 2,
+          basePrice: basePriceNum,
+          count: 10,
+          status: "available",
+          amenities: ["Wi-Fi", "Air Conditioning", "Flat TV", "Coffee maker"],
+          images: ["https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85"]
+        },
+        {
+          id: `rm-2-${Date.now()}`,
+          name: "Premium Deluxe Suite",
+          type: "Deluxe Suite",
+          maxGuests: 4,
+          basePrice: Math.round(basePriceNum * 1.8),
+          count: 5,
+          status: "available",
+          amenities: ["Ocean/Mountain View", "King Bed", "Minibar", "Bathtub", "High-speed Wi-Fi"],
+          images: ["https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=85"]
+        }
+      ];
+
+      const newTenant: Tenant = {
+        id: newId,
+        subdomain,
+        name: newHotelName,
+        subscriptionTier: 'free',
+        branding: {
+          primaryColor: "#3b82f6", // Indigo/Blue default
+          secondaryColor: "#1d4ed8",
+          font: "sans",
+          buttonStyle: "rounded-md"
+        },
+        settings: {
+          address: "101 Grand Boulevard, City Center",
+          city: "Mumbai",
+          country: "India",
+          currency: "INR",
+          timezone: "IST (UTC+5:30)",
+          checkInTime: "12:00",
+          checkOutTime: "10:00",
+          wifiPassword: `${subdomain}_wifi123`,
+          breakfastPolicy: "paid",
+          description: `Experience luxury hospitality at ${newHotelName}. Equipped with state-of-the-art room features and an automated WhatsApp AI Receptionist.`,
+          cancellationPolicy: "Flexible up to 24 hours prior to arrival.",
+          phone: newHotelPhone || "+91 22 9999 8888",
+          email: newHotelEmail || `info@${subdomain}.com`
+        },
+        rooms: defaultRooms,
+        bookings: [],
+        guests: [],
+        conversations: [
+          {
+            id: `c-init-${Date.now()}`,
+            guestName: "Guest Support Receptionist",
+            guestPhone: "+91 99999 88888",
+            status: "resolved",
+            unread: false,
+            createdAt: new Date().toISOString(),
+            messages: [
+              { id: "m-init-1", sender: "ai", text: `Welcome to ${newHotelName}'s AI WhatsApp Receptionist. Ask me about our rooms, amenities, or make bookings.`, timestamp: "Just now" }
+            ]
+          }
+        ],
+        team: [
+          { id: `tm-o-${Date.now()}`, name: "SaaS Platform Owner", email: newHotelEmail || `admin@${subdomain}.com`, role: "owner" }
+        ],
+        website: {
+          template: newHotelTemplate,
+          sections: [
+            {
+              id: "hero",
+              type: "hero",
+              title: "Hero Banner",
+              visible: true,
+              content: {
+                headline: `Welcome to ${newHotelName}`,
+                subheadline: `A boutique ${newHotelType} offering top-tier services and premium accommodation options.`,
+                ctaText: "Explore Rooms",
+                bgImage: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=85"
+              }
+            },
+            {
+              id: "about",
+              type: "about",
+              title: "About Us",
+              visible: true,
+              content: {
+                text: `Welcome to ${newHotelName}. Nestled in Mumbai, we specialize in high-comfort hospitality. Contact us on WhatsApp for live booking.`
+              }
+            },
+            {
+              id: "rooms",
+              type: "rooms",
+              title: "Our Rooms",
+              visible: true,
+              content: { subheading: "Premium luxury rooms equipped with standard services." }
+            },
+            {
+              id: "amenities",
+              type: "amenities",
+              title: "Premium Amenities",
+              visible: true,
+              content: { list: "High speed Wi-Fi, Room Service, Swimming Pool, Parking" }
+            },
+            {
+              id: "footer",
+              type: "footer",
+              title: "Footer details",
+              visible: true,
+              content: { copyright: `© 2026 ${newHotelName}. Powered by StayOS.` }
+            }
           ]
         }
-      ],
-      team: [
-        { id: `tm-o-${Date.now()}`, name: "SaaS Platform Owner", email: newHotelEmail || `admin@${subdomain}.com`, role: "owner" }
-      ],
-      website: {
-        template: newHotelTemplate,
-        sections: [
-          {
-            id: "hero",
-            type: "hero",
-            title: "Hero Banner",
-            visible: true,
-            content: {
-              headline: `Welcome to ${newHotelName}`,
-              subheadline: `A boutique ${newHotelType} offering top-tier services and premium accommodation options.`,
-              ctaText: "Explore Rooms",
-              bgImage: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=85"
-            }
-          },
-          {
-            id: "about",
-            type: "about",
-            title: "About Us",
-            visible: true,
-            content: {
-              text: `Welcome to ${newHotelName}. Nestled in Mumbai, we specialize in high-comfort hospitality. Contact us on WhatsApp for live booking.`
-            }
-          },
-          {
-            id: "rooms",
-            type: "rooms",
-            title: "Our Rooms",
-            visible: true,
-            content: { subheading: "Premium luxury rooms equipped with standard services." }
-          },
-          {
-            id: "amenities",
-            type: "amenities",
-            title: "Premium Amenities",
-            visible: true,
-            content: { list: "High speed Wi-Fi, Room Service, Swimming Pool, Parking" }
-          },
-          {
-            id: "footer",
-            type: "footer",
-            title: "Footer details",
-            visible: true,
-            content: { copyright: `© 2026 ${newHotelName}. Powered by StayOS.` }
-          }
-        ]
-      }
-    };
+      };
 
-    const updated = [...tenants, newTenant];
-    updateAllTenants(updated);
-    addLog('SYSTEM', `Manually registered new hotel tenant: ${newHotelName} (${subdomain}.stayos.com)`);
+      const updated = [...tenants, newTenant];
+      await updateAllTenants(updated);
+      addLog('SYSTEM', `Manually registered new hotel tenant: ${newHotelName} (${subdomain}.stayos.com)`);
 
-    // Reset Form
-    setNewHotelName('');
-    setNewHotelEmail('');
-    setNewHotelPhone('');
-    setNewHotelPrice('2999');
-    setAddHotelModalOpen(false);
+      // Reset Form
+      setNewHotelName('');
+      setNewHotelEmail('');
+      setNewHotelPhone('');
+      setNewHotelPrice('2999');
+      setAddHotelModalOpen(false);
+    } finally {
+      setIsSubmittingHotel(false);
+    }
   };
 
   // Delete Hotel Handler
@@ -324,25 +333,30 @@ export const AdminPanel: React.FC = () => {
   };
 
   // Add User Handler
-  const handleAddUser = (e: React.FormEvent) => {
+  const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newUserName || !newUserEmail) return;
 
-    const newUser: SaaSUser = {
-      id: `usr-${Date.now()}`,
-      name: newUserName,
-      email: newUserEmail,
-      tenants: newUserTenantId ? [{ tenantId: newUserTenantId, role: newUserRole }] : []
-    };
+    setIsSubmittingUser(true);
+    try {
+      const newUser: SaaSUser = {
+        id: `usr-${Date.now()}`,
+        name: newUserName,
+        email: newUserEmail,
+        tenants: newUserTenantId ? [{ tenantId: newUserTenantId, role: newUserRole }] : []
+      };
 
-    savePlatformUsers([...platformUsers, newUser]);
-    addLog('SYSTEM', `Created new platform user account: ${newUserName} (${newUserEmail})`);
-    
-    // Reset Form
-    setNewUserName('');
-    setNewUserEmail('');
-    setNewUserTenantId('');
-    setAddUserModalOpen(false);
+      savePlatformUsers([...platformUsers, newUser]);
+      addLog('SYSTEM', `Created new platform user account: ${newUserName} (${newUserEmail})`);
+      
+      // Reset Form
+      setNewUserName('');
+      setNewUserEmail('');
+      setNewUserTenantId('');
+      setAddUserModalOpen(false);
+    } finally {
+      setIsSubmittingUser(false);
+    }
   };
 
   // Delete User Handler
@@ -1265,12 +1279,13 @@ export const AdminPanel: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <button
+                <Button
                   type="submit"
+                  isLoading={isSubmittingHotel}
                   className="px-5 py-2 bg-brand-primary hover:bg-brand-hover text-white font-extrabold rounded-xl transition-all cursor-pointer shadow-md"
                 >
                   Save Property
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -1357,12 +1372,13 @@ export const AdminPanel: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <button
+                <Button
                   type="submit"
+                  isLoading={isSubmittingUser}
                   className="px-5 py-2 bg-brand-primary hover:bg-brand-hover text-white font-extrabold rounded-xl transition-all cursor-pointer shadow-md"
                 >
                   Assign Access
-                </button>
+                </Button>
               </div>
             </form>
           </div>

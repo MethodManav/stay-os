@@ -8,9 +8,10 @@ import {
   X, 
   Mail, 
   Phone, 
-  Tag, 
-  Award
+  Tag,
+  Award 
 } from 'lucide-react';
+import { Button } from './Button';
 
 export const CustomersTab: React.FC = () => {
   const { activeTenant, addGuest, updateGuest } = useApp();
@@ -18,6 +19,7 @@ export const CustomersTab: React.FC = () => {
   const [tagFilter, setTagFilter] = useState('all');
   const [editorOpen, setEditorOpen] = useState(false);
   const [selectedGuest, setSelectedGuest] = useState<Guest | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Form states
   const [name, setName] = useState('');
@@ -69,35 +71,40 @@ export const CustomersTab: React.FC = () => {
     setEditorOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedGuest) {
-      updateGuest({
-        ...selectedGuest,
-        name,
-        email,
-        phone,
-        tags,
-        notes,
-        preferences,
-        totalBookings,
-        totalSpending,
-        lastVisit
-      });
-    } else {
-      addGuest({
-        name,
-        email,
-        phone,
-        tags,
-        notes,
-        preferences,
-        totalBookings,
-        totalSpending,
-        lastVisit
-      });
+    setIsSubmitting(true);
+    try {
+      if (selectedGuest) {
+        await updateGuest({
+          ...selectedGuest,
+          name,
+          email,
+          phone,
+          tags,
+          notes,
+          preferences,
+          totalBookings,
+          totalSpending,
+          lastVisit
+        });
+      } else {
+        await addGuest({
+          name,
+          email,
+          phone,
+          tags,
+          notes,
+          preferences,
+          totalBookings,
+          totalSpending,
+          lastVisit
+        });
+      }
+      setEditorOpen(false);
+    } finally {
+      setIsSubmitting(false);
     }
-    setEditorOpen(false);
   };
 
   const toggleTag = (tagVal: Guest['tags'][number]) => {
@@ -379,12 +386,13 @@ export const CustomersTab: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <button
+                <Button
                   type="submit"
+                  isLoading={isSubmitting}
                   className="px-5 py-2 bg-brand-primary hover:bg-brand-hover text-white font-bold rounded-lg cursor-pointer shadow-sm shadow-brand-primary/10"
                 >
                   Save Profile
-                </button>
+                </Button>
               </div>
             </form>
           </div>

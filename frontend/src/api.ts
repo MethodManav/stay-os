@@ -1,5 +1,20 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
+let activeRequests = 0;
+const trackedFetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+  activeRequests++;
+  window.dispatchEvent(new Event('api-start'));
+  try {
+    return await window.fetch(input, init);
+  } finally {
+    activeRequests = Math.max(0, activeRequests - 1);
+    if (activeRequests === 0) {
+      window.dispatchEvent(new Event('api-end'));
+    }
+  }
+};
+const fetch = trackedFetch;
+
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
 }

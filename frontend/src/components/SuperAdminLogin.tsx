@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useApp } from '../AppContext';
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Button } from './Button';
 
 export const SuperAdminLogin: React.FC = () => {
   const { triggerOnboardingState } = useApp();
@@ -9,6 +10,7 @@ export const SuperAdminLogin: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const navigate = useNavigate();
 
@@ -19,6 +21,7 @@ export const SuperAdminLogin: React.FC = () => {
       return;
     }
     
+    setIsSubmitting(true);
     try {
       setError('');
       if (email === 'superadmin@stayos.com' && password === 'superadmin123') {
@@ -37,6 +40,8 @@ export const SuperAdminLogin: React.FC = () => {
       }
     } catch (err: any) {
       setError(err.message || 'Invalid email or password.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -110,12 +115,13 @@ export const SuperAdminLogin: React.FC = () => {
               </div>
             </div>
 
-            <button
+            <Button
               type="submit"
+              isLoading={isSubmitting}
               className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all cursor-pointer"
             >
               Access Admin Panel
-            </button>
+            </Button>
           </form>
           
           <div className="mt-6">

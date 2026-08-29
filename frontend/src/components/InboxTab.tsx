@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, Send, Flag, CheckCircle, Smartphone, AlertTriangle, MessageSquare } from 'lucide-react';
 import { useApp } from '../AppContext';
+import { Button } from './Button';
 
 export const InboxTab: React.FC = () => {
   const { activeTenant, addMessage, updateConversationStatus } = useApp();
@@ -8,6 +9,7 @@ export const InboxTab: React.FC = () => {
   const [selectedChatId, setSelectedChatId] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [inputMessage, setInputMessage] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Load first conversation on start if none selected
@@ -54,16 +56,21 @@ export const InboxTab: React.FC = () => {
     e.preventDefault();
     if (!inputMessage.trim() || !activeChat) return;
 
-    const messageText = inputMessage.trim();
-    setInputMessage('');
+    setIsSubmitting(true);
+    try {
+      const messageText = inputMessage.trim();
+      setInputMessage('');
 
-    // If AI is in control (status is active) and staff replies, auto-escalate the thread to staff!
-    if (activeChat.status === 'active') {
-      await updateConversationStatus(activeChat.id, 'escalated');
-      await addMessage(activeChat.id, 'staff', '⚠️ staff agent joined. conversation escalated.');
+      // If AI is in control (status is active) and staff replies, auto-escalate the thread to staff!
+      if (activeChat.status === 'active') {
+        await updateConversationStatus(activeChat.id, 'escalated');
+        await addMessage(activeChat.id, 'staff', '⚠️ staff agent joined. conversation escalated.');
+      }
+
+      await addMessage(activeChat.id, 'staff', messageText);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    await addMessage(activeChat.id, 'staff', messageText);
   };
 
   const filteredConversations = conversations.filter(c => 
@@ -172,7 +179,7 @@ export const InboxTab: React.FC = () => {
                   </div>
                 )}
                 
-                <button
+                <Button
                   onClick={toggleEscalation}
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border transition-all cursor-pointer ${
                     activeChat.status === 'escalated'
@@ -191,7 +198,7 @@ export const InboxTab: React.FC = () => {
                       <span>hand off to staff (pause ai)</span>
                     </>
                   )}
-                </button>
+                </Button>
               </div>
             </div>
 
@@ -254,13 +261,14 @@ export const InboxTab: React.FC = () => {
                 value={inputMessage}
                 onChange={e => setInputMessage(e.target.value)}
               />
-              <button
+              <Button
                 type="submit"
+                isLoading={isSubmitting}
                 className="px-4 py-2 bg-brand-primary hover:bg-brand-hover text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-md cursor-pointer"
               >
                 <Send className="w-4 h-4" />
                 <span>send</span>
-              </button>
+              </Button>
             </form>
           </>
         ) : (

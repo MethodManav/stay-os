@@ -18,6 +18,7 @@ import { SettingsTab } from './components/SettingsTab';
 import { PublicSite } from './components/PublicSite';
 import { AdminPanel } from './components/AdminPanel';
 import { SuperAdminLogin } from './components/SuperAdminLogin';
+import { TopLoader } from './components/TopLoader';
 
 // Auth Route Guard wrapper
 const OnboardingGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -34,6 +35,7 @@ const OnboardingGuard: React.FC<{ children: React.ReactNode }> = ({ children }) 
 export default function App() {
   return (
     <AppProvider>
+      <TopLoader />
       <BrowserRouter>
         <Routes>
           {/* Public Marketing Website */}

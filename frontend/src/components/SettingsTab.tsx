@@ -8,6 +8,7 @@ import {
   Coffee, 
   Building2
 } from 'lucide-react';
+import { Button } from './Button';
 
 export const SettingsTab: React.FC = () => {
   const { activeTenant, updateSettings, resetAll } = useApp();
@@ -29,6 +30,7 @@ export const SettingsTab: React.FC = () => {
   const [waNumberInput, setWaNumberInput] = useState('');
   const [qrState, setQrState] = useState<'disconnected' | 'generating' | 'ready' | 'connecting' | 'connected'>('disconnected');
   const [savedSuccessMsg, setSavedSuccessMsg] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Sync state if active tenant changes
   useEffect(() => {
@@ -47,28 +49,33 @@ export const SettingsTab: React.FC = () => {
     }
   }, [activeTenant]);
 
-  const handleSaveChanges = (e: React.FormEvent) => {
+  const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
-    // Save to context
-    updateSettings({
-      address,
-      city,
-      country,
-      currency: activeTenant.settings.currency,
-      timezone: activeTenant.settings.timezone,
-      checkInTime,
-      checkOutTime,
-      wifiPassword,
-      breakfastPolicy,
-      cancellationPolicy,
-      phone,
-      email,
-      description: activeTenant.settings.description
-    });
+    try {
+      // Save to context
+      await updateSettings({
+        address,
+        city,
+        country,
+        currency: activeTenant.settings.currency,
+        timezone: activeTenant.settings.timezone,
+        checkInTime,
+        checkOutTime,
+        wifiPassword,
+        breakfastPolicy,
+        cancellationPolicy,
+        phone,
+        email,
+        description: activeTenant.settings.description
+      });
 
-    setSavedSuccessMsg('Settings saved successfully.');
-    setTimeout(() => setSavedSuccessMsg(''), 3000);
+      setSavedSuccessMsg('Settings saved successfully.');
+      setTimeout(() => setSavedSuccessMsg(''), 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const startQrGeneration = () => {
@@ -256,13 +263,14 @@ export const SettingsTab: React.FC = () => {
             Reset Database Defaults
           </button>
           
-          <button
+          <Button
             type="submit"
+            isLoading={isSubmitting}
             className="flex items-center gap-1.5 px-5 py-2.5 bg-brand-primary hover:bg-brand-hover text-white text-xs font-bold rounded-lg shadow-sm transition-colors cursor-pointer"
           >
             <Save className="w-4 h-4" />
             <span>Save Settings</span>
-          </button>
+          </Button>
         </div>
 
       </form>
