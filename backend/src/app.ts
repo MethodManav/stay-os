@@ -8,6 +8,7 @@ import { Logger } from './shared/utils/Logger';
 import { ErrorHandler } from './core/errors/ErrorHandler';
 import { NotFoundError } from './core/errors/NotFoundError';
 import rootRouter from './routes';
+import { mcpRouter } from './routes/mcp';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './docs/swagger.json';
 // import { RateLimitMiddleware } from './core/middleware/RateLimitMiddleware';
@@ -46,6 +47,9 @@ app.use(morganMiddleware);
 
 // Register API routes
 app.use('/api/v1', rootRouter);
+
+// Register MCP server route at root
+app.use('/mcp', mcpRouter);
 
 // Register Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

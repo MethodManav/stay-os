@@ -260,27 +260,22 @@ export const PublicSite: React.FC = () => {
         localStorage.setItem('stayos_guest_phone', guestPhoneNum);
       }
 
-      const res = await api.sendGuestMessage(guestName || 'Guest User', guestPhoneNum, userQuery);
+      const history = messages.map(m => ({
+        role: m.sender === 'guest' ? ('user' as const) : ('model' as const),
+        content: m.text
+      }));
+
+      const res = await api.chatWithAgent(subdomain!, {
+        message: userQuery,
+        history,
+        guestName: guestName || 'Guest User',
+        guestEmail: guestEmail || undefined,
+        guestPhone: guestPhone || guestPhoneNum
+      });
       setIsTyping(false);
 
-      const allMsgs = res.data.messages || [];
-      const aiReply = allMsgs[allMsgs.length - 1];
-
-      if (aiReply) {
-        const q = userQuery.toLowerCase();
-        if (q.includes('book') || q.includes('reserve') || q.includes('reservation')) {
-          setMessages(prev => [
-            ...prev,
-            { sender: 'ai', text: aiReply.text },
-            ...tenant.rooms.map((r: any) => ({
-              sender: 'ai' as const,
-              text: `Book ${r.name} for ${currencySymbol}${r.basePrice}/night`,
-              link: r.id
-            }))
-          ]);
-        } else {
-          setMessages(prev => [...prev, { sender: 'ai', text: aiReply.text }]);
-        }
+      if (res && res.reply) {
+        setMessages(prev => [...prev, { sender: 'ai', text: res.reply }]);
       } else {
         setMessages(prev => [...prev, { sender: 'ai', text: `I am happy to assist you at ${tenant.name}. Please contact our front desk at ${tenant.settings.phone} for details.` }]);
       }

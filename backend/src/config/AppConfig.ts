@@ -13,6 +13,11 @@ export const AppConfig = {
     accessExpiresIn: EnvConfig.JWT_ACCESS_EXPIRES_IN,
     refreshExpiresIn: EnvConfig.JWT_REFRESH_EXPIRES_IN
   },
+  gemini: {
+    apiKey: EnvConfig.GEMINI_API_KEY || ''
+  },
+  backendUrl: EnvConfig.BACKEND_URL,
+  mcpServerUrl: EnvConfig.MCP_SERVER_URL,
   rateLimit: {
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // Limit each IP to 100 requests per windowMs

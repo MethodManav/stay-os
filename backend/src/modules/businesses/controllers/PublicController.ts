@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { Types } from 'mongoose';
 import { BusinessService } from '../services/BusinessService';
 import { WebsiteService } from '../../websites/services/WebsiteService';
 import { RoomService } from '../../rooms/services/RoomService';
@@ -8,6 +9,9 @@ import { IBookingRepository } from '../../bookings/repositories/IBookingReposito
 import { BadRequestError } from '../../../core/errors/BadRequestError';
 import { ConflictError } from '../../../core/errors/ConflictError';
 import { NotFoundError } from '../../../core/errors/NotFoundError';
+import { geminiBookingAgent } from '../../../agent/agent';
+import { ConversationModel } from '../../ai/models/ConversationModel';
+import { TenantContext } from '../../../mcp/context';
 
 export class PublicController {
   constructor(
@@ -264,6 +268,99 @@ export class PublicController {
         success: true,
         data: {
           isChatbot: business.subscriptionTier === 'premium'
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public chatWithAgent = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { slug } = req.params;
+      const { message, history, guestName, guestEmail, guestPhone } = req.body;
+
+      if (!message || typeof message !== 'string') {
+        throw new BadRequestError('A non-empty message text is required');
+      }
+
+      const business = await this.businessService.getBusinessBySlug(slug);
+
+      if (business.status !== 'ACTIVE') {
+        throw new NotFoundError('Business not found or pending verification');
+      }
+
+      const tenantContext: TenantContext = {
+        hotelId: business.id,
+        organizationId: business.organizationId.toString(),
+        hotelSlug: business.slug,
+        hotelName: business.name,
+        currency: business.currency || 'INR',
+        timezone: business.timezone || 'Asia/Kolkata'
+      };
+
+      // Invoke Gemini Booking Agent with secure tenant context
+      const agentResult = await geminiBookingAgent.handleMessage({
+        tenant: tenantContext,
+        message,
+        history: history || [],
+        guestInfo: {
+          name: guestName,
+          email: guestEmail,
+          phone: guestPhone
+        }
+      });
+
+      // Persist in conversation CRM if guest identity is available
+      const phoneToUse = guestPhone || req.headers['x-guest-phone'] as string || 'Guest Web';
+      const nameToUse = guestName || 'Guest Visitor';
+
+      try {
+        let conversation = await ConversationModel.findOne({
+          organizationId: business.organizationId,
+          businessId: new Types.ObjectId(business.id),
+          guestPhone: phoneToUse
+        }).exec();
+
+        if (!conversation) {
+          conversation = new ConversationModel({
+            organizationId: business.organizationId,
+            businessId: new Types.ObjectId(business.id),
+            guestName: nameToUse,
+            guestPhone: phoneToUse,
+            status: 'active',
+            unread: true,
+            messages: []
+          });
+        }
+
+        conversation.messages.push({
+          sender: 'guest',
+          text: message,
+          timestamp: new Date()
+        });
+
+        conversation.messages.push({
+          sender: 'ai',
+          text: agentResult.reply,
+          timestamp: new Date()
+        });
+
+        if (guestEmail) {
+          conversation.leads = { ...conversation.leads, email: guestEmail };
+        }
+
+        await conversation.save();
+      } catch (crmErr) {
+        // Non-blocking log if conversation persistence encounters an issue
+      }
+
+      res.status(200).json({
+        success: true,
+        data: {
+          reply: agentResult.reply,
+          toolCalls: agentResult.toolCallsExecuted,
+          booking: agentResult.bookingDetails
         }
       });
     } catch (error) {

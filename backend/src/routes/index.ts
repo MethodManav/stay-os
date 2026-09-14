@@ -14,6 +14,7 @@ import {
   publicRouter,
   adminRouter
 } from '../core/bootstrap';
+import { mcpRouter } from './mcp';
 
 const rootRouter = Router();
 
@@ -40,5 +41,6 @@ rootRouter.use('/ai', aiRouter);
 rootRouter.use('/analytics', analyticsRouter);
 rootRouter.use('/public/businesses', publicRouter);
 rootRouter.use('/admin', adminRouter);
+rootRouter.use('/mcp', mcpRouter);
 
 export default rootRouter;

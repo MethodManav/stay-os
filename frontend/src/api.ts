@@ -415,6 +415,28 @@ class ApiClient {
     return json.data;
   }
 
+  public async chatWithAgent(slug: string, data: {
+    message: string;
+    history?: Array<{ role: 'user' | 'model'; content: string }>;
+    guestName?: string;
+    guestEmail?: string;
+    guestPhone?: string;
+  }) {
+    const url = `${API_BASE_URL}/public/businesses/${slug}/chat`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    const json = await response.json();
+    if (!response.ok) {
+      throw new Error(json.message || `Chat request failed with status ${response.status}`);
+    }
+    return json.data;
+  }
+
   public async checkChatbotStatus(slug: string) {
     const url = `${API_BASE_URL}/public/businesses/${slug}/isChatbot`;
     const response = await fetch(url);

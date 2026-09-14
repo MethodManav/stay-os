@@ -42,6 +42,9 @@ export const createPublicRouter = (controller: PublicController): Router => {
   // Check if chatbot is enabled for this business
   router.get('/:slug/isChatbot', controller.isChatbot);
 
+  // Public AI Concierge Chatbot endpoint powered by Gemini & MCP tools
+  router.post('/:slug/chat', controller.chatWithAgent);
+
   return router;
 };
 
