@@ -250,7 +250,13 @@ export class BookingService {
         // Find matching by regex of the trailing ID
         const match = await BookingModel.findOne({
           businessId: new Types.ObjectId(hotelId),
-          _id: { $regex: new RegExp(`${cleaned}$`, 'i') }
+          $expr: {
+            $regexMatch: {
+              input: { $toString: '$_id' },
+              regex: `${cleaned}$`,
+              options: 'i'
+            }
+          }
         }).exec();
         if (match) {
           bookingQuery._id = match._id;

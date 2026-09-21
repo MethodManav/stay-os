@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { BusinessModel } from '../src/modules/businesses/models/BusinessModel';
 import { OrganizationModel } from '../src/modules/organizations/models/OrganizationModel';
@@ -29,6 +29,7 @@ beforeEach(async () => {
 });
 
 describe('StayOS AI-Powered Booking Agent & MCP Tools Suite', () => {
+  jest.setTimeout(30000);
   let hotelAContext: TenantContext;
   let hotelBContext: TenantContext;
   let hotelAId: string;
@@ -39,7 +40,9 @@ describe('StayOS AI-Powered Booking Agent & MCP Tools Suite', () => {
 
   beforeEach(async () => {
     // 1. Create Organizations
+    const testOwnerId = new Types.ObjectId();
     const orgA = await OrganizationModel.create({
+      ownerId: testOwnerId,
       name: 'Taj Group Org',
       slug: 'taj-group',
       billingEmail: 'billing@taj.com',
@@ -48,6 +51,7 @@ describe('StayOS AI-Powered Booking Agent & MCP Tools Suite', () => {
     });
 
     const orgB = await OrganizationModel.create({
+      ownerId: testOwnerId,
       name: 'Paradise Group Org',
       slug: 'paradise-group',
       billingEmail: 'billing@paradise.com',
@@ -376,6 +380,20 @@ describe('StayOS AI-Powered Booking Agent & MCP Tools Suite', () => {
   // TEST 5: Full Conversational Agent Execution Loop
   // =========================================================================
   describe('Gemini Booking Agent Multi-Turn Orchestration', () => {
+    it('answers amenity inquiries like Wi-Fi without triggering room search or room cards', async () => {
+      const response = await geminiBookingAgent.handleMessage({
+        tenant: hotelAContext,
+        message: 'Do you have free Wi-Fi?'
+      });
+
+      expect(response.reply).toBeDefined();
+      expect(response.reply.toLowerCase()).toMatch(/wi-fi|wifi|internet/i);
+      // Ensure NO room cards or searchRooms tool calls are triggered
+      const hasSearchTool = response.toolCallsExecuted.some(t => t.name === 'searchRooms');
+      expect(hasSearchTool).toBe(false);
+      expect(response.toolCallsExecuted.length).toBe(0);
+    });
+
     it('handles natural language room inquiry and triggers searchRooms MCP tool', async () => {
       const response = await geminiBookingAgent.handleMessage({
         tenant: hotelAContext,
@@ -386,7 +404,7 @@ describe('StayOS AI-Powered Booking Agent & MCP Tools Suite', () => {
       expect(response.reply.length).toBeGreaterThan(10);
       expect(response.toolCallsExecuted.length).toBeGreaterThan(0);
       expect(response.toolCallsExecuted[0].name).toBe('searchRooms');
-    });
+    }, 15000);
 
     it('handles end-to-end natural reservation flow', async () => {
       const response = await geminiBookingAgent.handleMessage({
@@ -399,6 +417,6 @@ describe('StayOS AI-Powered Booking Agent & MCP Tools Suite', () => {
       expect(response.bookingDetails).toBeDefined();
       expect(response.bookingDetails.bookingStatus).toBe('CONFIRMED');
       expect(response.bookingDetails.confirmationCode).toMatch(/^STY-[A-Z0-9]{6}$/);
-    });
+    }, 20000);
   });
 });

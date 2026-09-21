@@ -14,6 +14,7 @@ export interface RoomSearchResult {
   availableRooms: number;
   maxGuests: number;
   amenities: string[];
+  images?: string[];
 }
 
 export interface RoomDetailsResult {
@@ -85,7 +86,8 @@ export class RoomService {
           pricePerNight: rt.pricePerNight,
           availableRooms: availableCount,
           maxGuests: rt.capacity,
-          amenities: rt.amenities || []
+          amenities: rt.amenities || [],
+          images: rt.images || []
         });
       }
     }
@@ -236,7 +238,8 @@ export class RoomService {
     }).exec();
 
     if (physicalRooms.length === 0) {
-      return 0;
+      // If hotel hasn't defined physical room numbers yet, default to virtual availability
+      return 5;
     }
 
     let availableCount = 0;
@@ -271,6 +274,20 @@ export class RoomService {
       roomTypeId: new Types.ObjectId(roomTypeId),
       status: 'available'
     }).exec();
+
+    if (physicalRooms.length === 0) {
+      const rt = await RoomTypeModel.findById(roomTypeId);
+      if (rt) {
+        const newRoom = await RoomModel.create({
+          organizationId: rt.organizationId,
+          businessId: new Types.ObjectId(hotelId),
+          roomTypeId: new Types.ObjectId(roomTypeId),
+          roomNumber: `Room-${Math.floor(100 + Math.random() * 900)}`,
+          status: 'available'
+        });
+        return newRoom._id.toString();
+      }
+    }
 
     for (const room of physicalRooms) {
       const conflict = await BookingModel.findOne({

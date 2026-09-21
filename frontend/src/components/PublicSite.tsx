@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import type { Room, Tenant, TenantBranding, TenantSettings, WebsiteTheme } from '../types';
 import { api } from '../api';
+import { TamboChatWidget } from './chat/TamboChatWidget';
 import { 
   MapPin, 
   Wifi, 
@@ -9,12 +10,10 @@ import {
   Phone, 
   Mail, 
   Bot, 
-  Send, 
   X, 
   CheckCircle,
   Clock,
   Menu,
-  ChevronRight
 } from 'lucide-react';
 
 const mapPublicToTenant = (business: any, website: any, roomTypes: any[]): Tenant => {
@@ -109,11 +108,7 @@ export const PublicSite: React.FC = () => {
 
   // AI Assistant Chat Widget
   const [aiChatOpen, setAiChatOpen] = useState(false);
-  const [messages, setMessages] = useState<Array<{ sender: 'guest' | 'ai'; text: string; link?: string }>>([]);
-  const [aiInput, setAiInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
   const [isChatbotEnabled, setIsChatbotEnabled] = useState(false);
-  const chatBottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const loadTenant = async () => {
@@ -128,10 +123,6 @@ export const PublicSite: React.FC = () => {
 
         const chatbotStatus = await api.checkChatbotStatus(subdomain!);
         setIsChatbotEnabled(chatbotStatus);
-        
-        setMessages([
-          { sender: 'ai', text: `Hello! Welcome to ${mappedTenant.name}. I am your AI receptionist concierge. Ask me anything about our room rates, check-in policies, wifi, or request a booking reservation!` }
-        ]);
       } catch (err: any) {
         console.error('Failed to load public tenant profile:', err);
         setErrorState(err.message || 'Hotel profile not found.');
@@ -145,10 +136,19 @@ export const PublicSite: React.FC = () => {
   }, [subdomain]);
 
   useEffect(() => {
-    if (chatBottomRef.current) {
-      chatBottomRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, aiChatOpen]);
+    const handleBookRoomEvent = (e: any) => {
+      const roomId = e.detail?.roomId;
+      if (roomId && tenant) {
+        const room = tenant.rooms?.find((r: any) => r.id === roomId || r._id === roomId);
+        if (room) {
+          setAiChatOpen(false);
+          handleOpenBookingModal(room);
+        }
+      }
+    };
+    window.addEventListener('stayos:book_room', handleBookRoomEvent);
+    return () => window.removeEventListener('stayos:book_room', handleBookRoomEvent);
+  }, [tenant]);
 
   if (loading) {
     return (
@@ -241,55 +241,6 @@ export const PublicSite: React.FC = () => {
       alert(err.message || 'Booking reservation failed. Please check date availability.');
     } finally {
       setIsSubmittingBooking(false);
-    }
-  };
-
-  const handleAiSend = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!aiInput.trim()) return;
-
-    const userQuery = aiInput.trim();
-    setMessages(prev => [...prev, { sender: 'guest', text: userQuery }]);
-    setAiInput('');
-    setIsTyping(true);
-
-    try {
-      let guestPhoneNum = localStorage.getItem('stayos_guest_phone');
-      if (!guestPhoneNum) {
-        guestPhoneNum = '+91 99' + Math.floor(10000000 + Math.random() * 90000000);
-        localStorage.setItem('stayos_guest_phone', guestPhoneNum);
-      }
-
-      const history = messages.map(m => ({
-        role: m.sender === 'guest' ? ('user' as const) : ('model' as const),
-        content: m.text
-      }));
-
-      const res = await api.chatWithAgent(subdomain!, {
-        message: userQuery,
-        history,
-        guestName: guestName || 'Guest User',
-        guestEmail: guestEmail || undefined,
-        guestPhone: guestPhone || guestPhoneNum
-      });
-      setIsTyping(false);
-
-      if (res && res.reply) {
-        setMessages(prev => [...prev, { sender: 'ai', text: res.reply }]);
-      } else {
-        setMessages(prev => [...prev, { sender: 'ai', text: `I am happy to assist you at ${tenant.name}. Please contact our front desk at ${tenant.settings.phone} for details.` }]);
-      }
-    } catch (err) {
-      setIsTyping(false);
-      setMessages(prev => [...prev, { sender: 'ai', text: 'I am currently having trouble connecting to my concierge brain. Please try again in a few moments.' }]);
-    }
-  };
-
-  const handleLinkClick = (roomId: string) => {
-    const targetRoom = tenant.rooms.find(r => r.id === roomId);
-    if (targetRoom) {
-      setAiChatOpen(false);
-      handleOpenBookingModal(targetRoom);
     }
   };
 
@@ -703,108 +654,39 @@ export const PublicSite: React.FC = () => {
 
       {/* Floating AI Receptionist widget */}
       {isChatbotEnabled && (
-        <div className="fixed bottom-6 right-6 z-50">
-        
-        {/* Toggle bubble button */}
-        {!aiChatOpen && (
-          <button
-            onClick={() => setAiChatOpen(true)}
-            className="w-14 h-14 bg-[#1b4332] hover:bg-[#143324] text-white rounded-full flex items-center justify-center shadow-2xl shadow-[#1b4332]/25 relative animate-bounce cursor-pointer"
-            style={{ backgroundColor: primaryColor }}
-          >
-            <Bot className="w-6 h-6" />
-            <span className="absolute top-0 right-0 w-3 h-3 rounded-full bg-orange-500 border border-white" />
-          </button>
-        )}
-
-        {/* Chat Drawer Dialog */}
-        {aiChatOpen && (
-          <div className="w-80 sm:w-96 h-[460px] bg-white border border-slate-150 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
-            
-            {/* Header info */}
-            <div className="px-4 py-3 bg-[#1b4332] text-white flex justify-between items-center shrink-0" style={{ backgroundColor: primaryColor }}>
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-xs">
-                  <Bot className="w-4.5 h-4.5" />
-                </div>
-                <div>
-                  <span className="block text-sm font-bold">AI Receptionist Concierge</span>
-                  <span className="block text-xs opacity-85 mt-0.5 leading-none">Answers instantly 24/7</span>
-                </div>
-              </div>
-
-              <button onClick={() => setAiChatOpen(false)} className="text-white hover:opacity-80">
-                <X className="w-4.5 h-4.5" />
-              </button>
-            </div>
-
-            {/* Messages box */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-slate-50/50">
-              {messages.map((m, i) => {
-                const isGuest = m.sender === 'guest';
-                return (
-                  <div key={i} className={`flex gap-2.5 max-w-[80%] ${isGuest ? 'ml-auto flex-row-reverse text-right' : ''}`}>
-                    <div className={`w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center font-bold text-xs shrink-0 shadow-inner ${
-                      isGuest ? 'bg-slate-100 text-slate-800' : 'bg-emerald-950 text-emerald-400'
-                    }`}>
-                      {isGuest ? 'G' : 'AI'}
-                    </div>
-
-                    <div className="space-y-1 text-left">
-                      {m.link ? (
-                        <button
-                          onClick={() => handleLinkClick(m.link!)}
-                          className="p-2.5 rounded-xl text-xs font-bold text-left bg-emerald-100 hover:bg-emerald-600 border border-emerald-250 text-emerald-900 hover:text-white transition-all flex items-center justify-between w-full cursor-pointer"
-                        >
-                          <span>{m.text}</span>
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </button>
-                      ) : (
-                        <div className={`p-2.5 rounded-xl text-xs font-normal leading-relaxed ${
-                          isGuest ? 'bg-[#1b4332] text-white' : 'bg-white text-slate-700 border border-slate-200'
-                        }`} style={{ backgroundColor: isGuest ? primaryColor : undefined }}>
-                          {m.text}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-              {isTyping && (
-                <div className="flex gap-2 max-w-[80%]">
-                  <div className="w-7 h-7 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0">
-                    AI
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-400 italic font-medium flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 animate-spin" /> Thinking...
-                  </div>
-                </div>
-              )}
-              <div ref={chatBottomRef} />
-            </div>
-
-            {/* Input bottom form */}
-            <form onSubmit={handleAiSend} className="p-3 border-t border-slate-150 bg-white flex gap-2 shrink-0">
-              <input
-                type="text"
-                placeholder="Ask about wifi, checkout policy..."
-                value={aiInput}
-                onChange={e => setAiInput(e.target.value)}
-                className="flex-1 px-3 py-1.5 border border-slate-200 rounded-xl focus:outline-none text-xs text-[#1a1a1e]"
-              />
+        <>
+          {/* Toggle bubble button */}
+          {!aiChatOpen && (
+            <div className="fixed bottom-6 right-6 z-50">
               <button
-                type="submit"
-                className="p-1.5 bg-[#1b4332] hover:bg-[#143324] text-white rounded-xl cursor-pointer"
+                type="button"
+                onClick={() => setAiChatOpen(true)}
+                className="w-14 h-14 bg-[#1b4332] hover:bg-[#143324] text-white rounded-full flex items-center justify-center shadow-2xl shadow-[#1b4332]/25 relative animate-bounce cursor-pointer"
                 style={{ backgroundColor: primaryColor }}
               >
-                <Send className="w-4 h-4" />
+                <Bot className="w-6 h-6" />
+                <span className="absolute top-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border border-white animate-ping" />
+                <span className="absolute top-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border border-white" />
               </button>
-            </form>
+            </div>
+          )}
 
-          </div>
-        )}
-
-      </div>
+          {/* Modern Tambo Generative AI Chat Widget */}
+          <TamboChatWidget
+            subdomain={subdomain!}
+            tenant={tenant}
+            primaryColor={primaryColor}
+            isOpen={aiChatOpen}
+            onClose={() => setAiChatOpen(false)}
+            onSelectRoom={(room) => {
+              setAiChatOpen(false);
+              handleOpenBookingModal(room);
+            }}
+            guestName={guestName}
+            guestEmail={guestEmail}
+            guestPhone={guestPhone}
+          />
+        </>
       )}
 
     </div>
