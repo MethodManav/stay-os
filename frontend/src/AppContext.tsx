@@ -623,6 +623,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const updateSettings = async (settings: TenantSettings): Promise<void> => {
     await api.updateBusinessProfile({
+      ...(settings.name ? { name: settings.name } : {}),
       address: settings.address,
       city: settings.city,
       country: settings.country,
@@ -639,10 +640,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       subscriptionTier: settings.subscriptionTier
     });
     
-    // Optimistically update local active tenant state to reflect tier changes immediately
+    // Optimistically update local active tenant state to reflect changes immediately
     if (activeTenant) {
       updateActiveTenant({
         ...activeTenant,
+        ...(settings.name ? { name: settings.name } : {}),
         settings: {
           ...activeTenant.settings,
           ...settings

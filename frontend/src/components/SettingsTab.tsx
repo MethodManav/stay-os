@@ -6,7 +6,8 @@ import {
   RefreshCw, 
   Save, 
   Coffee, 
-  Building2
+  Building2,
+  AlertCircle
 } from 'lucide-react';
 import { Button } from './Button';
 
@@ -30,37 +31,40 @@ export const SettingsTab: React.FC = () => {
   const [waNumberInput, setWaNumberInput] = useState('');
   const [qrState, setQrState] = useState<'disconnected' | 'generating' | 'ready' | 'connecting' | 'connected'>('disconnected');
   const [savedSuccessMsg, setSavedSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Sync state if active tenant changes
   useEffect(() => {
     if (activeTenant) {
-      setName(activeTenant.name);
-      setAddress(activeTenant.settings.address);
-      setCity(activeTenant.settings.city);
-      setCountry(activeTenant.settings.country);
-      setCheckInTime(activeTenant.settings.checkInTime);
-      setCheckOutTime(activeTenant.settings.checkOutTime);
-      setWifiPassword(activeTenant.settings.wifiPassword);
-      setBreakfastPolicy(activeTenant.settings.breakfastPolicy);
-      setCancellationPolicy(activeTenant.settings.cancellationPolicy);
-      setPhone(activeTenant.settings.phone);
-      setEmail(activeTenant.settings.email);
+      setName(activeTenant.name || '');
+      setAddress(activeTenant.settings?.address || '');
+      setCity(activeTenant.settings?.city || '');
+      setCountry(activeTenant.settings?.country || '');
+      setCheckInTime(activeTenant.settings?.checkInTime || '14:00');
+      setCheckOutTime(activeTenant.settings?.checkOutTime || '11:00');
+      setWifiPassword(activeTenant.settings?.wifiPassword || '');
+      setBreakfastPolicy(activeTenant.settings?.breakfastPolicy || 'included');
+      setCancellationPolicy(activeTenant.settings?.cancellationPolicy || '');
+      setPhone(activeTenant.settings?.phone || '');
+      setEmail(activeTenant.settings?.email || '');
     }
   }, [activeTenant]);
 
   const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMsg('');
     
     try {
       // Save to context
       await updateSettings({
+        name,
         address,
         city,
         country,
-        currency: activeTenant.settings.currency,
-        timezone: activeTenant.settings.timezone,
+        currency: activeTenant?.settings?.currency || 'INR',
+        timezone: activeTenant?.settings?.timezone || 'IST (UTC+5:30)',
         checkInTime,
         checkOutTime,
         wifiPassword,
@@ -68,11 +72,14 @@ export const SettingsTab: React.FC = () => {
         cancellationPolicy,
         phone,
         email,
-        description: activeTenant.settings.description
+        description: activeTenant?.settings?.description || ''
       });
 
-      setSavedSuccessMsg('Settings saved successfully.');
-      setTimeout(() => setSavedSuccessMsg(''), 3000);
+      setSavedSuccessMsg('Property profile saved successfully.');
+      setTimeout(() => setSavedSuccessMsg(''), 4000);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Failed to update property profile');
+      setTimeout(() => setErrorMsg(''), 6000);
     } finally {
       setIsSubmitting(false);
     }
@@ -111,6 +118,14 @@ export const SettingsTab: React.FC = () => {
         <div className="bg-brand-light border border-emerald-200 text-brand-primary text-xs px-4 py-3 rounded-xl flex items-center gap-2">
           <CheckCircle className="w-4.5 h-4.5" />
           <span>{savedSuccessMsg}</span>
+        </div>
+      )}
+
+      {/* Error Indicator */}
+      {errorMsg && (
+        <div className="bg-red-50 border border-red-200 text-red-600 text-xs px-4 py-3 rounded-xl flex items-center gap-2">
+          <AlertCircle className="w-4.5 h-4.5" />
+          <span>{errorMsg}</span>
         </div>
       )}
 

@@ -46,7 +46,12 @@ export class BusinessController {
         throw new Error('Organization context not established');
       }
 
-      const business = await this.businessService.updateBusinessByOrganization(organizationId, req.body);
+      const businessId = req.params?.id;
+      const business = await this.businessService.updateBusinessByOrganization(
+        organizationId,
+        req.body,
+        businessId
+      );
       res.status(200).json({
         success: true,
         data: business,

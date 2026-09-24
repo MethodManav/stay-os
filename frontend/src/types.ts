@@ -7,6 +7,7 @@ export interface TenantBranding {
 }
 
 export interface TenantSettings {
+  name?: string;
   address: string;
   city: string;
   country: string;

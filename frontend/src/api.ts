@@ -196,6 +196,10 @@ class ApiClient {
     });
   }
 
+  public async updatePropertyProfile(data: any) {
+    return this.updateBusinessProfile(data);
+  }
+
   // Room Type Operations
   public async getRoomTypes() {
     return this.request('/room-types');

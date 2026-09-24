@@ -31,6 +31,8 @@ rootRouter.get('/health', (_req, res) => {
 rootRouter.use('/auth', authRouter);
 rootRouter.use('/organizations', organizationRouter);
 rootRouter.use('/businesses', businessRouter);
+rootRouter.use('/properties', businessRouter);
+rootRouter.use('/property-profile', businessRouter);
 rootRouter.use('/rooms', roomRouter);
 rootRouter.use('/room-types', roomTypeRouter);
 rootRouter.use('/guests', guestRouter);

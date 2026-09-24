@@ -20,23 +20,31 @@ export const createBusinessRouter = (controller: BusinessController): Router => 
   );
 
   // Retrieve current tenant business profile (Open to OWNER, ADMIN, MANAGER, and STAFF)
-  router.get(
-    '/me',
+  const getMiddlewares = [
     AuthMiddleware,
     TenantMiddleware,
-    authorizeRoles('OWNER', 'ADMIN', 'MANAGER', 'STAFF'),
-    controller.getMe
-  );
+    authorizeRoles('OWNER', 'ADMIN', 'MANAGER', 'STAFF')
+  ];
+  router.get('/', ...getMiddlewares, controller.getMe);
+  router.get('/me', ...getMiddlewares, controller.getMe);
+  router.get('/profile', ...getMiddlewares, controller.getMe);
 
   // Update current tenant business profile (Restricted to OWNER and ADMIN)
-  router.patch(
-    '/me',
+  const updateMiddlewares = [
     AuthMiddleware,
     TenantMiddleware,
     authorizeRoles('OWNER', 'ADMIN'),
-    validateRequest({ body: updateBusinessSchema }),
-    controller.updateMe
-  );
+    validateRequest({ body: updateBusinessSchema })
+  ];
+
+  router.patch('/', ...updateMiddlewares, controller.updateMe);
+  router.put('/', ...updateMiddlewares, controller.updateMe);
+  router.patch('/me', ...updateMiddlewares, controller.updateMe);
+  router.put('/me', ...updateMiddlewares, controller.updateMe);
+  router.patch('/profile', ...updateMiddlewares, controller.updateMe);
+  router.put('/profile', ...updateMiddlewares, controller.updateMe);
+  router.patch('/:id', ...updateMiddlewares, controller.updateMe);
+  router.put('/:id', ...updateMiddlewares, controller.updateMe);
 
   return router;
 };

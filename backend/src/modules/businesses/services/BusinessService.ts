@@ -38,9 +38,13 @@ export class BusinessService {
 
   public async updateBusinessByOrganization(
     organizationId: string,
-    data: Partial<IBusiness>
+    data: Partial<IBusiness>,
+    businessId?: string
   ): Promise<IBusinessDocument> {
-    const business = await this.businessRepository.findByOrganizationId(organizationId);
+    const business = businessId && businessId !== 'me' && businessId !== 'profile'
+      ? await this.businessRepository.findById(organizationId, businessId)
+      : await this.businessRepository.findByOrganizationId(organizationId);
+
     if (!business) {
       throw new NotFoundError('Business details not configured for this organization');
     }
