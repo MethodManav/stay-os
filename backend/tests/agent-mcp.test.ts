@@ -394,6 +394,41 @@ describe('StayOS AI-Powered Booking Agent & MCP Tools Suite', () => {
       expect(response.toolCallsExecuted.length).toBe(0);
     });
 
+    it('prompts for booking verification when user asks for Wi-Fi password without booking details', async () => {
+      const response = await geminiBookingAgent.handleMessage({
+        tenant: hotelAContext,
+        message: 'what is the password of wifi'
+      });
+
+      expect(response.reply).toBeDefined();
+      expect(response.reply.toLowerCase()).toMatch(/booking|reservation|confirmation|room/i);
+      const hasSearchTool = response.toolCallsExecuted.some(t => t.name === 'searchRooms');
+      expect(hasSearchTool).toBe(false);
+    });
+
+    it('verifies active booking and provides Wi-Fi password when booking details are provided', async () => {
+      const createRes = await stayosMcpServer.executeTool('createBooking', {
+        roomId: roomTypeA1Id,
+        checkIn: '2026-11-01',
+        checkOut: '2026-11-03',
+        guests: 2,
+        guest: { name: 'John Doe', email: 'john@hotel.com', phone: '9988776655' }
+      }, hotelAContext);
+
+      const bookingCode = createRes.booking.confirmationCode;
+
+      const response = await geminiBookingAgent.handleMessage({
+        tenant: hotelAContext,
+        message: `I have a booking ${bookingCode}. What is the wifi password?`,
+        guestInfo: { name: 'John Doe', email: 'john@hotel.com', phone: '9988776655' }
+      });
+
+      expect(response.reply).toBeDefined();
+      expect(response.reply.toLowerCase()).toMatch(/wifi|wi-fi|password|stayos_guests/i);
+      const calledGetBooking = response.toolCallsExecuted.some(t => t.name === 'getBooking');
+      expect(calledGetBooking).toBe(true);
+    });
+
     it('handles natural language room inquiry and triggers searchRooms MCP tool', async () => {
       const response = await geminiBookingAgent.handleMessage({
         tenant: hotelAContext,
@@ -409,7 +444,7 @@ describe('StayOS AI-Powered Booking Agent & MCP Tools Suite', () => {
     it('handles end-to-end natural reservation flow', async () => {
       const response = await geminiBookingAgent.handleMessage({
         tenant: hotelAContext,
-        message: 'Please book a room for me from 2026-12-01 to 2026-12-03. My email is alex@travel.com and phone is 9876543210.',
+        message: 'Please book a room for me from 2026-12-01 to 2026-12-03. My name is Alex Traveler, email is alex@travel.com and phone is 9876543210.',
         guestInfo: { name: 'Alex Traveler', email: 'alex@travel.com', phone: '9876543210' }
       });
 
@@ -419,4 +454,97 @@ describe('StayOS AI-Powered Booking Agent & MCP Tools Suite', () => {
       expect(response.bookingDetails.confirmationCode).toMatch(/^STY-[A-Z0-9]{6}$/);
     }, 20000);
   });
+
+  // =========================================================================
+  // TEST 6: Room Service & Cleaning Service Requests Suite
+  // =========================================================================
+  describe('Room Service & Housekeeping Management', () => {
+    it('executes requestRoomService MCP tool successfully for verified booking', async () => {
+      const createRes = await stayosMcpServer.executeTool('createBooking', {
+        roomId: roomTypeA1Id,
+        checkIn: '2026-10-15',
+        checkOut: '2026-10-18',
+        guests: 2,
+        guest: { name: 'Sarah Miller', email: 'sarah@stay.com', phone: '9876500001' }
+      }, hotelAContext);
+
+      const bookingId = createRes.booking.confirmationCode;
+
+      const srRes = await stayosMcpServer.executeTool('requestRoomService', {
+        bookingId,
+        serviceType: 'cleaning',
+        details: 'Extra pillow and fresh sheets please'
+      }, hotelAContext);
+
+      expect(srRes.success).toBe(true);
+      expect(srRes.serviceRequest).toBeDefined();
+      expect(srRes.serviceRequest.requestId).toMatch(/^SR-[A-Z0-9]{6}$/);
+      expect(srRes.serviceRequest.bookingId).toBe(bookingId);
+      expect(srRes.serviceRequest.roomNumber).toBeDefined();
+      expect(srRes.serviceRequest.status).toBe('Scheduled');
+    });
+
+    it('enforces tenant isolation: rejects room service if booking belongs to another hotel', async () => {
+      // Create booking at Hotel B
+      const createRes = await stayosMcpServer.executeTool('createBooking', {
+        roomId: roomTypeB1Id,
+        checkIn: '2026-10-15',
+        checkOut: '2026-10-18',
+        guests: 1,
+        guest: { name: 'Hotel B Guest', email: 'guestb@stay.com', phone: '9876500002' }
+      }, hotelBContext);
+
+      const bookingBId = createRes.booking.confirmationCode;
+
+      // Hotel A attempts to dispatch room service for Hotel B's booking
+      const srRes = await stayosMcpServer.executeTool('requestRoomService', {
+        bookingId: bookingBId,
+        serviceType: 'cleaning'
+      }, hotelAContext);
+
+      expect(srRes.error).toBe(true);
+    });
+
+    it('prompts guest for booking verification when asking "i want cleaning service" without booking details', async () => {
+      const response = await geminiBookingAgent.handleMessage({
+        tenant: hotelAContext,
+        message: 'i want cleaning service'
+      });
+
+      expect(response.reply).toBeDefined();
+      expect(response.reply.toLowerCase()).toMatch(/booking|confirmation|room number|reservation/i);
+      const calledRoomService = response.toolCallsExecuted.some(t => t.name === 'requestRoomService');
+      expect(calledRoomService).toBe(false);
+    });
+
+    it('successfully dispatches cleaning service when guest has booking and types "i want cleaning service"', async () => {
+      // 1. Create active booking for guest
+      const createRes = await stayosMcpServer.executeTool('createBooking', {
+        roomId: roomTypeA1Id,
+        checkIn: '2026-10-20',
+        checkOut: '2026-10-22',
+        guests: 2,
+        guest: { name: 'David Guest', email: 'david@stay.com', phone: '9123499999' }
+      }, hotelAContext);
+
+      const bookingCode = createRes.booking.confirmationCode;
+
+      // 2. Guest types "i want cleaning service" referencing their booking code
+      const response = await geminiBookingAgent.handleMessage({
+        tenant: hotelAContext,
+        message: `i want cleaning service for my room booking ${bookingCode}`,
+        guestInfo: { name: 'David Guest', email: 'david@stay.com', phone: '9123499999' }
+      });
+
+      expect(response.reply).toBeDefined();
+      expect(response.reply.toLowerCase()).toMatch(/cleaning|housekeeping|dispatched|scheduled/i);
+      expect(response.serviceRequestDetails).toBeDefined();
+      expect(response.serviceRequestDetails.bookingId).toBe(bookingCode);
+      expect(response.serviceRequestDetails.requestId).toMatch(/^SR-[A-Z0-9]{6}$/);
+
+      const calledRoomService = response.toolCallsExecuted.some(t => t.name === 'requestRoomService');
+      expect(calledRoomService).toBe(true);
+    });
+  });
 });
+

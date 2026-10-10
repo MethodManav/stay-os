@@ -10,6 +10,7 @@ import {
 import { RoomCard } from './generative/RoomCard';
 import { BookingConfirmationCard } from './generative/BookingConfirmationCard';
 import { AvailabilityBadge } from './generative/AvailabilityBadge';
+import { ServiceRequestCard } from './generative/ServiceRequestCard';
 import { api } from '../../api';
 
 interface TamboChatWidgetProps {
@@ -29,13 +30,14 @@ interface ChatMessage {
   sender: 'guest' | 'ai';
   text: string;
   generativeComponents?: Array<{
-    type: 'RoomCard' | 'BookingConfirmationCard' | 'AvailabilityBadge';
+    type: 'RoomCard' | 'BookingConfirmationCard' | 'AvailabilityBadge' | 'ServiceRequestCard';
     props: any;
   }>;
 }
 
 const QUICK_PROMPTS = [
   'Show available rooms',
+  'I want cleaning service',
   'What is the check-in time?',
   'Do you have free Wi-Fi?',
   'Are meals included in the stay?',
@@ -122,10 +124,15 @@ const StayOSGenerativeChatView: React.FC<TamboChatWidgetProps> = ({
     setIsTyping(true);
 
     try {
-      let savedPhone = localStorage.getItem('stayos_guest_phone');
-      if (!savedPhone) {
-        savedPhone = guestPhone || '+91 98' + Math.floor(10000000 + Math.random() * 90000000);
-        localStorage.setItem('stayos_guest_phone', savedPhone);
+      const savedPhone = localStorage.getItem('stayos_guest_phone') || guestPhone || undefined;
+      const lastBookingId = localStorage.getItem('stayos_last_booking_id');
+
+      // If the guest has a remembered booking in this browser and asks for cleaning/room service without mentioning it,
+      // include the booking context so the concierge can schedule it immediately.
+      let outgoingMessage = query;
+      const isCleaningQuery = /clean|housekeep|room service|towel/i.test(query);
+      if (isCleaningQuery && lastBookingId && !query.toUpperCase().includes('STY-') && !query.includes(lastBookingId)) {
+        outgoingMessage = `${query} (Booking Ref: ${lastBookingId})`;
       }
 
       const history = messages.map((m) => ({
@@ -134,7 +141,7 @@ const StayOSGenerativeChatView: React.FC<TamboChatWidgetProps> = ({
       }));
 
       const res = await api.chatWithAgent(subdomain, {
-        message: query,
+        message: outgoingMessage,
         history,
         guestName: guestName || 'Valued Guest',
         guestEmail: guestEmail || undefined,
@@ -202,6 +209,12 @@ const StayOSGenerativeChatView: React.FC<TamboChatWidgetProps> = ({
 
           if ((tool.name === 'createBooking' || tool.name === 'getBooking') && (tool.result?.booking || res.booking || res.bookingDetails)) {
             const bk = tool.result?.booking || res.booking || res.bookingDetails;
+            if (bk?.confirmationCode) {
+              localStorage.setItem('stayos_last_booking_id', bk.confirmationCode);
+            }
+            if (bk?.guest?.phone) {
+              localStorage.setItem('stayos_guest_phone', bk.guest.phone);
+            }
             generativeComponents.push({
               type: 'BookingConfirmationCard',
               props: {
@@ -216,7 +229,44 @@ const StayOSGenerativeChatView: React.FC<TamboChatWidgetProps> = ({
               },
             });
           }
+
+          if (tool.name === 'requestRoomService' && (tool.result?.serviceRequest || res.serviceRequest)) {
+            const sr = tool.result?.serviceRequest || res.serviceRequest;
+            generativeComponents.push({
+              type: 'ServiceRequestCard',
+              props: {
+                requestId: sr.requestId || 'SR-DISPATCHED',
+                bookingId: sr.bookingId || lastBookingId || 'STY-CONFIRMED',
+                roomNumber: sr.roomNumber || 'Assigned Room',
+                roomName: sr.roomName,
+                guestName: sr.guestName || guestName || 'Valued Guest',
+                serviceType: sr.serviceType || 'Room Cleaning',
+                status: sr.status || 'Scheduled',
+                details: sr.details,
+                estimatedArrival: sr.estimatedArrival || 'Within 20–35 minutes',
+              },
+            });
+          }
         }
+      }
+
+      // Also check top-level serviceRequest in API response
+      if (res?.serviceRequest && !generativeComponents.some((c) => c.type === 'ServiceRequestCard')) {
+        const sr = res.serviceRequest;
+        generativeComponents.push({
+          type: 'ServiceRequestCard',
+          props: {
+            requestId: sr.requestId || 'SR-DISPATCHED',
+            bookingId: sr.bookingId || lastBookingId || 'STY-CONFIRMED',
+            roomNumber: sr.roomNumber || 'Assigned Room',
+            roomName: sr.roomName,
+            guestName: sr.guestName || guestName || 'Valued Guest',
+            serviceType: sr.serviceType || 'Room Cleaning',
+            status: sr.status || 'Scheduled',
+            details: sr.details,
+            estimatedArrival: sr.estimatedArrival || 'Within 20–35 minutes',
+          },
+        });
       }
 
       // If user specifically asked about rooms and no tool rendered a card yet, synthesize room cards from tenant profile
@@ -372,6 +422,9 @@ const StayOSGenerativeChatView: React.FC<TamboChatWidgetProps> = ({
                         onBookNow={handleBookRoom}
                       />
                     );
+                  }
+                  if (comp.type === 'ServiceRequestCard') {
+                    return <ServiceRequestCard key={cIdx} {...comp.props} />;
                   }
                   return null;
                 })}

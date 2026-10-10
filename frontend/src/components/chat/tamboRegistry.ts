@@ -3,6 +3,7 @@ import type { TamboComponent } from '@tambo-ai/react';
 import { RoomCard } from './generative/RoomCard';
 import { BookingConfirmationCard } from './generative/BookingConfirmationCard';
 import { AvailabilityBadge } from './generative/AvailabilityBadge';
+import { ServiceRequestCard } from './generative/ServiceRequestCard';
 
 export const RoomCardSchema = z.object({
   roomId: z.string().describe('Unique identifier or ID of the room type'),
@@ -36,6 +37,18 @@ export const AvailabilityBadgeSchema = z.object({
   currency: z.string().default('INR').describe('Currency code'),
 });
 
+export const ServiceRequestCardSchema = z.object({
+  requestId: z.string().describe('Unique reference identifier for the service dispatch (e.g. SR-XXXXXX)'),
+  bookingId: z.string().describe('Verified booking confirmation ID (e.g. STY-XXXXXX)'),
+  roomNumber: z.string().describe('The physical room number or allocated suite of the staying guest'),
+  roomName: z.string().optional().describe('Name or category of the booked room'),
+  guestName: z.string().optional().describe('Name of the staying guest'),
+  serviceType: z.string().default('Room Cleaning').describe('Requested service type (e.g. Room Cleaning, Fresh Towels, Maintenance)'),
+  status: z.string().default('Scheduled').describe('Current dispatch status'),
+  details: z.string().optional().describe('Guest instructions or details'),
+  estimatedArrival: z.string().default('Within 20–35 minutes').describe('Expected staff arrival time'),
+});
+
 export const tamboComponents: TamboComponent[] = [
   {
     name: 'RoomCard',
@@ -54,5 +67,11 @@ export const tamboComponents: TamboComponent[] = [
     description: 'Renders a live availability check banner with stay dates, availability status, and rate estimate. Use when guests ask if rooms are free for specific dates.',
     component: AvailabilityBadge,
     propsSchema: AvailabilityBadgeSchema,
+  },
+  {
+    name: 'ServiceRequestCard',
+    description: 'Renders an interactive housekeeping and room service dispatch voucher for room cleaning, maintenance, towels, or room service requests.',
+    component: ServiceRequestCard,
+    propsSchema: ServiceRequestCardSchema,
   },
 ];

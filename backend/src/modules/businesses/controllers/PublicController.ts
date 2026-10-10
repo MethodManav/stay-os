@@ -360,7 +360,8 @@ export class PublicController {
         data: {
           reply: agentResult.reply,
           toolCalls: agentResult.toolCallsExecuted,
-          booking: agentResult.bookingDetails
+          booking: agentResult.bookingDetails,
+          serviceRequest: agentResult.serviceRequestDetails
         }
       });
     } catch (error) {

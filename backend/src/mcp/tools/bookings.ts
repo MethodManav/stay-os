@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TenantContext, validateTenantContext } from '../context';
 import { bookingService } from '../../services/bookingService';
+import { BadRequestError } from '../../core/errors/BadRequestError';
 
 export const createBookingSchema = z.object({
   roomId: z.string().describe('The room category ID or room ID to book'),
@@ -36,15 +37,18 @@ export async function executeCreateBooking(input: CreateBookingInput, context: T
 }
 
 export const getBookingSchema = z.object({
-  bookingId: z.string().describe('The booking confirmation ID (e.g. STY-XXXXXX or MongoDB ObjectId)'),
-  email: z.string().email().optional().describe('Guest email address for security verification'),
-  phone: z.string().optional().describe('Guest phone number for security verification')
+  bookingId: z.string().optional().describe('The booking confirmation ID (e.g. STY-XXXXXX or MongoDB ObjectId)'),
+  email: z.string().email().optional().describe('Guest email address for security verification or booking lookup'),
+  phone: z.string().optional().describe('Guest phone number for security verification or booking lookup')
 });
 
 export type GetBookingInput = z.infer<typeof getBookingSchema>;
 
 export async function executeGetBooking(input: GetBookingInput, context: TenantContext) {
   const verified = validateTenantContext(context);
+  if (!input.bookingId && !input.email && !input.phone) {
+    throw new BadRequestError('At least one of bookingId, email, or phone is required to verify a booking');
+  }
   const booking = await bookingService.getBooking({
     hotelId: verified.hotelId,
     bookingId: input.bookingId,

@@ -253,6 +253,18 @@ export const SettingsTab: React.FC = () => {
             </div>
 
             <div>
+              <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Guest Wi-Fi Password</label>
+              <input 
+                type="text" 
+                value={wifiPassword} 
+                onChange={e => setWifiPassword(e.target.value)}
+                placeholder="e.g. stayos_guests"
+                className="w-full max-w-xs px-3.5 py-2.5 border border-border-subtle bg-[#f1f5f9]/30 rounded-lg focus:outline-none focus:border-brand-primary"
+              />
+              <p className="text-[11px] text-text-secondary mt-1">Shared by the AI Concierge when guests ask for Wi-Fi credentials.</p>
+            </div>
+
+            <div>
               <label className="block text-[11px] uppercase font-bold text-text-secondary mb-1.5">Cancellation Policy</label>
               <textarea 
                 rows={3}

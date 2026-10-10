@@ -235,7 +235,10 @@ export const PublicSite: React.FC = () => {
         }
       });
 
-      setBookingSuccess(res.bookingId || `B-${Math.floor(1000 + Math.random() * 9000)}`);
+      const bookedId = res.bookingId || `STY-${Math.floor(1000 + Math.random() * 9000)}`;
+      setBookingSuccess(bookedId);
+      localStorage.setItem('stayos_last_booking_id', bookedId);
+      if (guestPhone) localStorage.setItem('stayos_guest_phone', guestPhone);
     } catch (err: any) {
       console.error(err);
       alert(err.message || 'Booking reservation failed. Please check date availability.');

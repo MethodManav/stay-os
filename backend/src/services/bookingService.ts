@@ -48,6 +48,7 @@ export interface BookingResponse {
   bookingStatus: string;
   paymentStatus: string;
   cancellationPolicy: string;
+  roomNumber?: string;
 }
 
 export class BookingService {
@@ -193,6 +194,7 @@ export class BookingService {
 
     const shortId = booking._id.toString().slice(-6).toUpperCase();
     const confirmationCode = `STY-${shortId}`;
+    const physicalRoom = allocatedRoomId ? await RoomModel.findById(allocatedRoomId).exec() : null;
 
     return {
       bookingId: booking._id.toString(),
@@ -200,6 +202,7 @@ export class BookingService {
       hotelId,
       hotelName: hotel.name,
       roomName: roomType.name,
+      roomNumber: physicalRoom?.roomNumber || undefined,
       checkIn,
       checkOut,
       nights,
@@ -227,7 +230,7 @@ export class BookingService {
    */
   public async getBooking(params: {
     hotelId: string;
-    bookingId: string;
+    bookingId?: string;
     email?: string;
     phone?: string;
   }): Promise<BookingResponse> {
@@ -237,49 +240,71 @@ export class BookingService {
       throw new BadRequestError('Invalid hotel identifier');
     }
 
+    if (!bookingId && !email && !phone) {
+      throw new BadRequestError('Please provide a booking ID, email, or phone number to verify booking');
+    }
+
     let bookingQuery: any = {
       businessId: new Types.ObjectId(hotelId)
     };
 
-    if (Types.ObjectId.isValid(bookingId)) {
-      bookingQuery._id = new Types.ObjectId(bookingId);
-    } else {
-      // Handle STY-XXXXXX format or mongo ID
-      const cleaned = bookingId.replace(/^STY-/, '');
-      if (cleaned.length === 6) {
-        // Find matching by regex of the trailing ID
-        const match = await BookingModel.findOne({
-          businessId: new Types.ObjectId(hotelId),
-          $expr: {
-            $regexMatch: {
-              input: { $toString: '$_id' },
-              regex: `${cleaned}$`,
-              options: 'i'
-            }
-          }
-        }).exec();
-        if (match) {
-          bookingQuery._id = match._id;
-        } else {
-          throw new NotFoundError(`Booking '${bookingId}' not found at this hotel`);
-        }
+    if (bookingId) {
+      if (Types.ObjectId.isValid(bookingId)) {
+        bookingQuery._id = new Types.ObjectId(bookingId);
       } else {
-        throw new BadRequestError('Invalid booking ID format');
+        // Handle STY-XXXXXX format or mongo ID
+        const cleaned = bookingId.replace(/^STY-/, '');
+        if (cleaned.length === 6) {
+          // Find matching by regex of the trailing ID
+          const match = await BookingModel.findOne({
+            businessId: new Types.ObjectId(hotelId),
+            $expr: {
+              $regexMatch: {
+                input: { $toString: '$_id' },
+                regex: `${cleaned}$`,
+                options: 'i'
+              }
+            }
+          }).exec();
+          if (match) {
+            bookingQuery._id = match._id;
+          } else {
+            throw new NotFoundError(`Booking '${bookingId}' not found at this hotel`);
+          }
+        } else {
+          throw new BadRequestError('Invalid booking ID format');
+        }
       }
+    } else {
+      // Find guest by email or phone
+      const guestQuery: any = {};
+      if (email) guestQuery.email = email.trim().toLowerCase();
+      if (phone) guestQuery.phone = phone.trim();
+
+      const guests = await GuestModel.find(guestQuery).exec();
+      if (guests.length === 0) {
+        throw new NotFoundError('No guest record found matching the provided details');
+      }
+
+      bookingQuery.guestId = { $in: guests.map(g => g._id) };
+      bookingQuery.bookingStatus = { $nin: ['CANCELLED'] };
     }
 
     const booking = await BookingModel.findOne(bookingQuery)
+      .sort({ createdAt: -1 })
       .populate('guestId')
       .populate('roomTypeId')
+      .populate('roomId')
       .populate('businessId')
       .exec();
 
     if (!booking) {
-      throw new NotFoundError(`Booking '${bookingId}' not found at this hotel`);
+      throw new NotFoundError(bookingId ? `Booking '${bookingId}' not found at this hotel` : 'No active booking found for provided guest details');
     }
 
     const guestDoc: any = booking.guestId;
     const roomType: any = booking.roomTypeId;
+    const physicalRoom: any = booking.roomId;
     const hotel: any = booking.businessId;
 
     // Verify guest identity if provided
@@ -300,6 +325,7 @@ export class BookingService {
       hotelId: hotel?._id?.toString() || hotelId,
       hotelName: hotel?.name || 'Hotel Property',
       roomName: roomType?.name || 'Standard Room',
+      roomNumber: physicalRoom?.roomNumber || undefined,
       checkIn: booking.checkIn.toISOString().split('T')[0],
       checkOut: booking.checkOut.toISOString().split('T')[0],
       nights,

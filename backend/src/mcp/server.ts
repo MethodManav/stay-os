@@ -18,6 +18,10 @@ import {
   cancelBookingSchema,
   executeCancelBooking
 } from './tools/bookings';
+import {
+  requestRoomServiceSchema,
+  executeRequestRoomService
+} from './tools/serviceRequests';
 import { BadRequestError } from '../core/errors/BadRequestError';
 
 export interface ToolDefinition {
@@ -139,7 +143,7 @@ export class StayOSMcpServer {
 
     this.tools.set('getBooking', {
       name: 'getBooking',
-      description: 'Retrieve an existing booking by booking confirmation ID or code with secure guest verification.',
+      description: 'Retrieve and verify an existing room booking by booking confirmation ID (e.g. STY-XXXXXX), guest email, or guest phone. Use this to verify whether the guest has an active booking at the hotel before sharing protected amenities like the Wi-Fi password.',
       parameters: {
         type: 'OBJECT',
         properties: {
@@ -149,14 +153,13 @@ export class StayOSMcpServer {
           },
           email: {
             type: 'STRING',
-            description: 'Guest email address for security verification'
+            description: 'Guest email address for verification or lookup'
           },
           phone: {
             type: 'STRING',
-            description: 'Guest phone number for security verification'
+            description: 'Guest phone number for verification or lookup'
           }
-        },
-        required: ['bookingId']
+        }
       },
       execute: (input, ctx) => executeGetBooking(getBookingSchema.parse(input), ctx)
     });
@@ -187,6 +190,45 @@ export class StayOSMcpServer {
         required: ['bookingId']
       },
       execute: (input, ctx) => executeCancelBooking(cancelBookingSchema.parse(input), ctx)
+    });
+
+    this.tools.set('requestRoomService', {
+      name: 'requestRoomService',
+      description: 'Schedule and dispatch room service, cleaning, or housekeeping for a guest with an existing confirmed booking. Requires guest verification (bookingId, roomNumber, email, or phone). Use whenever a guest asks for room cleaning ("i want cleaning service"), housekeeping, fresh towels, maintenance, or room service.',
+      parameters: {
+        type: 'OBJECT',
+        properties: {
+          bookingId: {
+            type: 'STRING',
+            description: 'The booking confirmation ID (e.g. STY-XXXXXX)'
+          },
+          roomNumber: {
+            type: 'STRING',
+            description: 'The room number where the service should be delivered'
+          },
+          serviceType: {
+            type: 'STRING',
+            description: 'Type of service requested: "cleaning", "housekeeping", "towels", "maintenance", "dining"'
+          },
+          details: {
+            type: 'STRING',
+            description: 'Specific notes or instructions for the service request'
+          },
+          email: {
+            type: 'STRING',
+            description: 'Guest email address for booking lookup'
+          },
+          phone: {
+            type: 'STRING',
+            description: 'Guest phone number for booking lookup'
+          },
+          requestedTime: {
+            type: 'STRING',
+            description: 'Requested timing for the service (e.g. "ASAP" or "in 1 hour")'
+          }
+        }
+      },
+      execute: (input, ctx) => executeRequestRoomService(requestRoomServiceSchema.parse(input), ctx)
     });
   }
 

@@ -19,6 +19,8 @@ export interface HotelProfile {
   timezone: string;
   checkInTime: string;
   checkOutTime: string;
+  wifiPassword?: string;
+  breakfastPolicy?: 'included' | 'paid' | 'none';
   cancellationPolicy?: string;
   amenities: string[];
 }
@@ -83,6 +85,8 @@ export class HotelService {
       timezone: business.timezone || 'Asia/Kolkata',
       checkInTime: business.checkInTime || '14:00',
       checkOutTime: business.checkOutTime || '11:00',
+      wifiPassword: business.wifiPassword || 'stayos_guests',
+      breakfastPolicy: business.breakfastPolicy || 'included',
       cancellationPolicy: business.cancellationPolicy || 'Free cancellation up to 24 hours before check-in. Non-refundable thereafter.',
       amenities: business.amenities || []
     };
