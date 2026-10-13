@@ -250,6 +250,39 @@ class ApiClient {
     });
   }
 
+  // Service Request Operations
+  public async getServiceRequests(filters?: { status?: string; serviceType?: string }) {
+    let url = '/service-requests';
+    if (filters) {
+      const params = new URLSearchParams();
+      if (filters.status && filters.status !== 'all') params.append('status', filters.status);
+      if (filters.serviceType && filters.serviceType !== 'all') params.append('serviceType', filters.serviceType);
+      const q = params.toString();
+      if (q) url += `?${q}`;
+    }
+    return this.request(url);
+  }
+
+  public async createServiceRequest(data: any) {
+    return this.request('/service-requests', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+
+  public async updateServiceRequestStatus(id: string, status: string, details?: string) {
+    return this.request(`/service-requests/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status, details })
+    });
+  }
+
+  public async deleteServiceRequest(id: string) {
+    return this.request(`/service-requests/${id}`, {
+      method: 'DELETE'
+    });
+  }
+
   // Booking Operations
   public async getBookings() {
     return this.request('/bookings');

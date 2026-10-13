@@ -8,6 +8,7 @@ import { DashboardLayout } from './components/DashboardApp';
 import { DashboardTab } from './components/DashboardTab';
 import { BookingsTab } from './components/BookingsTab';
 import { RoomsTab } from './components/RoomsTab';
+import { ServicesTab } from './components/ServicesTab';
 import { CustomersTab } from './components/CustomersTab';
 import { WebsiteTab } from './components/WebsiteTab';
 import { AiTab } from './components/AiTab';
@@ -61,6 +62,7 @@ export default function App() {
             <Route path="dashboard" element={<DashboardTab />} />
             <Route path="bookings" element={<BookingsTab />} />
             <Route path="rooms" element={<RoomsTab />} />
+            <Route path="services" element={<ServicesTab />} />
             <Route path="customers" element={<CustomersTab />} />
             <Route path="website" element={<WebsiteTab />} />
             <Route path="ai" element={<AiTab />} />

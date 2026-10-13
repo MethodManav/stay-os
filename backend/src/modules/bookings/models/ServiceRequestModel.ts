@@ -7,10 +7,11 @@ export type ServicePriority = 'low' | 'normal' | 'high';
 export interface IServiceRequest {
   organizationId: Types.ObjectId;
   businessId: Types.ObjectId;
-  bookingId: Types.ObjectId;
+  bookingId?: Types.ObjectId;
   guestId?: Types.ObjectId;
+  guestName?: string;
   roomNumber: string;
-  roomName: string;
+  roomName?: string;
   serviceType: ServiceType;
   details: string;
   status: ServiceStatus;
@@ -39,22 +40,28 @@ const ServiceRequestSchema = new Schema<IServiceRequestDocument>(
     bookingId: {
       type: Schema.Types.ObjectId,
       ref: 'Booking',
-      required: true,
+      required: false,
       index: true
     },
     guestId: {
       type: Schema.Types.ObjectId,
       ref: 'Guest'
     },
+    guestName: {
+      type: String,
+      trim: true,
+      default: 'Valued Guest'
+    },
     roomNumber: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
+      default: 'In-House Guest'
     },
     roomName: {
       type: String,
-      required: true,
-      trim: true
+      trim: true,
+      default: 'Guest Room'
     },
     serviceType: {
       type: String,

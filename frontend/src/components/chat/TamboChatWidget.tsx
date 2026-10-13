@@ -131,7 +131,8 @@ const StayOSGenerativeChatView: React.FC<TamboChatWidgetProps> = ({
       // include the booking context so the concierge can schedule it immediately.
       let outgoingMessage = query;
       const isCleaningQuery = /clean|housekeep|room service|towel/i.test(query);
-      if (isCleaningQuery && lastBookingId && !query.toUpperCase().includes('STY-') && !query.includes(lastBookingId)) {
+      const isWifiQuery = /wifi|wi-fi|internet|password|passcode/i.test(query);
+      if ((isCleaningQuery || isWifiQuery) && lastBookingId && !query.toUpperCase().includes('STY-') && !query.includes(lastBookingId)) {
         outgoingMessage = `${query} (Booking Ref: ${lastBookingId})`;
       }
 
@@ -232,6 +233,15 @@ const StayOSGenerativeChatView: React.FC<TamboChatWidgetProps> = ({
 
           if (tool.name === 'requestRoomService' && (tool.result?.serviceRequest || res.serviceRequest)) {
             const sr = tool.result?.serviceRequest || res.serviceRequest;
+            window.dispatchEvent(new CustomEvent('stayos:service_request_created', { detail: sr }));
+            try {
+              const currentKey = `stayos_services_${tenant?.id || 'default'}`;
+              const prev = JSON.parse(localStorage.getItem(currentKey) || '[]');
+              const updated = [sr, ...prev.filter((p: any) => p.requestId !== sr.requestId)];
+              localStorage.setItem(currentKey, JSON.stringify(updated));
+            } catch {
+              // ignore
+            }
             generativeComponents.push({
               type: 'ServiceRequestCard',
               props: {
@@ -253,6 +263,15 @@ const StayOSGenerativeChatView: React.FC<TamboChatWidgetProps> = ({
       // Also check top-level serviceRequest in API response
       if (res?.serviceRequest && !generativeComponents.some((c) => c.type === 'ServiceRequestCard')) {
         const sr = res.serviceRequest;
+        window.dispatchEvent(new CustomEvent('stayos:service_request_created', { detail: sr }));
+        try {
+          const currentKey = `stayos_services_${tenant?.id || 'default'}`;
+          const prev = JSON.parse(localStorage.getItem(currentKey) || '[]');
+          const updated = [sr, ...prev.filter((p: any) => p.requestId !== sr.requestId)];
+          localStorage.setItem(currentKey, JSON.stringify(updated));
+        } catch {
+          // ignore
+        }
         generativeComponents.push({
           type: 'ServiceRequestCard',
           props: {

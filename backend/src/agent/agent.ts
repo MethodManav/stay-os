@@ -103,13 +103,16 @@ Your responsibilities:
    - Use 'getBooking' when a guest asks about an existing booking, or to verify if a guest has a room reservation before sharing the Wi-Fi password.
    - Use 'cancelBooking' when a guest requests cancellation.
    - Use 'requestRoomService' when a guest requests room cleaning, housekeeping, fresh towels, maintenance, or room service for their room.
-6. Room Service & Cleaning Requests Rule (MANDATORY):
-   - In-room cleaning, housekeeping, and room service are available exclusively for staying guests with an active room reservation.
-   - When a guest asks for cleaning service or room service (e.g., "i want cleaning service", "can you clean my room", "need housekeeping", "send room service", "fresh towels", "maintenance"):
-     * Check if a booking confirmation code (e.g. STY-XXXXXX), room number, guest email, or guest phone is present in the message, conversation history, or Known Guest Context.
-     * If booking details/context exist: CALL 'requestRoomService' immediately to schedule the service (set serviceType: "cleaning").
-     * If NO booking confirmation ID, room number, email, or phone has been provided yet: Do NOT call the tool. Politely inform the guest that room cleaning is available for staying guests, and ask them to provide their **Booking Confirmation ID** (e.g. STY-XXXXXX), **Room Number**, or registered **phone/email** so you can schedule the service for their room.
-     * If 'requestRoomService' confirms the request: Clearly inform the guest that cleaning has been scheduled, specifying their room number, confirmation ID, and estimated arrival time.
+6. Room Service & Service Requests Rule (CRITICAL & MANDATORY):
+   - Whenever the guest asks or requests ANY hotel service, room service, cleaning, housekeeping, fresh towels, linens, maintenance, repairs, food/dining, wake-up call, luggage, or assistance (e.g., "i want cleaning service", "can you clean my room", "need housekeeping", "fresh towels", "fix AC", "maintenance", "room service", "breakfast in room", etc.):
+     * ANALYZE their message to extract:
+       - serviceType: "cleaning", "towels", "maintenance", "dining", "room_service", "luggage", etc.
+       - roomNumber: extract if mentioned (e.g., "room 101", "204") or from context.
+       - bookingId: extract if mentioned (e.g., "STY-XXXXXX") or from context.
+       - details: the guest's specific message or needs.
+     * ALWAYS CALL 'requestRoomService' immediately! DO NOT refuse, do NOT ask for booking confirmation before calling the tool.
+     * Calling 'requestRoomService' immediately creates a live service record in the hotel management panel for hotel staff.
+     * Once 'requestRoomService' confirms the request, clearly inform the guest that the service has been scheduled, quoting their Request Reference ID (e.g. SR-XXXXXX), room number, and estimated arrival time. If room number was not provided, kindly ask them to confirm their room number so staff can deliver it promptly.
 7. Pricing & Policy Rules:
    - State prices clearly in ${currency}.
    - Never invent or guess room availability or prices; always use tool outputs.
@@ -285,20 +288,38 @@ Your responsibilities:
       };
     }
 
-    // 2. Check if user requests Room Service / Housekeeping / Cleaning
+    // 2. Check if user requests Room Service / Housekeeping / Cleaning / Maintenance / Dining / Any service
     const isServiceRequest =
       textLower.includes('cleaning') ||
       textLower.includes('clean') ||
       textLower.includes('housekeep') ||
       textLower.includes('towel') ||
-      textLower.includes('linens') ||
-      (textLower.includes('room service') && (textLower.includes('want') || textLower.includes('need') || textLower.includes('order') || textLower.includes('make') || textLower.includes('request') || textLower.includes('get')));
+      textLower.includes('linen') ||
+      textLower.includes('sheet') ||
+      textLower.includes('pillow') ||
+      textLower.includes('blanket') ||
+      textLower.includes('maintenance') ||
+      textLower.includes('repair') ||
+      textLower.includes('fix') ||
+      textLower.includes('leak') ||
+      textLower.includes('plumb') ||
+      textLower.includes('ac ') ||
+      textLower.includes('air conditioning') ||
+      textLower.includes('dining') ||
+      textLower.includes('food') ||
+      textLower.includes('breakfast') ||
+      textLower.includes('meal') ||
+      textLower.includes('room service') ||
+      textLower.includes('wake up') ||
+      textLower.includes('alarm') ||
+      textLower.includes('luggage') ||
+      textLower.includes('laundry') ||
+      textLower.includes('iron') ||
+      textLower.includes('service');
 
     if (isServiceRequest) {
-      // 1. Extract booking code from current message
+      // 1. Extract booking code from current message or history
       let bookingId = message.match(/STY-[A-Z0-9]{6}|[0-9a-fA-F]{24}/i)?.[0];
-
-      // 2. If not in message, check history for booking confirmation codes
       if (!bookingId && history) {
         for (let i = history.length - 1; i >= 0; i--) {
           const match = history[i].content.match(/STY-[A-Z0-9]{6}|[0-9a-fA-F]{24}/i);
@@ -309,54 +330,57 @@ Your responsibilities:
         }
       }
 
-      // 3. Extract room number if mentioned, e.g. "room 204", "rm 101"
-      const roomMatch = message.match(/(?:room|rm)[\s#:]*([A-Za-z0-9\-]+)/i);
+      // 2. Extract room number if mentioned, e.g. "room 204", "rm 101", "room: 305"
+      const roomMatch = message.match(/(?:room|rm|suite)[\s#:]*([A-Za-z0-9\-]+)/i);
       const roomNumber = roomMatch ? roomMatch[1] : undefined;
 
-      // 4. Extract contact details
+      // 3. Extract contact details
       const emailMatch = message.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)?.[0];
       const phoneMatch = message.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}|\d{10}/)?.[0];
-
       const guestEmail = emailMatch || (guestInfo?.email && !guestInfo.email.includes('guest@stayos.com') ? guestInfo.email : undefined);
       const guestPhone = phoneMatch || (guestInfo?.phone && !guestInfo.phone.includes('Valued') ? guestInfo.phone : undefined);
+      const guestName = guestInfo?.name && !guestInfo.name.includes('Valued') ? guestInfo.name : undefined;
 
-      if (bookingId || roomNumber || guestEmail || guestPhone) {
-        try {
-          const res = await stayosMcpServer.executeTool('requestRoomService', {
-            bookingId,
-            roomNumber,
-            serviceType: 'cleaning',
-            details: message,
-            email: guestEmail,
-            phone: guestPhone
-          }, tenant);
-
-          if (res.serviceRequest) {
-            const sr = res.serviceRequest;
-            return {
-              reply: `✨ Housekeeping scheduled! We have dispatched room cleaning for **${sr.roomNumber}** (Booking: ${sr.bookingId}, Request Ref: ${sr.requestId}). Our staff will arrive ${sr.estimatedArrival.toLowerCase()}. Please let us know if you need anything else!`,
-              toolCallsExecuted: [{ name: 'requestRoomService', args: { bookingId, roomNumber, serviceType: 'cleaning' }, result: res }],
-              serviceRequestDetails: sr
-            };
-          } else if (res.error) {
-            return {
-              reply: `I could not locate an active reservation matching those details. Room service is reserved for staying guests. Please double-check your booking confirmation ID (e.g. STY-XXXXXX) or room number so we can dispatch housekeeping.`,
-              toolCallsExecuted: [{ name: 'requestRoomService', args: { bookingId, roomNumber }, result: res }]
-            };
-          }
-        } catch {
-          return {
-            reply: `I could not locate an active reservation matching those details. Room service is reserved for staying guests. Please double-check your booking confirmation ID (e.g. STY-XXXXXX) or room number so we can dispatch housekeeping.`,
-            toolCallsExecuted: []
-          };
-        }
+      // 4. Analyze service category
+      let detectedServiceType = 'cleaning';
+      if (textLower.includes('towel') || textLower.includes('linen') || textLower.includes('sheet') || textLower.includes('pillow')) {
+        detectedServiceType = 'towels';
+      } else if (textLower.includes('maintenance') || textLower.includes('fix') || textLower.includes('repair') || textLower.includes('plumb') || textLower.includes('ac')) {
+        detectedServiceType = 'maintenance';
+      } else if (textLower.includes('food') || textLower.includes('dine') || textLower.includes('dining') || textLower.includes('meal') || textLower.includes('breakfast')) {
+        detectedServiceType = 'dining';
+      } else if (textLower.includes('clean') || textLower.includes('housekeep')) {
+        detectedServiceType = 'cleaning';
+      } else {
+        detectedServiceType = 'room_service';
       }
 
-      // No booking details provided yet: prompt the guest
-      return {
-        reply: `Our room cleaning and housekeeping services are complimentary for our staying guests! To dispatch housekeeping to your room, please provide your **Booking Confirmation ID** (e.g. STY-XXXXXX), **Room Number**, or the **email / phone number** used for your reservation.`,
-        toolCallsExecuted: []
-      };
+      try {
+        const res = await stayosMcpServer.executeTool('requestRoomService', {
+          bookingId,
+          roomNumber,
+          serviceType: detectedServiceType,
+          details: message,
+          guestName,
+          email: guestEmail,
+          phone: guestPhone
+        }, tenant);
+
+        if (res.serviceRequest) {
+          const sr = res.serviceRequest;
+          const roomNotice = sr.roomNumber && !sr.roomNumber.includes('To be confirmed')
+            ? `for **${sr.roomNumber}**`
+            : `(Service Ticket: ${sr.requestId})`;
+
+          return {
+            reply: `✨ Service Scheduled! We have dispatched **${sr.serviceType}** ${roomNotice} (Reference: **${sr.requestId}**). Staff will arrive ${sr.estimatedArrival.toLowerCase()}.${sr.roomNumber.includes('To be confirmed') ? ' If you haven\'t given your room number, please let us know so we can bring it straight to your door!' : ''}`,
+            toolCallsExecuted: [{ name: 'requestRoomService', args: { bookingId, roomNumber, serviceType: detectedServiceType, details: message }, result: res }],
+            serviceRequestDetails: sr
+          };
+        }
+      } catch (err: any) {
+        Logger.warn(`[Agent] Failed to dispatch simulated room service: ${err.message}`);
+      }
     }
 
     // 3. Check if user provides a booking code or inquires about their reservation
@@ -484,19 +508,53 @@ Your responsibilities:
       const isHindi = /[\u0900-\u097F]/.test(message);
 
       if (asksPassword) {
-        // Check if user provided booking ID, email, or phone in message or guestInfo
-        const bookingCodeMatch = message.match(/STY-[A-Z0-9]{6}|[0-9a-fA-F]{24}/i);
-        const emailMatch = message.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-        const phoneMatch = message.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}|\d{10}/);
+        // 1. Check if user provided booking ID in message or conversation history
+        let bookingId = message.match(/STY-[A-Z0-9]{6}|[0-9a-fA-F]{24}/i)?.[0];
+        if (!bookingId && history) {
+          for (let i = history.length - 1; i >= 0; i--) {
+            const match = history[i].content.match(/STY-[A-Z0-9]{6}|[0-9a-fA-F]{24}/i);
+            if (match) {
+              bookingId = match[0];
+              break;
+            }
+          }
+        }
 
-        const bookingId = bookingCodeMatch ? bookingCodeMatch[0] : undefined;
-        const guestEmail = emailMatch ? emailMatch[0] : (guestInfo?.email && !guestInfo.email.includes('guest@stayos.com') ? guestInfo.email : undefined);
-        const guestPhone = phoneMatch ? phoneMatch[0] : (guestInfo?.phone && !guestInfo.phone.includes('Valued') ? guestInfo.phone : undefined);
+        // 2. Extract room number if mentioned, e.g. "room 204", "rm 101"
+        const roomMatch = message.match(/(?:room|rm|suite)[\s#:]*([A-Za-z0-9\-]+)/i);
+        const roomNumber = roomMatch ? roomMatch[1] : undefined;
 
-        if (bookingId || guestEmail || guestPhone) {
+        // 3. Extract email from message, guestInfo, or history
+        const emailMatch = message.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)?.[0];
+        let guestEmail = emailMatch || (guestInfo?.email && !guestInfo.email.includes('guest@stayos.com') ? guestInfo.email : undefined);
+        if (!guestEmail && history) {
+          for (let i = history.length - 1; i >= 0; i--) {
+            const match = history[i].content.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+            if (match) {
+              guestEmail = match[0];
+              break;
+            }
+          }
+        }
+
+        // 4. Extract phone from message, guestInfo, or history
+        const phoneMatch = message.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}|\d{10}/)?.[0];
+        let guestPhone = phoneMatch || (guestInfo?.phone && !guestInfo.phone.includes('Valued') ? guestInfo.phone : undefined);
+        if (!guestPhone && history) {
+          for (let i = history.length - 1; i >= 0; i--) {
+            const match = history[i].content.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}|\d{10}/);
+            if (match) {
+              guestPhone = match[0];
+              break;
+            }
+          }
+        }
+
+        if (bookingId || roomNumber || guestEmail || guestPhone) {
           try {
             const bookingRes = await stayosMcpServer.executeTool('getBooking', {
               bookingId,
+              roomNumber,
               email: guestEmail,
               phone: guestPhone
             }, tenant);
@@ -507,15 +565,15 @@ Your responsibilities:
                 reply: isHindi
                   ? `धन्यवाद ${b.guest?.name || ''}! आपकी बुकिंग (${b.confirmationCode} - ${b.roomName}) सत्यापित हो गई है। होटल का Wi-Fi पासवर्ड **${wifiPass}** है।`
                   : `Welcome ${b.guest?.name || ''}! We've verified your reservation (${b.confirmationCode} - ${b.roomName}). Your complimentary high-speed Wi-Fi password is **${wifiPass}**. Enjoy your stay!`,
-                toolCallsExecuted: [{ name: 'getBooking', args: { bookingId, email: guestEmail, phone: guestPhone }, result: bookingRes }],
+                toolCallsExecuted: [{ name: 'getBooking', args: { bookingId, roomNumber, email: guestEmail, phone: guestPhone }, result: bookingRes }],
                 bookingDetails: b
               };
             }
           } catch {
             return {
               reply: isHindi
-                ? `हमें आपके दिए गए विवरण के साथ कोई सक्रिय बुकिंग नहीं मिली। कृपया अपना Booking Confirmation ID जांचें या फ्रंट डेस्क से संपर्क करें।`
-                : `We couldn't locate an active booking matching those details. Please check your booking confirmation code or visit our front desk.`,
+                ? `हमें आपके दिए गए विवरण के साथ कोई सक्रिय बुकिंग नहीं मिली। Wi-Fi केवल पंजीकृत अतिथियों के लिए उपलब्ध है। कृपया अपना Booking Confirmation ID जांचें या फ्रंट डेस्क से संपर्क करें।`
+                : `We couldn't locate an active booking matching those details. Complimentary Wi-Fi is reserved exclusively for guests with a confirmed booking. Please check your booking confirmation code or visit our front desk.`,
               toolCallsExecuted: []
             };
           }

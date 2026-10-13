@@ -12,7 +12,8 @@ import {
   aiRouter,
   analyticsRouter,
   publicRouter,
-  adminRouter
+  adminRouter,
+  serviceRequestRouter
 } from '../core/bootstrap';
 import { mcpRouter } from './mcp';
 
@@ -41,6 +42,8 @@ rootRouter.use('/websites', websiteRouter);
 rootRouter.use('/payments', paymentRouter);
 rootRouter.use('/ai', aiRouter);
 rootRouter.use('/analytics', analyticsRouter);
+rootRouter.use('/service-requests', serviceRequestRouter);
+rootRouter.use('/services', serviceRequestRouter);
 rootRouter.use('/public/businesses', publicRouter);
 rootRouter.use('/admin', adminRouter);
 rootRouter.use('/mcp', mcpRouter);

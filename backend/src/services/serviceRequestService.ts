@@ -2,6 +2,7 @@ import { Types } from 'mongoose';
 import { ServiceRequestModel, ServiceType } from '../modules/bookings/models/ServiceRequestModel';
 import { BookingModel } from '../modules/bookings/models/BookingModel';
 import { RoomModel } from '../modules/rooms/models/RoomModel';
+import { BusinessModel } from '../modules/businesses/models/BusinessModel';
 import { bookingService } from './bookingService';
 import { BadRequestError } from '../core/errors/BadRequestError';
 import { NotFoundError } from '../core/errors/NotFoundError';
@@ -12,10 +13,12 @@ export interface CreateServiceRequestParams {
   bookingId?: string;
   email?: string;
   phone?: string;
+  guestName?: string;
   roomNumber?: string;
   serviceType?: string;
   details?: string;
   requestedTime?: string;
+  priority?: 'low' | 'normal' | 'high';
 }
 
 export interface ServiceRequestResponse {
@@ -33,78 +36,103 @@ export interface ServiceRequestResponse {
 
 export class ServiceRequestService {
   /**
-   * Schedule or dispatch a room service / housekeeping request for a verified staying guest.
+   * Schedule or dispatch a room service / housekeeping request.
+   * Gracefully links active booking if available, or records directly for hotel staff.
    */
   public async createServiceRequest(params: CreateServiceRequestParams): Promise<ServiceRequestResponse> {
     const { hotelId, bookingId, email, phone, roomNumber } = params;
 
-    if (!Types.ObjectId.isValid(hotelId)) {
+    if (!hotelId || !Types.ObjectId.isValid(hotelId)) {
       throw new BadRequestError('Invalid hotel identifier');
     }
 
-    if (!bookingId && !email && !phone && !roomNumber) {
-      throw new BadRequestError('Please provide a booking confirmation ID, registered email/phone, or room number to request room service.');
+    // 1. Resolve organizationId
+    let orgId: Types.ObjectId | null = params.organizationId && Types.ObjectId.isValid(params.organizationId) 
+      ? new Types.ObjectId(params.organizationId) 
+      : null;
+
+    if (!orgId) {
+      const b = await BusinessModel.findById(new Types.ObjectId(hotelId)).select('organizationId').exec();
+      if (b?.organizationId) {
+        orgId = b.organizationId;
+      }
+    }
+    if (!orgId) {
+      orgId = new Types.ObjectId();
     }
 
-    // 1. Verify active booking for this hotel
-    let booking;
-    try {
-      booking = await bookingService.getBooking({
-        hotelId,
-        bookingId,
-        email,
-        phone
-      });
-    } catch (err: any) {
-      // If roomNumber was provided but no booking ID, try to find current booking for that room
-      if (roomNumber && !bookingId) {
-        const physicalRoom = await RoomModel.findOne({
+    // 2. Attempt to verify or find active booking if any details are given
+    let booking: any = null;
+    let bRecord: any = null;
+
+    if (bookingId) {
+      try {
+        booking = await bookingService.getBooking({
+          hotelId,
+          bookingId,
+          email,
+          phone
+        });
+      } catch (err: any) {
+        throw new NotFoundError(err.message || 'No confirmed reservation found for this property with that booking ID.');
+      }
+    } else if (email || phone) {
+      try {
+        booking = await bookingService.getBooking({
+          hotelId,
+          email,
+          phone
+        });
+      } catch {
+        // Non-blocking: proceed with guest context
+      }
+    }
+
+    if (!booking && roomNumber) {
+      const physicalRoom = await RoomModel.findOne({
+        businessId: new Types.ObjectId(hotelId),
+        roomNumber: roomNumber.trim()
+      }).exec();
+
+      if (physicalRoom) {
+        const activeBooking = await BookingModel.findOne({
           businessId: new Types.ObjectId(hotelId),
-          roomNumber: roomNumber.trim()
-        }).exec();
+          roomId: physicalRoom._id,
+          bookingStatus: { $in: ['CONFIRMED', 'CHECKED_IN'] }
+        }).sort({ createdAt: -1 }).populate('guestId').populate('roomTypeId').exec();
 
-        if (physicalRoom) {
-          const now = new Date();
-          const activeBooking = await BookingModel.findOne({
-            businessId: new Types.ObjectId(hotelId),
-            roomId: physicalRoom._id,
-            bookingStatus: { $in: ['CONFIRMED', 'CHECKED_IN'] },
-            checkIn: { $lte: now },
-            checkOut: { $gte: now }
-          }).sort({ createdAt: -1 }).populate('guestId').populate('roomTypeId').exec();
-
-          if (activeBooking) {
+        if (activeBooking) {
+          bRecord = activeBooking;
+          try {
             booking = await bookingService.getBooking({
               hotelId,
               bookingId: activeBooking._id.toString()
             });
+          } catch {
+            // Fallback to activeBooking document
           }
         }
       }
-
-      if (!booking) {
-        throw new NotFoundError(
-          err.message || 'No confirmed reservation found matching your details. Room service is reserved for staying guests.'
-        );
-      }
     }
 
-    // 2. Validate booking status
-    if (booking.bookingStatus === 'CANCELLED') {
-      throw new BadRequestError('Cannot request room service for a cancelled reservation.');
-    }
-    if (booking.bookingStatus === 'CHECKED_OUT') {
-      throw new BadRequestError('Cannot request room service for a reservation that has already checked out.');
+    if (booking?.bookingId && !bRecord) {
+      bRecord = await BookingModel.findById(new Types.ObjectId(booking.bookingId)).exec();
     }
 
-    // 3. Resolve room number
-    let finalRoomNumber: string = roomNumber || booking.roomNumber || '';
-    if (!finalRoomNumber) {
-      // Look up booking document for physical room
-      const bDoc = await BookingModel.findById(new Types.ObjectId(booking.bookingId)).populate('roomId').exec();
+    // 3. Resolve room number and guest name
+    let finalRoomNumber: string = roomNumber || booking?.roomNumber || '';
+    if (!finalRoomNumber && bRecord?.roomId) {
+      const bDoc = await BookingModel.findById(bRecord._id).populate('roomId').exec();
       const rDoc: any = bDoc?.roomId;
-      finalRoomNumber = rDoc?.roomNumber || `Room for ${booking.roomName}`;
+      finalRoomNumber = rDoc?.roomNumber || '';
     }
+    if (!finalRoomNumber) {
+      finalRoomNumber = roomNumber ? `Room ${roomNumber}` : 'Room (To be confirmed)';
+    }
+
+    const finalRoomName: string = booking?.roomName || (bRecord ? 'Assigned Suite' : 'Guest Room');
+    const finalGuestName: string = params.guestName || booking?.guest?.name || (bRecord?.guestId ? 'In-House Guest' : 'Valued Guest');
+    const finalBookingCode: string = booking?.confirmationCode || (bookingId ? bookingId : 'IN-HOUSE');
 
     // 4. Normalize service type
     const rawType = (params.serviceType || 'cleaning').toLowerCase();
@@ -114,7 +142,7 @@ export class ServiceRequestService {
     if (rawType.includes('towel') || rawType.includes('linen') || rawType.includes('sheet') || rawType.includes('pillow')) {
       normalizedType = 'towels';
       displayService = 'Fresh Towels & Linens';
-    } else if (rawType.includes('maintenance') || rawType.includes('fix') || rawType.includes('repair') || rawType.includes('plumb')) {
+    } else if (rawType.includes('maintenance') || rawType.includes('fix') || rawType.includes('repair') || rawType.includes('plumb') || rawType.includes('ac')) {
       normalizedType = 'maintenance';
       displayService = 'Maintenance Support';
     } else if (rawType.includes('food') || rawType.includes('dine') || rawType.includes('dining') || rawType.includes('meal') || rawType.includes('breakfast')) {
@@ -131,18 +159,18 @@ export class ServiceRequestService {
     const details = params.details || `Guest requested ${displayService} via AI Concierge chatbot.`;
 
     // 5. Create service request record
-    const bRecord = await BookingModel.findById(new Types.ObjectId(booking.bookingId)).exec();
     const serviceRequest = new ServiceRequestModel({
-      organizationId: bRecord?.organizationId || new Types.ObjectId(),
+      organizationId: orgId,
       businessId: new Types.ObjectId(hotelId),
-      bookingId: new Types.ObjectId(booking.bookingId),
+      bookingId: bRecord?._id || (booking?.bookingId && Types.ObjectId.isValid(booking.bookingId) ? new Types.ObjectId(booking.bookingId) : undefined),
       guestId: bRecord?.guestId,
+      guestName: finalGuestName,
       roomNumber: finalRoomNumber,
-      roomName: booking.roomName,
+      roomName: finalRoomName,
       serviceType: normalizedType,
       details,
       status: 'scheduled',
-      priority: 'normal',
+      priority: params.priority || (normalizedType === 'maintenance' ? 'high' : 'normal'),
       requestedTime: params.requestedTime || 'ASAP'
     });
 
@@ -153,10 +181,10 @@ export class ServiceRequestService {
 
     return {
       requestId,
-      bookingId: booking.confirmationCode,
+      bookingId: finalBookingCode,
       roomNumber: finalRoomNumber,
-      roomName: booking.roomName,
-      guestName: booking.guest.name,
+      roomName: finalRoomName,
+      guestName: finalGuestName,
       serviceType: displayService,
       status: 'Scheduled',
       details,
@@ -169,15 +197,29 @@ export class ServiceRequestService {
    * Retrieve active service requests for a booking or hotel.
    */
   public async getServiceRequests(hotelId: string, bookingId?: string) {
-    const query: any = { businessId: new Types.ObjectId(hotelId) };
-    if (bookingId) {
-      if (Types.ObjectId.isValid(bookingId)) {
-        query.bookingId = new Types.ObjectId(bookingId);
-      }
+    if (!hotelId || !Types.ObjectId.isValid(hotelId)) {
+      return [];
     }
-    return ServiceRequestModel.find(query).sort({ createdAt: -1 }).limit(10).exec();
+    const query: any = { businessId: new Types.ObjectId(hotelId) };
+    if (bookingId && Types.ObjectId.isValid(bookingId)) {
+      query.bookingId = new Types.ObjectId(bookingId);
+    }
+    return ServiceRequestModel.find(query).sort({ createdAt: -1 }).limit(100).exec();
+  }
+
+  /**
+   * Update status of a service request (e.g. scheduled, in_progress, completed, cancelled)
+   */
+  public async updateServiceRequestStatus(requestId: string, status: string, notes?: string) {
+    const query = Types.ObjectId.isValid(requestId) ? { _id: new Types.ObjectId(requestId) } : { _id: requestId };
+    const update: any = { status };
+    if (notes) {
+      update.details = notes;
+    }
+    return ServiceRequestModel.findOneAndUpdate(query, update, { new: true }).exec();
   }
 }
 
 export const serviceRequestService = new ServiceRequestService();
 export default serviceRequestService;
+

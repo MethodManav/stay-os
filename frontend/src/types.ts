@@ -104,6 +104,24 @@ export interface WebsiteTheme {
   sections: WebsiteSection[];
 }
 
+export interface ServiceRecord {
+  id: string;
+  requestId?: string;
+  bookingId?: string;
+  bookingCode?: string;
+  guestName: string;
+  roomNumber: string;
+  roomName?: string;
+  serviceType: string;
+  details: string;
+  status: 'requested' | 'scheduled' | 'in_progress' | 'completed' | 'cancelled';
+  priority: 'low' | 'normal' | 'high';
+  requestedTime?: string;
+  estimatedArrival?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
 export interface Tenant {
   id: string;
   subdomain: string;
@@ -118,6 +136,7 @@ export interface Tenant {
   conversations: Conversation[];
   team: TeamMember[];
   website: WebsiteTheme;
+  serviceRequests?: ServiceRecord[];
 }
 
 export interface SaaSUser {

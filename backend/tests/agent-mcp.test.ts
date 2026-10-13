@@ -505,16 +505,16 @@ describe('StayOS AI-Powered Booking Agent & MCP Tools Suite', () => {
       expect(srRes.error).toBe(true);
     });
 
-    it('prompts guest for booking verification when asking "i want cleaning service" without booking details', async () => {
+    it('analyzes request and executes requestRoomService tool when guest asks "i want cleaning service"', async () => {
       const response = await geminiBookingAgent.handleMessage({
         tenant: hotelAContext,
         message: 'i want cleaning service'
       });
 
       expect(response.reply).toBeDefined();
-      expect(response.reply.toLowerCase()).toMatch(/booking|confirmation|room number|reservation/i);
       const calledRoomService = response.toolCallsExecuted.some(t => t.name === 'requestRoomService');
-      expect(calledRoomService).toBe(false);
+      expect(calledRoomService).toBe(true);
+      expect(response.serviceRequestDetails).toBeDefined();
     });
 
     it('successfully dispatches cleaning service when guest has booking and types "i want cleaning service"', async () => {

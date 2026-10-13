@@ -233,15 +233,16 @@ export class BookingService {
     bookingId?: string;
     email?: string;
     phone?: string;
+    roomNumber?: string;
   }): Promise<BookingResponse> {
-    const { hotelId, bookingId, email, phone } = params;
+    const { hotelId, bookingId, email, phone, roomNumber } = params;
 
     if (!Types.ObjectId.isValid(hotelId)) {
       throw new BadRequestError('Invalid hotel identifier');
     }
 
-    if (!bookingId && !email && !phone) {
-      throw new BadRequestError('Please provide a booking ID, email, or phone number to verify booking');
+    if (!bookingId && !email && !phone && !roomNumber) {
+      throw new BadRequestError('Please provide a booking ID, room number, email, or phone number to verify booking');
     }
 
     let bookingQuery: any = {
@@ -275,6 +276,18 @@ export class BookingService {
           throw new BadRequestError('Invalid booking ID format');
         }
       }
+    } else if (roomNumber && !email && !phone) {
+      const physicalRoom = await RoomModel.findOne({
+        businessId: new Types.ObjectId(hotelId),
+        roomNumber: roomNumber.trim()
+      }).exec();
+
+      if (!physicalRoom) {
+        throw new NotFoundError(`Room '${roomNumber}' not found at this hotel`);
+      }
+
+      bookingQuery.roomId = physicalRoom._id;
+      bookingQuery.bookingStatus = { $nin: ['CANCELLED'] };
     } else {
       // Find guest by email or phone
       const guestQuery: any = {};

@@ -40,6 +40,7 @@ import { AIController } from '../modules/ai/controllers/AIController';
 import { AnalyticsController } from '../modules/analytics/controllers/AnalyticsController';
 import { PublicController } from '../modules/businesses/controllers/PublicController';
 import { AdminController } from '../modules/admin/controllers/AdminController';
+import { ServiceRequestController } from '../modules/bookings/controllers/ServiceRequestController';
 
 // Routers
 import { createAuthRouter } from '../modules/auth/routes/AuthRoutes';
@@ -54,6 +55,7 @@ import { createAIRouter } from '../modules/ai/routes/AIRoutes';
 import { createAnalyticsRouter } from '../modules/analytics/routes/AnalyticsRoutes';
 import { createPublicRouter } from '../modules/businesses/routes/PublicRoutes';
 import { createAdminRouter } from '../modules/admin/routes/AdminRoutes';
+import { createServiceRequestRouter } from '../modules/bookings/routes/ServiceRequestRoutes';
 
 // Instantiate Repository layer singletons
 const userRepo = new MongoUserRepository();
@@ -102,6 +104,7 @@ const publicController = new PublicController(
   bookingRepo
 );
 const adminController = new AdminController();
+const serviceRequestController = new ServiceRequestController();
 
 // Instantiate Routers
 export const authRouter = createAuthRouter(authController);
@@ -117,3 +120,5 @@ export const aiRouter = createAIRouter(aiController);
 export const analyticsRouter = createAnalyticsRouter(analyticsController);
 export const publicRouter = createPublicRouter(publicController);
 export const adminRouter = createAdminRouter(adminController);
+export const serviceRequestRouter = createServiceRequestRouter(serviceRequestController);
+
